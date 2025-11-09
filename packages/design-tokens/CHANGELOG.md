@@ -2,132 +2,113 @@
 
 ## [0.10.3](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.10.2...@instill-ai/design-tokens-v0.10.3) (2025-06-30)
 
-
 ### Bug Fixes
 
-* fix pnpm version ([#1778](https://github.com/instill-ai/console/issues/1778)) ([582a316](https://github.com/instill-ai/console/commit/582a316bfce784c8a90fa32df67959aafd0907e2))
+- fix pnpm version ([#1778](https://github.com/instill-ai/console/issues/1778)) ([582a316](https://github.com/instill-ai/console/commit/582a316bfce784c8a90fa32df67959aafd0907e2))
 
 ## [0.10.2](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.10.1...@instill-ai/design-tokens-v0.10.2) (2025-06-17)
 
-
 ### Features
 
-* clean up the deps and upgrade nextjs to 15 ([#1758](https://github.com/instill-ai/console/issues/1758)) ([cc0fda0](https://github.com/instill-ai/console/commit/cc0fda067922ba5f0b8cd8f060dee266e2851671))
+- clean up the deps and upgrade nextjs to 15 ([#1758](https://github.com/instill-ai/console/issues/1758)) ([cc0fda0](https://github.com/instill-ai/console/commit/cc0fda067922ba5f0b8cd8f060dee266e2851671))
 
 ## [0.10.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.10.0...@instill-ai/design-tokens-v0.10.1) (2025-05-20)
 
-
 ### Bug Fixes
 
-* fix console-deps-vuln ([#1707](https://github.com/instill-ai/console/issues/1707)) ([d2e4f6a](https://github.com/instill-ai/console/commit/d2e4f6a3504c3268ac366665b7afae70d7b2b937))
+- fix console-deps-vuln ([#1707](https://github.com/instill-ai/console/issues/1707)) ([d2e4f6a](https://github.com/instill-ai/console/commit/d2e4f6a3504c3268ac366665b7afae70d7b2b937))
 
 ## [0.10.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.9.0...@instill-ai/design-tokens-v0.10.0) (2025-04-23)
 
-
 ### Features
 
-* new agent product line ([#1695](https://github.com/instill-ai/console/issues/1695)) ([3148f39](https://github.com/instill-ai/console/commit/3148f39780ffc0abd76e74622441f4f1727d8397))
+- new agent product line ([#1695](https://github.com/instill-ai/console/issues/1695)) ([3148f39](https://github.com/instill-ai/console/commit/3148f39780ffc0abd76e74622441f4f1727d8397))
 
 ## [0.9.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.8.1...@instill-ai/design-tokens-v0.9.0) (2025-02-24)
 
-
 ### Features
 
-* fully update vitest to 2.1.9 ([#1683](https://github.com/instill-ai/console/issues/1683)) ([7da518f](https://github.com/instill-ai/console/commit/7da518fb3fdbee82cc3e1a9b4c0ae1617d1db1c5))
-
+- fully update vitest to 2.1.9 ([#1683](https://github.com/instill-ai/console/issues/1683)) ([7da518f](https://github.com/instill-ai/console/commit/7da518fb3fdbee82cc3e1a9b4c0ae1617d1db1c5))
 
 ### Bug Fixes
 
-* fix several deps vulnerability (vite, vitest) ([#1682](https://github.com/instill-ai/console/issues/1682)) ([18ef687](https://github.com/instill-ai/console/commit/18ef687eb23badb8ca3106c806bd3143b6be501a))
+- fix several deps vulnerability (vite, vitest) ([#1682](https://github.com/instill-ai/console/issues/1682)) ([18ef687](https://github.com/instill-ai/console/commit/18ef687eb23badb8ca3106c806bd3143b6be501a))
 
 ## [0.8.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.8.0...@instill-ai/design-tokens-v0.8.1) (2024-12-03)
 
-
 ### Bug Fixes
 
-* patch high vulnerabilities deps issues ([#1631](https://github.com/instill-ai/console/issues/1631)) ([955355e](https://github.com/instill-ai/console/commit/955355e4ad14baa2690d1e87273257dba6468b71))
+- patch high vulnerabilities deps issues ([#1631](https://github.com/instill-ai/console/issues/1631)) ([955355e](https://github.com/instill-ai/console/commit/955355e4ad14baa2690d1e87273257dba6468b71))
 
 ## [0.8.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.7.1...@instill-ai/design-tokens-v0.8.0) (2024-10-22)
 
-
 ### Features
 
-* automatically download icons ([#1551](https://github.com/instill-ai/console/issues/1551)) ([02c7223](https://github.com/instill-ai/console/commit/02c722362601e07bc37b646750ef29183b72fe0a))
+- automatically download icons ([#1551](https://github.com/instill-ai/console/issues/1551)) ([02c7223](https://github.com/instill-ai/console/commit/02c722362601e07bc37b646750ef29183b72fe0a))
 
 ## [0.7.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.7.0...@instill-ai/design-tokens-v0.7.1) (2024-08-29)
 
-
 ### Bug Fixes
 
-* fix ts version that cause build issue ([#1407](https://github.com/instill-ai/console/issues/1407)) ([f7b2b13](https://github.com/instill-ai/console/commit/f7b2b13f3e6494915b8e6555b5f23498d32f792e))
+- fix ts version that cause build issue ([#1407](https://github.com/instill-ai/console/issues/1407)) ([f7b2b13](https://github.com/instill-ai/console/commit/f7b2b13f3e6494915b8e6555b5f23498d32f792e))
 
 ## [0.7.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.6.1...@instill-ai/design-tokens-v0.7.0) (2024-07-16)
 
-
 ### Features
 
-* merge sprint 39 changes ([#1302](https://github.com/instill-ai/console/issues/1302)) ([14194ab](https://github.com/instill-ai/console/commit/14194abb680c9a5156d35cbd5fe4c2fab25e8891))
+- merge sprint 39 changes ([#1302](https://github.com/instill-ai/console/issues/1302)) ([14194ab](https://github.com/instill-ai/console/commit/14194abb680c9a5156d35cbd5fe4c2fab25e8891))
 
 ## [0.6.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.6.0...@instill-ai/design-tokens-v0.6.1) (2024-07-02)
 
-
 ### Bug Fixes
 
-* fix prettier issue around root folder and vscode plugin ([#1258](https://github.com/instill-ai/console/issues/1258)) ([d3eac49](https://github.com/instill-ai/console/commit/d3eac498ec78872392c9c5072c1b9aed303fc24f))
-
+- fix prettier issue around root folder and vscode plugin ([#1258](https://github.com/instill-ai/console/issues/1258)) ([d3eac49](https://github.com/instill-ai/console/commit/d3eac498ec78872392c9c5072c1b9aed303fc24f))
 
 ### Miscellaneous
 
-* use prettier to sort import order ([#1261](https://github.com/instill-ai/console/issues/1261)) ([4640c24](https://github.com/instill-ai/console/commit/4640c24ce73940d204111880b8bb367d690e32d1))
+- use prettier to sort import order ([#1261](https://github.com/instill-ai/console/issues/1261)) ([4640c24](https://github.com/instill-ai/console/commit/4640c24ce73940d204111880b8bb367d690e32d1))
 
 ## [0.6.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.5.4...@instill-ai/design-tokens-v0.6.0) (2024-06-06)
 
-
 ### Features
 
-* update models list ui/ux ([#1136](https://github.com/instill-ai/console/issues/1136)) ([88944b4](https://github.com/instill-ai/console/commit/88944b4245c8270ebeb0ad4439c641257e8082a7))
+- update models list ui/ux ([#1136](https://github.com/instill-ai/console/issues/1136)) ([88944b4](https://github.com/instill-ai/console/commit/88944b4245c8270ebeb0ad4439c641257e8082a7))
 
 ## [0.5.4](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.5.3...@instill-ai/design-tokens-v0.5.4) (2024-05-28)
 
-
 ### Bug Fixes
 
-* fix deps alerts and zod denial issue ([#1184](https://github.com/instill-ai/console/issues/1184)) ([3db9a78](https://github.com/instill-ai/console/commit/3db9a786767db1c9902bc3945e7b3defe4dd331d))
+- fix deps alerts and zod denial issue ([#1184](https://github.com/instill-ai/console/issues/1184)) ([3db9a78](https://github.com/instill-ai/console/commit/3db9a786767db1c9902bc3945e7b3defe4dd331d))
 
 ## [0.5.3](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.5.2...@instill-ai/design-tokens-v0.5.3) (2024-05-24)
 
-
 ### Bug Fixes
 
-* fix eslint version and error ([#1177](https://github.com/instill-ai/console/issues/1177)) ([7e9893d](https://github.com/instill-ai/console/commit/7e9893d8368c8b2aebf8f9948d5d1994b9ae537d))
+- fix eslint version and error ([#1177](https://github.com/instill-ai/console/issues/1177)) ([7e9893d](https://github.com/instill-ai/console/commit/7e9893d8368c8b2aebf8f9948d5d1994b9ae537d))
 
 ## [0.5.2](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.5.1...@instill-ai/design-tokens-v0.5.2) (2024-05-01)
 
-
 ### Bug Fixes
 
-* fix vscode settings to use tsconfigs in subfolders ([#1114](https://github.com/instill-ai/console/issues/1114)) ([af1bb2d](https://github.com/instill-ai/console/commit/af1bb2d306e09637eef2e67bc562a84ddeb2938d))
+- fix vscode settings to use tsconfigs in subfolders ([#1114](https://github.com/instill-ai/console/issues/1114)) ([af1bb2d](https://github.com/instill-ai/console/commit/af1bb2d306e09637eef2e67bc562a84ddeb2938d))
 
 ## [0.5.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.5.0...@instill-ai/design-tokens-v0.5.1) (2024-03-29)
 
-
 ### Miscellaneous
 
-* refactor how we bundle toolkit and design system ([#1028](https://github.com/instill-ai/console/issues/1028)) ([1bc0628](https://github.com/instill-ai/console/commit/1bc0628aee9e93749ed04bb956f58884ba7a0a4c))
+- refactor how we bundle toolkit and design system ([#1028](https://github.com/instill-ai/console/issues/1028)) ([1bc0628](https://github.com/instill-ai/console/commit/1bc0628aee9e93749ed04bb956f58884ba7a0a4c))
 
 ## [0.5.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.4.1...@instill-ai/design-tokens-v0.5.0) (2024-01-24)
 
-
 ### Features
 
-* setup the react testing library for auto-gen-form unit test ([#895](https://github.com/instill-ai/console/issues/895)) ([b3947b7](https://github.com/instill-ai/console/commit/b3947b75a3fc7d52d9b2d9e90210232ca6c96d98))
+- setup the react testing library for auto-gen-form unit test ([#895](https://github.com/instill-ai/console/issues/895)) ([b3947b7](https://github.com/instill-ai/console/commit/b3947b75a3fc7d52d9b2d9e90210232ca6c96d98))
 
 ## [0.4.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.4.0...@instill-ai/design-tokens-v0.4.1) (2024-01-02)
 
-
 ### Miscellaneous
 
-* apply prettier format and reject formatting errors in PRs ([#818](https://github.com/instill-ai/console/issues/818)) ([fa5c3b3](https://github.com/instill-ai/console/commit/fa5c3b362dfac92291926c0e9020bb53c8c10ddc))
+- apply prettier format and reject formatting errors in PRs ([#818](https://github.com/instill-ai/console/issues/818)) ([fa5c3b3](https://github.com/instill-ai/console/commit/fa5c3b362dfac92291926c0e9020bb53c8c10ddc))
 
 ## [0.4.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.3.5...@instill-ai/design-tokens-v0.4.0) (2023-12-15)
 

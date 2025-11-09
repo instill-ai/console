@@ -1,6 +1,4 @@
-export * from "./application";
 export * from "./artifact";
-export * from "./catalog";
 export * from "./connector";
 export * from "./hub";
 export * from "./integration";
@@ -12,8 +10,6 @@ export * from "./organization";
 export * from "./misc";
 export * from "./release";
 export * from "./secret";
-export * from "./chats";
-export * from "./table";
 export * from "./types";
 
 /** Re export react-query to solve ESM, CJS confict issue */

@@ -11,7 +11,7 @@ In most cases, you only need to edit the `core.ts` file. However, in some scenar
 
 ## Normal OAuth Authorization Code Flow
 
-NextAuth is built by default for the `OIDC` flow, which means "Sign in with <Provider>". However, in our case, we want to "Connect to <Provider>" to get the token and use it to access the user's data. 
+NextAuth is built by default for the `OIDC` flow, which means "Sign in with <Provider>". However, in our case, we want to "Connect to <Provider>" to get the token and use it to access the user's data.
 
 This use case creates additional challenges that require contributors to have a deeper understanding of NextAuth. For example, the default `GitHub` provider follows the `oauth` flow, while the default `Slack` provider follows the `oidc` flow. You can find these information in the source code of NextAuth.
 
@@ -152,39 +152,39 @@ Here's an example for the Slack integration:
 ```ts
 export const slackAccessTokenInterceptor =
   (originalFetch: typeof fetch) =>
-async (
-  url: Parameters<typeof fetch>[0],
-  options: Parameters<typeof fetch>[1] = {},
-) => {
-  if (
-    url === "https://slack.com/api/oauth.v2.access" &&
-    options.method === "POST"
-  ) {
-    const response = await originalFetch(url, options);
+  async (
+    url: Parameters<typeof fetch>[0],
+    options: Parameters<typeof fetch>[1] = {},
+  ) => {
+    if (
+      url === "https://slack.com/api/oauth.v2.access" &&
+      options.method === "POST"
+    ) {
+      const response = await originalFetch(url, options);
 
-    // Clone the response to be able to modify it
-    const clonedResponse = response.clone();
-    const body = await clonedResponse.json();
+      // Clone the response to be able to modify it
+      const clonedResponse = response.clone();
+      const body = await clonedResponse.json();
 
-    // Since we use https://slack.com/api/oauth.v2.access, the token_type is "bot" not "bearer"
-    // but next-auth expects the token_type to be "bearer"
-    body.token_type = "bearer";
+      // Since we use https://slack.com/api/oauth.v2.access, the token_type is "bot" not "bearer"
+      // but next-auth expects the token_type to be "bearer"
+      body.token_type = "bearer";
 
-    // Create a new response with the modified body
-    const modifiedResponse = new Response(JSON.stringify(body), {
-      status: response.status,
-      statusText: response.statusText,
-      headers: response.headers,
-    });
+      // Create a new response with the modified body
+      const modifiedResponse = new Response(JSON.stringify(body), {
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers,
+      });
 
-    // Add the original url to the response
-    return Object.defineProperty(modifiedResponse, "url", {
-      value: response.url,
-    });
-  }
+      // Add the original url to the response
+      return Object.defineProperty(modifiedResponse, "url", {
+        value: response.url,
+      });
+    }
 
-  return originalFetch(url, options);
-};
+    return originalFetch(url, options);
+  };
 ```
 
 Key points:
@@ -212,7 +212,7 @@ Key points:
 3. After getting the response, restore the global `fetch` to the original one.
 
 Now the Slack integration should work as expected.
- 
+
 ## About ngrok usage
 
 In some cases like Slack, it's OAuth endpoint callback doesn't allow http request, we need to use ngrok to redirect the request to the local server. To test locally, you can follow these steps:

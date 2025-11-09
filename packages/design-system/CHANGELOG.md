@@ -2,489 +2,419 @@
 
 ## [0.90.5](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.4...@instill-ai/design-system-v0.90.5) (2025-08-27)
 
-
 ### Miscellaneous
 
-* **github,toolkit,radix,jsx:** houseclean  codebase ([#1814](https://github.com/instill-ai/console/issues/1814)) ([2329c5b](https://github.com/instill-ai/console/commit/2329c5b7b3273c31785e72965f093b41c5bfe667))
+- **github,toolkit,radix,jsx:** houseclean codebase ([#1814](https://github.com/instill-ai/console/issues/1814)) ([2329c5b](https://github.com/instill-ai/console/commit/2329c5b7b3273c31785e72965f093b41c5bfe667))
 
 ## [0.90.4](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.3...@instill-ai/design-system-v0.90.4) (2025-07-31)
 
-
 ### Features
 
-* **design-system:** add pin icons ([#1812](https://github.com/instill-ai/console/issues/1812)) ([31a9476](https://github.com/instill-ai/console/commit/31a947635c99ec0f350726b8d5695d9582681812))
-* **main:** new things for the new subscription flow ([#1806](https://github.com/instill-ai/console/issues/1806)) ([e19f352](https://github.com/instill-ai/console/commit/e19f352333f9165c4367e94d3c823b886cf821f5))
-
+- **design-system:** add pin icons ([#1812](https://github.com/instill-ai/console/issues/1812)) ([31a9476](https://github.com/instill-ai/console/commit/31a947635c99ec0f350726b8d5695d9582681812))
+- **main:** new things for the new subscription flow ([#1806](https://github.com/instill-ai/console/issues/1806)) ([e19f352](https://github.com/instill-ai/console/commit/e19f352333f9165c4367e94d3c823b886cf821f5))
 
 ### Bug Fixes
 
-* fix org sub react-query key ([#1810](https://github.com/instill-ai/console/issues/1810)) ([a32872a](https://github.com/instill-ai/console/commit/a32872a0973807486cc4efb518a078d1ebb7e57b))
+- fix org sub react-query key ([#1810](https://github.com/instill-ai/console/issues/1810)) ([a32872a](https://github.com/instill-ai/console/commit/a32872a0973807486cc4efb518a078d1ebb7e57b))
 
 ## [0.90.3](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.2...@instill-ai/design-system-v0.90.3) (2025-07-26)
 
-
 ### Features
 
-* add slash error 01 icon ([#1805](https://github.com/instill-ai/console/issues/1805)) ([900e7c0](https://github.com/instill-ai/console/commit/900e7c0f77ab02726c4af8619da6c8e7235e5412))
-* update multiple type ([#1807](https://github.com/instill-ai/console/issues/1807)) ([1e3d155](https://github.com/instill-ai/console/commit/1e3d15592eb632316844d965a228dbb570de47f8))
+- add slash error 01 icon ([#1805](https://github.com/instill-ai/console/issues/1805)) ([900e7c0](https://github.com/instill-ai/console/commit/900e7c0f77ab02726c4af8619da6c8e7235e5412))
+- update multiple type ([#1807](https://github.com/instill-ai/console/issues/1807)) ([1e3d155](https://github.com/instill-ai/console/commit/1e3d15592eb632316844d965a228dbb570de47f8))
 
 ## [0.90.2](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.1...@instill-ai/design-system-v0.90.2) (2025-06-30)
 
-
 ### Features
 
-* add enhance/suggest table column definition sdk ([#1791](https://github.com/instill-ai/console/issues/1791)) ([81d3695](https://github.com/instill-ai/console/commit/81d36959353916ed6cfd7d9aea427197e28c39eb))
-
+- add enhance/suggest table column definition sdk ([#1791](https://github.com/instill-ai/console/issues/1791)) ([81d3695](https://github.com/instill-ai/console/commit/81d36959353916ed6cfd7d9aea427197e28c39eb))
 
 ### Bug Fixes
 
-* fix pnpm version ([#1778](https://github.com/instill-ai/console/issues/1778)) ([582a316](https://github.com/instill-ai/console/commit/582a316bfce784c8a90fa32df67959aafd0907e2))
+- fix pnpm version ([#1778](https://github.com/instill-ai/console/issues/1778)) ([582a316](https://github.com/instill-ai/console/commit/582a316bfce784c8a90fa32df67959aafd0907e2))
 
 ## [0.90.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.0...@instill-ai/design-system-v0.90.1) (2025-06-17)
 
-
 ### Features
 
-* clean up the deps and upgrade nextjs to 15 ([#1758](https://github.com/instill-ai/console/issues/1758)) ([cc0fda0](https://github.com/instill-ai/console/commit/cc0fda067922ba5f0b8cd8f060dee266e2851671))
-* deprecate old design-system ([#1756](https://github.com/instill-ai/console/issues/1756)) ([03fca09](https://github.com/instill-ai/console/commit/03fca09f66b73b104631e540f570025a503dd3a4))
-* use sonner as new toast ([#1760](https://github.com/instill-ai/console/issues/1760)) ([df8f7e0](https://github.com/instill-ai/console/commit/df8f7e0ee361ea7a6df12851309f24c0ff7afc08))
-
+- clean up the deps and upgrade nextjs to 15 ([#1758](https://github.com/instill-ai/console/issues/1758)) ([cc0fda0](https://github.com/instill-ai/console/commit/cc0fda067922ba5f0b8cd8f060dee266e2851671))
+- deprecate old design-system ([#1756](https://github.com/instill-ai/console/issues/1756)) ([03fca09](https://github.com/instill-ai/console/commit/03fca09f66b73b104631e540f570025a503dd3a4))
+- use sonner as new toast ([#1760](https://github.com/instill-ai/console/issues/1760)) ([df8f7e0](https://github.com/instill-ai/console/commit/df8f7e0ee361ea7a6df12851309f24c0ff7afc08))
 
 ### Bug Fixes
 
-* fix secure cookie issue, default to use not-secure cookie on http site ([#1761](https://github.com/instill-ai/console/issues/1761)) ([a2167ce](https://github.com/instill-ai/console/commit/a2167ce9d2ac65db9c90113a839902a7f62d2a00))
+- fix secure cookie issue, default to use not-secure cookie on http site ([#1761](https://github.com/instill-ai/console/issues/1761)) ([a2167ce](https://github.com/instill-ai/console/commit/a2167ce9d2ac65db9c90113a839902a7f62d2a00))
 
 ## [0.90.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.89.0...@instill-ai/design-system-v0.90.0) (2025-05-28)
 
-
 ### Features
 
-* add check-square icon ([#1732](https://github.com/instill-ai/console/issues/1732)) ([7b389de](https://github.com/instill-ai/console/commit/7b389de89f300ff82e1986c6bad01105aaafd49c))
+- add check-square icon ([#1732](https://github.com/instill-ai/console/issues/1732)) ([7b389de](https://github.com/instill-ai/console/commit/7b389de89f300ff82e1986c6bad01105aaafd49c))
 
 ## [0.89.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.88.0...@instill-ai/design-system-v0.89.0) (2025-05-20)
 
-
 ### Features
 
-* new icon ([#1719](https://github.com/instill-ai/console/issues/1719)) ([ec0d601](https://github.com/instill-ai/console/commit/ec0d6016ad9d2b8ca2b167e851b6f1910f99838c))
-* update chat message type ([#1717](https://github.com/instill-ai/console/issues/1717)) ([529cd96](https://github.com/instill-ai/console/commit/529cd96221a06de48d4902faf0e23dfca7d08140))
-
+- new icon ([#1719](https://github.com/instill-ai/console/issues/1719)) ([ec0d601](https://github.com/instill-ai/console/commit/ec0d6016ad9d2b8ca2b167e851b6f1910f99838c))
+- update chat message type ([#1717](https://github.com/instill-ai/console/issues/1717)) ([529cd96](https://github.com/instill-ai/console/commit/529cd96221a06de48d4902faf0e23dfca7d08140))
 
 ### Bug Fixes
 
-* fix console-deps-vuln ([#1707](https://github.com/instill-ai/console/issues/1707)) ([d2e4f6a](https://github.com/instill-ai/console/commit/d2e4f6a3504c3268ac366665b7afae70d7b2b937))
-* fix hash02 icon ([#1723](https://github.com/instill-ai/console/issues/1723)) ([c3e560f](https://github.com/instill-ai/console/commit/c3e560fbd31e3dc75348f0bf195a198f0a5e97c4))
+- fix console-deps-vuln ([#1707](https://github.com/instill-ai/console/issues/1707)) ([d2e4f6a](https://github.com/instill-ai/console/commit/d2e4f6a3504c3268ac366665b7afae70d7b2b937))
+- fix hash02 icon ([#1723](https://github.com/instill-ai/console/issues/1723)) ([c3e560f](https://github.com/instill-ai/console/commit/c3e560fbd31e3dc75348f0bf195a198f0a5e97c4))
 
 ## [0.88.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.87.0...@instill-ai/design-system-v0.88.0) (2025-04-23)
 
-
 ### Features
 
-* add Intercom icon ([#1702](https://github.com/instill-ai/console/issues/1702)) ([a0bbf63](https://github.com/instill-ai/console/commit/a0bbf63eca3b1ce710d12b72eb2835ddc95cd454))
-* export Popover portal ([#1699](https://github.com/instill-ai/console/issues/1699)) ([6451896](https://github.com/instill-ai/console/commit/64518964e2b91303b81fc6551229f01d3c7b3161))
-* new agent product line ([#1695](https://github.com/instill-ai/console/issues/1695)) ([3148f39](https://github.com/instill-ai/console/commit/3148f39780ffc0abd76e74622441f4f1727d8397))
-* new icon and chat storage update ([#1697](https://github.com/instill-ai/console/issues/1697)) ([9fe4e4b](https://github.com/instill-ai/console/commit/9fe4e4be79a29e2b8c1ba21feb3d12ac25182947))
+- add Intercom icon ([#1702](https://github.com/instill-ai/console/issues/1702)) ([a0bbf63](https://github.com/instill-ai/console/commit/a0bbf63eca3b1ce710d12b72eb2835ddc95cd454))
+- export Popover portal ([#1699](https://github.com/instill-ai/console/issues/1699)) ([6451896](https://github.com/instill-ai/console/commit/64518964e2b91303b81fc6551229f01d3c7b3161))
+- new agent product line ([#1695](https://github.com/instill-ai/console/issues/1695)) ([3148f39](https://github.com/instill-ai/console/commit/3148f39780ffc0abd76e74622441f4f1727d8397))
+- new icon and chat storage update ([#1697](https://github.com/instill-ai/console/issues/1697)) ([9fe4e4b](https://github.com/instill-ai/console/commit/9fe4e4be79a29e2b8c1ba21feb3d12ac25182947))
 
 ## [0.87.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.86.3...@instill-ai/design-system-v0.87.0) (2025-02-24)
 
-
 ### Features
 
-* fully update vitest to 2.1.9 ([#1683](https://github.com/instill-ai/console/issues/1683)) ([7da518f](https://github.com/instill-ai/console/commit/7da518fb3fdbee82cc3e1a9b4c0ae1617d1db1c5))
-
+- fully update vitest to 2.1.9 ([#1683](https://github.com/instill-ai/console/issues/1683)) ([7da518f](https://github.com/instill-ai/console/commit/7da518fb3fdbee82cc3e1a9b4c0ae1617d1db1c5))
 
 ### Bug Fixes
 
-* fix several deps vulnerability (vite, vitest) ([#1682](https://github.com/instill-ai/console/issues/1682)) ([18ef687](https://github.com/instill-ai/console/commit/18ef687eb23badb8ca3106c806bd3143b6be501a))
+- fix several deps vulnerability (vite, vitest) ([#1682](https://github.com/instill-ai/console/issues/1682)) ([18ef687](https://github.com/instill-ai/console/commit/18ef687eb23badb8ca3106c806bd3143b6be501a))
 
 ## [0.86.3](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.86.2...@instill-ai/design-system-v0.86.3) (2025-02-06)
 
-
 ### Bug Fixes
 
-* invalidate model list on new model creation ([#1667](https://github.com/instill-ai/console/issues/1667)) ([8a45206](https://github.com/instill-ai/console/commit/8a452063f8034ce02d82608d13744c17a499a491))
+- invalidate model list on new model creation ([#1667](https://github.com/instill-ai/console/issues/1667)) ([8a45206](https://github.com/instill-ai/console/commit/8a452063f8034ce02d82608d13744c17a499a491))
 
 ## [0.86.2](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.86.1...@instill-ai/design-system-v0.86.2) (2025-01-08)
 
-
 ### Bug Fixes
 
-* chat task label fix ([#1657](https://github.com/instill-ai/console/issues/1657)) ([c01daec](https://github.com/instill-ai/console/commit/c01daec62f3b92d9edaa62b91f25dac049889ae8))
+- chat task label fix ([#1657](https://github.com/instill-ai/console/issues/1657)) ([c01daec](https://github.com/instill-ai/console/commit/c01daec62f3b92d9edaa62b91f25dac049889ae8))
 
 ## [0.86.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.86.0...@instill-ai/design-system-v0.86.1) (2024-12-13)
 
-
 ### Bug Fixes
 
-* fix model hardware options ([#1652](https://github.com/instill-ai/console/issues/1652)) ([55b98a6](https://github.com/instill-ai/console/commit/55b98a662bea5ff3fa63bab7cf3ced46d06839d0))
+- fix model hardware options ([#1652](https://github.com/instill-ai/console/issues/1652)) ([55b98a6](https://github.com/instill-ai/console/commit/55b98a662bea5ff3fa63bab7cf3ced46d06839d0))
 
 ## [0.86.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.85.0...@instill-ai/design-system-v0.86.0) (2024-12-09)
 
-
 ### Features
 
-* update toggle styles ([#1645](https://github.com/instill-ai/console/issues/1645)) ([b1e1722](https://github.com/instill-ai/console/commit/b1e172235d726d8862248561b1b36ffa50d2f086))
+- update toggle styles ([#1645](https://github.com/instill-ai/console/issues/1645)) ([b1e1722](https://github.com/instill-ai/console/commit/b1e172235d726d8862248561b1b36ffa50d2f086))
 
 ## [0.85.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.84.0...@instill-ai/design-system-v0.85.0) (2024-12-03)
 
-
 ### Features
 
-* upgrade storybook deps ([#1634](https://github.com/instill-ai/console/issues/1634)) ([96bc075](https://github.com/instill-ai/console/commit/96bc07512ed161946aaeec4513312a64706e9017))
-
+- upgrade storybook deps ([#1634](https://github.com/instill-ai/console/issues/1634)) ([96bc075](https://github.com/instill-ai/console/commit/96bc07512ed161946aaeec4513312a64706e9017))
 
 ### Bug Fixes
 
-* further fix vulnerabilities deps ([#1632](https://github.com/instill-ai/console/issues/1632)) ([bda8462](https://github.com/instill-ai/console/commit/bda84621e28898ad7ef277550086a5de21ff3ef6))
-* patch high vulnerabilities deps issues ([#1631](https://github.com/instill-ai/console/issues/1631)) ([955355e](https://github.com/instill-ai/console/commit/955355e4ad14baa2690d1e87273257dba6468b71))
+- further fix vulnerabilities deps ([#1632](https://github.com/instill-ai/console/issues/1632)) ([bda8462](https://github.com/instill-ai/console/commit/bda84621e28898ad7ef277550086a5de21ff3ef6))
+- patch high vulnerabilities deps issues ([#1631](https://github.com/instill-ai/console/issues/1631)) ([955355e](https://github.com/instill-ai/console/commit/955355e4ad14baa2690d1e87273257dba6468b71))
 
 ## [0.84.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.83.0...@instill-ai/design-system-v0.84.0) (2024-11-20)
 
-
 ### Features
 
-* adapt artifact upload on pipeline preview page ([#1605](https://github.com/instill-ai/console/issues/1605)) ([37411cf](https://github.com/instill-ai/console/commit/37411cf53ec7f98cde73f443a4d35b27900c4770))
-* **dashboard:** rename pipeline/model triggers to runs ([#1597](https://github.com/instill-ai/console/issues/1597)) ([d32ce87](https://github.com/instill-ai/console/commit/d32ce8730e3ea03c9eea4123f47f4f3c835bf293))
-* support event component ([#1600](https://github.com/instill-ai/console/issues/1600)) ([af3526b](https://github.com/instill-ai/console/commit/af3526b5546a25d2fd18a3404c129f6c0128a21c))
+- adapt artifact upload on pipeline preview page ([#1605](https://github.com/instill-ai/console/issues/1605)) ([37411cf](https://github.com/instill-ai/console/commit/37411cf53ec7f98cde73f443a4d35b27900c4770))
+- **dashboard:** rename pipeline/model triggers to runs ([#1597](https://github.com/instill-ai/console/issues/1597)) ([d32ce87](https://github.com/instill-ai/console/commit/d32ce8730e3ea03c9eea4123f47f4f3c835bf293))
+- support event component ([#1600](https://github.com/instill-ai/console/issues/1600)) ([af3526b](https://github.com/instill-ai/console/commit/af3526b5546a25d2fd18a3404c129f6c0128a21c))
 
 ## [0.83.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.82.1...@instill-ai/design-system-v0.83.0) (2024-11-05)
 
-
 ### Features
 
-* **design-system:** feat add slider  ([#1571](https://github.com/instill-ai/console/issues/1571)) ([8e3e655](https://github.com/instill-ai/console/commit/8e3e655772e6814b9b05f689f2b8db695417d2ab))
+- **design-system:** feat add slider ([#1571](https://github.com/instill-ai/console/issues/1571)) ([8e3e655](https://github.com/instill-ai/console/commit/8e3e655772e6814b9b05f689f2b8db695417d2ab))
 
 ## [0.82.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.82.0...@instill-ai/design-system-v0.82.1) (2024-10-24)
 
-
 ### Bug Fixes
 
-* fix custom task icon ([#1560](https://github.com/instill-ai/console/issues/1560)) ([2477f00](https://github.com/instill-ai/console/commit/2477f00d1c2e39bb3f802d7db05c698a8f692b6c))
+- fix custom task icon ([#1560](https://github.com/instill-ai/console/issues/1560)) ([2477f00](https://github.com/instill-ai/console/commit/2477f00d1c2e39bb3f802d7db05c698a8f692b6c))
 
 ## [0.82.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.81.0...@instill-ai/design-system-v0.82.0) (2024-10-22)
 
-
 ### Features
 
-* put back image input preview, clean up ([#1546](https://github.com/instill-ai/console/issues/1546)) ([9a65578](https://github.com/instill-ai/console/commit/9a65578f751c28578b1efc55cf8117f95c06a3c0))
+- put back image input preview, clean up ([#1546](https://github.com/instill-ai/console/issues/1546)) ([9a65578](https://github.com/instill-ai/console/commit/9a65578f751c28578b1efc55cf8117f95c06a3c0))
 
 ## [0.81.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.80.0...@instill-ai/design-system-v0.81.0) (2024-10-08)
 
-
 ### Features
 
-* **assistant:** feat add assistant navbar  ([#1512](https://github.com/instill-ai/console/issues/1512)) ([c3245b8](https://github.com/instill-ai/console/commit/c3245b8b2c0fe56696d65736fe9c484d4c965d22))
-
+- **assistant:** feat add assistant navbar ([#1512](https://github.com/instill-ai/console/issues/1512)) ([c3245b8](https://github.com/instill-ai/console/commit/c3245b8b2c0fe56696d65736fe9c484d4c965d22))
 
 ### Bug Fixes
 
-* fix console not correctly update the namespace requester uid when requesting run related endpoint ([#1513](https://github.com/instill-ai/console/issues/1513)) ([ec89e4e](https://github.com/instill-ai/console/commit/ec89e4e17d5517a189ea1a7f0d6bf98b7e8b69bf))
+- fix console not correctly update the namespace requester uid when requesting run related endpoint ([#1513](https://github.com/instill-ai/console/issues/1513)) ([ec89e4e](https://github.com/instill-ai/console/commit/ec89e4e17d5517a189ea1a7f0d6bf98b7e8b69bf))
 
 ## [0.80.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.79.1...@instill-ai/design-system-v0.80.0) (2024-09-24)
 
-
 ### Features
 
-* support run-on-event webhook URL on editor ([#1498](https://github.com/instill-ai/console/issues/1498)) ([d0ed46d](https://github.com/instill-ai/console/commit/d0ed46dc02b24fc4085d8e6e8ac223d4a4239b8f))
-
+- support run-on-event webhook URL on editor ([#1498](https://github.com/instill-ai/console/issues/1498)) ([d0ed46d](https://github.com/instill-ai/console/commit/d0ed46dc02b24fc4085d8e6e8ac223d4a4239b8f))
 
 ### Bug Fixes
 
-* **editor:** fix CMDO not correctly initialized searchCode issue ([#1500](https://github.com/instill-ai/console/issues/1500)) ([88d7705](https://github.com/instill-ai/console/commit/88d7705f7a4afcd984f6fd1ec8ebb95398621828))
+- **editor:** fix CMDO not correctly initialized searchCode issue ([#1500](https://github.com/instill-ai/console/issues/1500)) ([88d7705](https://github.com/instill-ai/console/commit/88d7705f7a4afcd984f6fd1ec8ebb95398621828))
 
 ## [0.79.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.79.0...@instill-ai/design-system-v0.79.1) (2024-09-19)
 
-
 ### Miscellaneous
 
-* update nextjs version to 14.2.10, clean up playwright deps ([#1483](https://github.com/instill-ai/console/issues/1483)) ([d5ae86a](https://github.com/instill-ai/console/commit/d5ae86a051e0816e7138066bde2005e5ff29b24e))
+- update nextjs version to 14.2.10, clean up playwright deps ([#1483](https://github.com/instill-ai/console/issues/1483)) ([d5ae86a](https://github.com/instill-ai/console/commit/d5ae86a051e0816e7138066bde2005e5ff29b24e))
 
 ## [0.79.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.78.1...@instill-ai/design-system-v0.79.0) (2024-09-18)
 
-
 ### Features
 
-* **catalog:** feat support new file types  ([#1467](https://github.com/instill-ai/console/issues/1467)) ([a55c7c0](https://github.com/instill-ai/console/commit/a55c7c077dba953a14b36e3bbbdb8095551bfc24))
-* change "connector" to "component" ([#1476](https://github.com/instill-ai/console/issues/1476)) ([bb2129f](https://github.com/instill-ai/console/commit/bb2129f687657d68a8906eb2788444ff834b3a9b))
+- **catalog:** feat support new file types ([#1467](https://github.com/instill-ai/console/issues/1467)) ([a55c7c0](https://github.com/instill-ai/console/commit/a55c7c077dba953a14b36e3bbbdb8095551bfc24))
+- change "connector" to "component" ([#1476](https://github.com/instill-ai/console/issues/1476)) ([bb2129f](https://github.com/instill-ai/console/commit/bb2129f687657d68a8906eb2788444ff834b3a9b))
 
 ## [0.78.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.78.0...@instill-ai/design-system-v0.78.1) (2024-09-13)
 
-
 ### Bug Fixes
 
-* show operation error in model playground ([#1461](https://github.com/instill-ai/console/issues/1461)) ([67c0535](https://github.com/instill-ai/console/commit/67c05359e6fa0ccbad55bd7ba3323335b71e4d6f))
+- show operation error in model playground ([#1461](https://github.com/instill-ai/console/issues/1461)) ([67c0535](https://github.com/instill-ai/console/commit/67c05359e6fa0ccbad55bd7ba3323335b71e4d6f))
 
 ## [0.78.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.77.0...@instill-ai/design-system-v0.78.0) (2024-09-11)
 
-
 ### Features
 
-* Integration page ([#1411](https://github.com/instill-ai/console/issues/1411)) ([c1f800b](https://github.com/instill-ai/console/commit/c1f800b862ea3d766d6597d8ce81881d99220159))
-* use the preview in the editor as the pipeline preview tab ([#1441](https://github.com/instill-ai/console/issues/1441)) ([bb4cadc](https://github.com/instill-ai/console/commit/bb4cadc43ede0d0d7059c3cb39bada7ddae94bd2))
-
+- Integration page ([#1411](https://github.com/instill-ai/console/issues/1411)) ([c1f800b](https://github.com/instill-ai/console/commit/c1f800b862ea3d766d6597d8ce81881d99220159))
+- use the preview in the editor as the pipeline preview tab ([#1441](https://github.com/instill-ai/console/issues/1441)) ([bb4cadc](https://github.com/instill-ai/console/commit/bb4cadc43ede0d0d7059c3cb39bada7ddae94bd2))
 
 ### Bug Fixes
 
-* fix model input type issue and add icons ([#1448](https://github.com/instill-ai/console/issues/1448)) ([1a71760](https://github.com/instill-ai/console/commit/1a7176059699ed212020ffa08389eb04d5832a47))
-* fix model output issue ([#1454](https://github.com/instill-ai/console/issues/1454)) ([a4e833c](https://github.com/instill-ai/console/commit/a4e833c9b1bf9e2af7de050d1ba3e8de08edd79e))
-* fix pipeline overview share-by-link is not working ([#1443](https://github.com/instill-ai/console/issues/1443)) ([d46fdeb](https://github.com/instill-ai/console/commit/d46fdeb64fc78b6390e83803b7a66d6274c9b6aa))
+- fix model input type issue and add icons ([#1448](https://github.com/instill-ai/console/issues/1448)) ([1a71760](https://github.com/instill-ai/console/commit/1a7176059699ed212020ffa08389eb04d5832a47))
+- fix model output issue ([#1454](https://github.com/instill-ai/console/issues/1454)) ([a4e833c](https://github.com/instill-ai/console/commit/a4e833c9b1bf9e2af7de050d1ba3e8de08edd79e))
+- fix pipeline overview share-by-link is not working ([#1443](https://github.com/instill-ai/console/issues/1443)) ([d46fdeb](https://github.com/instill-ai/console/commit/d46fdeb64fc78b6390e83803b7a66d6274c9b6aa))
 
 ## [0.77.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.76.0...@instill-ai/design-system-v0.77.0) (2024-08-29)
 
-
 ### Features
 
-* **catalog:** feat add 2 new API pages ([#1380](https://github.com/instill-ai/console/issues/1380)) ([4c2a5db](https://github.com/instill-ai/console/commit/4c2a5db337ee033c15ba01d7a2f90b09780a141d))
-* **editor:** add getting started view into low-code editor ([#1394](https://github.com/instill-ai/console/issues/1394)) ([f3f6f68](https://github.com/instill-ai/console/commit/f3f6f688fd4f2e89900e31faa743637605ba2d47))
-* **editor:** add tooltip information on interactive button ([#1403](https://github.com/instill-ai/console/issues/1403)) ([7e09729](https://github.com/instill-ai/console/commit/7e09729e06c83d104e4c3fce267ce639653523eb))
-* **editor:** support saving non-valid recipe ([#1408](https://github.com/instill-ai/console/issues/1408)) ([a991779](https://github.com/instill-ai/console/commit/a9917797c7692737cb685bb54c8ae83498c7ab6d))
-* introduce low-code editor ([#1385](https://github.com/instill-ai/console/issues/1385)) ([34a62b0](https://github.com/instill-ai/console/commit/34a62b0ea3f863014b0c892fa26340678281d1d6))
-* support streaming with new low code editor ([#1391](https://github.com/instill-ai/console/issues/1391)) ([20edfde](https://github.com/instill-ai/console/commit/20edfdee1cd7fbccd4abe2e7c9c296ff671143f4))
-* view pipeline and model run logs ([#1383](https://github.com/instill-ai/console/issues/1383)) ([f0b60fb](https://github.com/instill-ai/console/commit/f0b60fb592876a92c853b85d9fe216a6ee528f7c))
-
+- **catalog:** feat add 2 new API pages ([#1380](https://github.com/instill-ai/console/issues/1380)) ([4c2a5db](https://github.com/instill-ai/console/commit/4c2a5db337ee033c15ba01d7a2f90b09780a141d))
+- **editor:** add getting started view into low-code editor ([#1394](https://github.com/instill-ai/console/issues/1394)) ([f3f6f68](https://github.com/instill-ai/console/commit/f3f6f688fd4f2e89900e31faa743637605ba2d47))
+- **editor:** add tooltip information on interactive button ([#1403](https://github.com/instill-ai/console/issues/1403)) ([7e09729](https://github.com/instill-ai/console/commit/7e09729e06c83d104e4c3fce267ce639653523eb))
+- **editor:** support saving non-valid recipe ([#1408](https://github.com/instill-ai/console/issues/1408)) ([a991779](https://github.com/instill-ai/console/commit/a9917797c7692737cb685bb54c8ae83498c7ab6d))
+- introduce low-code editor ([#1385](https://github.com/instill-ai/console/issues/1385)) ([34a62b0](https://github.com/instill-ai/console/commit/34a62b0ea3f863014b0c892fa26340678281d1d6))
+- support streaming with new low code editor ([#1391](https://github.com/instill-ai/console/issues/1391)) ([20edfde](https://github.com/instill-ai/console/commit/20edfdee1cd7fbccd4abe2e7c9c296ff671143f4))
+- view pipeline and model run logs ([#1383](https://github.com/instill-ai/console/issues/1383)) ([f0b60fb](https://github.com/instill-ai/console/commit/f0b60fb592876a92c853b85d9fe216a6ee528f7c))
 
 ### Bug Fixes
 
-* **catalog:** fix rename knowledge base to catalog ([#1371](https://github.com/instill-ai/console/issues/1371)) ([aa64ddd](https://github.com/instill-ai/console/commit/aa64ddd99492c0787a0ecf3d94529a1c7195b990))
-* fix ts version that cause build issue ([#1407](https://github.com/instill-ai/console/issues/1407)) ([f7b2b13](https://github.com/instill-ai/console/commit/f7b2b13f3e6494915b8e6555b5f23498d32f792e))
+- **catalog:** fix rename knowledge base to catalog ([#1371](https://github.com/instill-ai/console/issues/1371)) ([aa64ddd](https://github.com/instill-ai/console/commit/aa64ddd99492c0787a0ecf3d94529a1c7195b990))
+- fix ts version that cause build issue ([#1407](https://github.com/instill-ai/console/issues/1407)) ([f7b2b13](https://github.com/instill-ai/console/commit/f7b2b13f3e6494915b8e6555b5f23498d32f792e))
 
 ## [0.76.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.75.0...@instill-ai/design-system-v0.76.0) (2024-08-13)
 
-
 ### Features
 
-* **catalog:** MVP 2 ([#1351](https://github.com/instill-ai/console/issues/1351)) ([8648319](https://github.com/instill-ai/console/commit/8648319aace47bcff864a2067a85143ef22bbd79))
+- **catalog:** MVP 2 ([#1351](https://github.com/instill-ai/console/issues/1351)) ([8648319](https://github.com/instill-ai/console/commit/8648319aace47bcff864a2067a85143ef22bbd79))
 
 ## [0.75.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.74.0...@instill-ai/design-system-v0.75.0) (2024-08-02)
 
-
 ### Features
 
-* add icons ([#1336](https://github.com/instill-ai/console/issues/1336)) ([a7fc200](https://github.com/instill-ai/console/commit/a7fc200e269503e10a982db0e5a82c519741fdf6))
-* Catalog MVP ([#1340](https://github.com/instill-ai/console/issues/1340)) ([746793a](https://github.com/instill-ai/console/commit/746793a075a4e2aae3a642d8e3a4ae8701ea9fb5))
+- add icons ([#1336](https://github.com/instill-ai/console/issues/1336)) ([a7fc200](https://github.com/instill-ai/console/commit/a7fc200e269503e10a982db0e5a82c519741fdf6))
+- Catalog MVP ([#1340](https://github.com/instill-ai/console/issues/1340)) ([746793a](https://github.com/instill-ai/console/commit/746793a075a4e2aae3a642d8e3a4ae8701ea9fb5))
 
 ## [0.74.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.73.1...@instill-ai/design-system-v0.74.0) (2024-07-31)
 
-
 ### Features
 
-* add integration test for SDK ([#1315](https://github.com/instill-ai/console/issues/1315)) ([d247ec9](https://github.com/instill-ai/console/commit/d247ec9a539dd258530d1286c191ede3131014f0))
+- add integration test for SDK ([#1315](https://github.com/instill-ai/console/issues/1315)) ([d247ec9](https://github.com/instill-ai/console/commit/d247ec9a539dd258530d1286c191ede3131014f0))
 
 ## [0.73.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.73.0...@instill-ai/design-system-v0.73.1) (2024-07-17)
 
-
 ### Bug Fixes
 
-* readme editor html fix, wording updates, remove GitHub and License from pipeline ([#1312](https://github.com/instill-ai/console/issues/1312)) ([70c282b](https://github.com/instill-ai/console/commit/70c282b825ebfa9d0f6d8eb09ed00745b3a0fafb))
+- readme editor html fix, wording updates, remove GitHub and License from pipeline ([#1312](https://github.com/instill-ai/console/issues/1312)) ([70c282b](https://github.com/instill-ai/console/commit/70c282b825ebfa9d0f6d8eb09ed00745b3a0fafb))
 
 ## [0.73.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.72.0...@instill-ai/design-system-v0.73.0) (2024-07-16)
 
-
 ### Features
 
-* merge sprint 39 changes ([#1302](https://github.com/instill-ai/console/issues/1302)) ([14194ab](https://github.com/instill-ai/console/commit/14194abb680c9a5156d35cbd5fe4c2fab25e8891))
-
+- merge sprint 39 changes ([#1302](https://github.com/instill-ai/console/issues/1302)) ([14194ab](https://github.com/instill-ai/console/commit/14194abb680c9a5156d35cbd5fe4c2fab25e8891))
 
 ### Miscellaneous
 
-* enforce more strict Typescript rule among codebase ([#1284](https://github.com/instill-ai/console/issues/1284)) ([14ea371](https://github.com/instill-ai/console/commit/14ea37183f29160a28afb45703a704d8a61b3292))
+- enforce more strict Typescript rule among codebase ([#1284](https://github.com/instill-ai/console/issues/1284)) ([14ea371](https://github.com/instill-ai/console/commit/14ea37183f29160a28afb45703a704d8a61b3292))
 
 ## [0.72.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.71.0...@instill-ai/design-system-v0.72.0) (2024-07-02)
 
-
 ### Features
 
-* add twMerge to deal with classname conflict issue ([#1262](https://github.com/instill-ai/console/issues/1262)) ([c2d40a4](https://github.com/instill-ai/console/commit/c2d40a48c837b1e103bd5730d8ce669a1e578344))
-* **dashboard:** add credit usage chart on dashboard ([#1265](https://github.com/instill-ai/console/issues/1265)) ([2304de7](https://github.com/instill-ai/console/commit/2304de7073f73f27c993e36899f70493ae8d87b8))
-* **design-system:** add resizable component ([#1263](https://github.com/instill-ai/console/issues/1263)) ([987357c](https://github.com/instill-ai/console/commit/987357c49aa2790318b4bec892b6e7d767397725))
-* model view tweaks ([#1259](https://github.com/instill-ai/console/issues/1259)) ([508bacf](https://github.com/instill-ai/console/commit/508bacfbbfdff98875c322799ab96eb7642557c9))
-
+- add twMerge to deal with classname conflict issue ([#1262](https://github.com/instill-ai/console/issues/1262)) ([c2d40a4](https://github.com/instill-ai/console/commit/c2d40a48c837b1e103bd5730d8ce669a1e578344))
+- **dashboard:** add credit usage chart on dashboard ([#1265](https://github.com/instill-ai/console/issues/1265)) ([2304de7](https://github.com/instill-ai/console/commit/2304de7073f73f27c993e36899f70493ae8d87b8))
+- **design-system:** add resizable component ([#1263](https://github.com/instill-ai/console/issues/1263)) ([987357c](https://github.com/instill-ai/console/commit/987357c49aa2790318b4bec892b6e7d767397725))
+- model view tweaks ([#1259](https://github.com/instill-ai/console/issues/1259)) ([508bacf](https://github.com/instill-ai/console/commit/508bacfbbfdff98875c322799ab96eb7642557c9))
 
 ### Bug Fixes
 
-* fix prettier issue around root folder and vscode plugin ([#1258](https://github.com/instill-ai/console/issues/1258)) ([d3eac49](https://github.com/instill-ai/console/commit/d3eac498ec78872392c9c5072c1b9aed303fc24f))
-
+- fix prettier issue around root folder and vscode plugin ([#1258](https://github.com/instill-ai/console/issues/1258)) ([d3eac49](https://github.com/instill-ai/console/commit/d3eac498ec78872392c9c5072c1b9aed303fc24f))
 
 ### Miscellaneous
 
-* use prettier to sort import order ([#1261](https://github.com/instill-ai/console/issues/1261)) ([4640c24](https://github.com/instill-ai/console/commit/4640c24ce73940d204111880b8bb367d690e32d1))
+- use prettier to sort import order ([#1261](https://github.com/instill-ai/console/issues/1261)) ([4640c24](https://github.com/instill-ai/console/commit/4640c24ce73940d204111880b8bb367d690e32d1))
 
 ## [0.71.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.70.0...@instill-ai/design-system-v0.71.0) (2024-06-19)
 
-
 ### Features
 
-* **billing:** billing credits related updates ([#1226](https://github.com/instill-ai/console/issues/1226)) ([ea15ea2](https://github.com/instill-ai/console/commit/ea15ea29d36f4d07d74a3a19716c22f10f04aaf2))
-* enable namespace-switch to help user navigate pages ([#1224](https://github.com/instill-ai/console/issues/1224)) ([067b5a5](https://github.com/instill-ai/console/commit/067b5a59598b964fc7c46173bfa79b8ffd3124b0))
-
+- **billing:** billing credits related updates ([#1226](https://github.com/instill-ai/console/issues/1226)) ([ea15ea2](https://github.com/instill-ai/console/commit/ea15ea29d36f4d07d74a3a19716c22f10f04aaf2))
+- enable namespace-switch to help user navigate pages ([#1224](https://github.com/instill-ai/console/issues/1224)) ([067b5a5](https://github.com/instill-ai/console/commit/067b5a59598b964fc7c46173bfa79b8ffd3124b0))
 
 ### Bug Fixes
 
-* fix subscription type definition not obeying camelCase ([#1228](https://github.com/instill-ai/console/issues/1228)) ([8f12ff4](https://github.com/instill-ai/console/commit/8f12ff4737b31e93f016caaf0d7271758bc21465))
-* fix Tag border style ([#1242](https://github.com/instill-ai/console/issues/1242)) ([4630f16](https://github.com/instill-ai/console/commit/4630f16eb275832a1b8a4a867cf9c6494e2b178d))
-* fix using wrong icon for Your organizations button ([#1243](https://github.com/instill-ai/console/issues/1243)) ([6fe337e](https://github.com/instill-ai/console/commit/6fe337e389096a11df1d6538433b42d6c1b21101))
-* **namespace-switch:** fix the namespace switch style and deviation  ([#1237](https://github.com/instill-ai/console/issues/1237)) ([5e3c925](https://github.com/instill-ai/console/commit/5e3c925265d321d5c38edd3322535b72e90fb74e))
-* **pipelines:** change button build to edit ([#1222](https://github.com/instill-ai/console/issues/1222)) ([914a1ba](https://github.com/instill-ai/console/commit/914a1bad5747c9afb84b49eaf4729465b151bf15))
-
+- fix subscription type definition not obeying camelCase ([#1228](https://github.com/instill-ai/console/issues/1228)) ([8f12ff4](https://github.com/instill-ai/console/commit/8f12ff4737b31e93f016caaf0d7271758bc21465))
+- fix Tag border style ([#1242](https://github.com/instill-ai/console/issues/1242)) ([4630f16](https://github.com/instill-ai/console/commit/4630f16eb275832a1b8a4a867cf9c6494e2b178d))
+- fix using wrong icon for Your organizations button ([#1243](https://github.com/instill-ai/console/issues/1243)) ([6fe337e](https://github.com/instill-ai/console/commit/6fe337e389096a11df1d6538433b42d6c1b21101))
+- **namespace-switch:** fix the namespace switch style and deviation ([#1237](https://github.com/instill-ai/console/issues/1237)) ([5e3c925](https://github.com/instill-ai/console/commit/5e3c925265d321d5c38edd3322535b72e90fb74e))
+- **pipelines:** change button build to edit ([#1222](https://github.com/instill-ai/console/issues/1222)) ([914a1ba](https://github.com/instill-ai/console/commit/914a1bad5747c9afb84b49eaf4729465b151bf15))
 
 ### Miscellaneous
 
-* add icons ([#1232](https://github.com/instill-ai/console/issues/1232)) ([5a57733](https://github.com/instill-ai/console/commit/5a57733badf7660b313f55d098fdc26de864b38e))
+- add icons ([#1232](https://github.com/instill-ai/console/issues/1232)) ([5a57733](https://github.com/instill-ai/console/commit/5a57733badf7660b313f55d098fdc26de864b38e))
 
 ## [0.70.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.69.2...@instill-ai/design-system-v0.70.0) (2024-06-06)
 
-
 ### Features
 
-* **pipeline-builder:** replace trigger node with variable node ([#1197](https://github.com/instill-ai/console/issues/1197)) ([8a6f06d](https://github.com/instill-ai/console/commit/8a6f06de42a5d5874d759f2c4915744d0a387e67))
-* update models list ui/ux ([#1136](https://github.com/instill-ai/console/issues/1136)) ([88944b4](https://github.com/instill-ai/console/commit/88944b4245c8270ebeb0ad4439c641257e8082a7))
-
+- **pipeline-builder:** replace trigger node with variable node ([#1197](https://github.com/instill-ai/console/issues/1197)) ([8a6f06d](https://github.com/instill-ai/console/commit/8a6f06de42a5d5874d759f2c4915744d0a387e67))
+- update models list ui/ux ([#1136](https://github.com/instill-ai/console/issues/1136)) ([88944b4](https://github.com/instill-ai/console/commit/88944b4245c8270ebeb0ad4439c641257e8082a7))
 
 ### Miscellaneous
 
-* update demanded pnpm version to 9.1.4 ([#1188](https://github.com/instill-ai/console/issues/1188)) ([bfa6544](https://github.com/instill-ai/console/commit/bfa6544f47879d422ae37df20d0af512a3994335))
+- update demanded pnpm version to 9.1.4 ([#1188](https://github.com/instill-ai/console/issues/1188)) ([bfa6544](https://github.com/instill-ai/console/commit/bfa6544f47879d422ae37df20d0af512a3994335))
 
 ## [0.69.2](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.69.1...@instill-ai/design-system-v0.69.2) (2024-05-28)
 
-
 ### Bug Fixes
 
-* fix deps alerts and zod denial issue ([#1184](https://github.com/instill-ai/console/issues/1184)) ([3db9a78](https://github.com/instill-ai/console/commit/3db9a786767db1c9902bc3945e7b3defe4dd331d))
+- fix deps alerts and zod denial issue ([#1184](https://github.com/instill-ai/console/issues/1184)) ([3db9a78](https://github.com/instill-ai/console/commit/3db9a786767db1c9902bc3945e7b3defe4dd331d))
 
 ## [0.69.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.69.0...@instill-ai/design-system-v0.69.1) (2024-05-24)
 
-
 ### Bug Fixes
 
-* fix eslint version and error ([#1177](https://github.com/instill-ai/console/issues/1177)) ([7e9893d](https://github.com/instill-ai/console/commit/7e9893d8368c8b2aebf8f9948d5d1994b9ae537d))
+- fix eslint version and error ([#1177](https://github.com/instill-ai/console/issues/1177)) ([7e9893d](https://github.com/instill-ai/console/commit/7e9893d8368c8b2aebf8f9948d5d1994b9ae537d))
 
 ## [0.69.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.68.0...@instill-ai/design-system-v0.69.0) (2024-05-17)
 
-
 ### Features
 
-* create hub page ([#1160](https://github.com/instill-ai/console/issues/1160)) ([85992b1](https://github.com/instill-ai/console/commit/85992b1a725f5aaa0752fa9763c44a662d3bbe22))
+- create hub page ([#1160](https://github.com/instill-ai/console/issues/1160)) ([85992b1](https://github.com/instill-ai/console/commit/85992b1a725f5aaa0752fa9763c44a662d3bbe22))
 
 ## [0.68.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.67.0...@instill-ai/design-system-v0.68.0) (2024-05-16)
 
-
 ### Features
 
-* **design-system:** improve Select component to let it cover more use cases ([#1134](https://github.com/instill-ai/console/issues/1134)) ([ed53689](https://github.com/instill-ai/console/commit/ed536895bfb24efc6c5f120047d77d0cf9397895))
-* **pipeline-builder:** implement the instill credit interaction on component ([#1139](https://github.com/instill-ai/console/issues/1139)) ([03e1596](https://github.com/instill-ai/console/commit/03e1596531d5a8c429a84a10d545f8bf219b7350))
-
+- **design-system:** improve Select component to let it cover more use cases ([#1134](https://github.com/instill-ai/console/issues/1134)) ([ed53689](https://github.com/instill-ai/console/commit/ed536895bfb24efc6c5f120047d77d0cf9397895))
+- **pipeline-builder:** implement the instill credit interaction on component ([#1139](https://github.com/instill-ai/console/issues/1139)) ([03e1596](https://github.com/instill-ai/console/commit/03e1596531d5a8c429a84a10d545f8bf219b7350))
 
 ### Bug Fixes
 
-* dependabot alerts ([#1142](https://github.com/instill-ai/console/issues/1142)) ([1318232](https://github.com/instill-ai/console/commit/1318232d56bfb7bb46d84a03e13018d2f5cd50c4))
-* fix ci and docker node version to adapt node20 ([#1143](https://github.com/instill-ai/console/issues/1143)) ([5aed24b](https://github.com/instill-ai/console/commit/5aed24b538b2c73743602f41110c8b1adf8c6f59))
-* fix wrongly generate instillFormat for trigger component ([#1144](https://github.com/instill-ai/console/issues/1144)) ([a59a6c3](https://github.com/instill-ai/console/commit/a59a6c34b052c0051d73a87eda743cc2de21f0c9))
+- dependabot alerts ([#1142](https://github.com/instill-ai/console/issues/1142)) ([1318232](https://github.com/instill-ai/console/commit/1318232d56bfb7bb46d84a03e13018d2f5cd50c4))
+- fix ci and docker node version to adapt node20 ([#1143](https://github.com/instill-ai/console/issues/1143)) ([5aed24b](https://github.com/instill-ai/console/commit/5aed24b538b2c73743602f41110c8b1adf8c6f59))
+- fix wrongly generate instillFormat for trigger component ([#1144](https://github.com/instill-ai/console/issues/1144)) ([a59a6c3](https://github.com/instill-ai/console/commit/a59a6c34b052c0051d73a87eda743cc2de21f0c9))
 
 ## [0.67.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.66.1...@instill-ai/design-system-v0.67.0) (2024-05-07)
 
-
 ### Features
 
-* **design-system:** add Collapsible component into design-system ([#1125](https://github.com/instill-ai/console/issues/1125)) ([b802520](https://github.com/instill-ai/console/commit/b802520ec0d92b661498e486eb96bcb063ec58fb))
+- **design-system:** add Collapsible component into design-system ([#1125](https://github.com/instill-ai/console/issues/1125)) ([b802520](https://github.com/instill-ai/console/commit/b802520ec0d92b661498e486eb96bcb063ec58fb))
 
 ## [0.66.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.66.0...@instill-ai/design-system-v0.66.1) (2024-05-01)
 
-
 ### Bug Fixes
 
-* fix deps that have issues ([#1107](https://github.com/instill-ai/console/issues/1107)) ([751e266](https://github.com/instill-ai/console/commit/751e2663995e9965e4ce155953030f4ed65b6f89))
-* fix vscode settings to use tsconfigs in subfolders ([#1114](https://github.com/instill-ai/console/issues/1114)) ([af1bb2d](https://github.com/instill-ai/console/commit/af1bb2d306e09637eef2e67bc562a84ddeb2938d))
-* **pipeline-overview:** fix alignment between input and output fields on the pipeline overview page ([301aee7](https://github.com/instill-ai/console/commit/301aee76d193815e6403e409f467ce8a112c9c77))
+- fix deps that have issues ([#1107](https://github.com/instill-ai/console/issues/1107)) ([751e266](https://github.com/instill-ai/console/commit/751e2663995e9965e4ce155953030f4ed65b6f89))
+- fix vscode settings to use tsconfigs in subfolders ([#1114](https://github.com/instill-ai/console/issues/1114)) ([af1bb2d](https://github.com/instill-ai/console/commit/af1bb2d306e09637eef2e67bc562a84ddeb2938d))
+- **pipeline-overview:** fix alignment between input and output fields on the pipeline overview page ([301aee7](https://github.com/instill-ai/console/commit/301aee76d193815e6403e409f467ce8a112c9c77))
 
 ## [0.66.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.65.1...@instill-ai/design-system-v0.66.0) (2024-04-25)
 
-
 ### Features
 
-* retire connector resource ([#1098](https://github.com/instill-ai/console/issues/1098)) ([a4befc7](https://github.com/instill-ai/console/commit/a4befc773f523964f7bc3a4a4f1456e348127e8d))
+- retire connector resource ([#1098](https://github.com/instill-ai/console/issues/1098)) ([a4befc7](https://github.com/instill-ai/console/commit/a4befc773f523964f7bc3a4a4f1456e348127e8d))
 
 ## [0.65.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.65.0...@instill-ai/design-system-v0.65.1) (2024-03-29)
 
-
 ### Miscellaneous
 
-* refactor how we bundle toolkit and design system ([#1028](https://github.com/instill-ai/console/issues/1028)) ([1bc0628](https://github.com/instill-ai/console/commit/1bc0628aee9e93749ed04bb956f58884ba7a0a4c))
+- refactor how we bundle toolkit and design system ([#1028](https://github.com/instill-ai/console/issues/1028)) ([1bc0628](https://github.com/instill-ai/console/commit/1bc0628aee9e93749ed04bb956f58884ba7a0a4c))
 
 ## [0.65.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.64.0...@instill-ai/design-system-v0.65.0) (2024-03-13)
 
-
 ### Features
 
-* add the new design for reference hint ([#1004](https://github.com/instill-ai/console/issues/1004)) ([7b7b41e](https://github.com/instill-ai/console/commit/7b7b41e1253b1ab6395e4a27728ad98f58286cd6))
-* bump nextjs version to 14 and update react-hook-form ([#1008](https://github.com/instill-ai/console/issues/1008)) ([235847f](https://github.com/instill-ai/console/commit/235847f1a3b57e9f340040320ddcdc7789dafe2d))
-* **pipeline-builder:** implement the iterator editor ([#1006](https://github.com/instill-ai/console/issues/1006)) ([8a57837](https://github.com/instill-ai/console/commit/8a57837fb62fb22d700c86c32af6253939fe085a))
-
+- add the new design for reference hint ([#1004](https://github.com/instill-ai/console/issues/1004)) ([7b7b41e](https://github.com/instill-ai/console/commit/7b7b41e1253b1ab6395e4a27728ad98f58286cd6))
+- bump nextjs version to 14 and update react-hook-form ([#1008](https://github.com/instill-ai/console/issues/1008)) ([235847f](https://github.com/instill-ai/console/commit/235847f1a3b57e9f340040320ddcdc7789dafe2d))
+- **pipeline-builder:** implement the iterator editor ([#1006](https://github.com/instill-ai/console/issues/1006)) ([8a57837](https://github.com/instill-ai/console/commit/8a57837fb62fb22d700c86c32af6253939fe085a))
 
 ### Bug Fixes
 
-* fix docker node version ([#1014](https://github.com/instill-ai/console/issues/1014)) ([d3127e4](https://github.com/instill-ai/console/commit/d3127e4a22076be3e5f0f0ab4aa807b43108518c))
-
+- fix docker node version ([#1014](https://github.com/instill-ai/console/issues/1014)) ([d3127e4](https://github.com/instill-ai/console/commit/d3127e4a22076be3e5f0f0ab4aa807b43108518c))
 
 ### Miscellaneous
 
-* add missing use client in design-system ([#1009](https://github.com/instill-ai/console/issues/1009)) ([7b01eeb](https://github.com/instill-ai/console/commit/7b01eeb22cfb33ad0cb160068fcdd31ab03ad87d))
+- add missing use client in design-system ([#1009](https://github.com/instill-ai/console/issues/1009)) ([7b01eeb](https://github.com/instill-ai/console/commit/7b01eeb22cfb33ad0cb160068fcdd31ab03ad87d))
 
 ## [0.64.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.63.0...@instill-ai/design-system-v0.64.0) (2024-02-15)
 
-
 ### Features
 
-* **pipeline-builder:** support video/multiple-video in pipeline builder ([#943](https://github.com/instill-ai/console/issues/943)) ([2680f70](https://github.com/instill-ai/console/commit/2680f70162dbf22eed143ad455f87cd305e51826))
-
+- **pipeline-builder:** support video/multiple-video in pipeline builder ([#943](https://github.com/instill-ai/console/issues/943)) ([2680f70](https://github.com/instill-ai/console/commit/2680f70162dbf22eed143ad455f87cd305e51826))
 
 ### Miscellaneous
 
-* **design-system:** add storybook stories for colors ([#945](https://github.com/instill-ai/console/issues/945)) ([f4d52d8](https://github.com/instill-ai/console/commit/f4d52d8cbca1f8b11cc5a722c9d0b812891e4a96))
+- **design-system:** add storybook stories for colors ([#945](https://github.com/instill-ai/console/issues/945)) ([f4d52d8](https://github.com/instill-ai/console/commit/f4d52d8cbca1f8b11cc5a722c9d0b812891e4a96))
 
 ## [0.63.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.62.0...@instill-ai/design-system-v0.63.0) (2024-01-30)
 
-
 ### Features
 
-* **pipeline-builder:** add reference hint at the start operator ([#902](https://github.com/instill-ai/console/issues/902)) ([d87de86](https://github.com/instill-ai/console/commit/d87de86845e385465279e995e78c9c4bb4d0d3c0))
-* **pipeline-builder:** hide edit/delete button of start input into dropdown ([#910](https://github.com/instill-ai/console/issues/910)) ([bf0bfa7](https://github.com/instill-ai/console/commit/bf0bfa76de2c8e5d62a123f1cfa0c21deff36a7d))
+- **pipeline-builder:** add reference hint at the start operator ([#902](https://github.com/instill-ai/console/issues/902)) ([d87de86](https://github.com/instill-ai/console/commit/d87de86845e385465279e995e78c9c4bb4d0d3c0))
+- **pipeline-builder:** hide edit/delete button of start input into dropdown ([#910](https://github.com/instill-ai/console/issues/910)) ([bf0bfa7](https://github.com/instill-ai/console/commit/bf0bfa76de2c8e5d62a123f1cfa0c21deff36a7d))
 
 ## [0.62.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.61.1...@instill-ai/design-system-v0.62.0) (2024-01-24)
 
-
 ### Features
 
-* implement the unit test for nested auto gen form ([#896](https://github.com/instill-ai/console/issues/896)) ([51c4630](https://github.com/instill-ai/console/commit/51c46305e93372ae652e38eda0fed82545afc714))
-* setup the react testing library for auto-gen-form unit test ([#895](https://github.com/instill-ai/console/issues/895)) ([b3947b7](https://github.com/instill-ai/console/commit/b3947b75a3fc7d52d9b2d9e90210232ca6c96d98))
-
+- implement the unit test for nested auto gen form ([#896](https://github.com/instill-ai/console/issues/896)) ([51c4630](https://github.com/instill-ai/console/commit/51c46305e93372ae652e38eda0fed82545afc714))
+- setup the react testing library for auto-gen-form unit test ([#895](https://github.com/instill-ai/console/issues/895)) ([b3947b7](https://github.com/instill-ai/console/commit/b3947b75a3fc7d52d9b2d9e90210232ca6c96d98))
 
 ### Bug Fixes
 
-* Typo in component configuration ([#889](https://github.com/instill-ai/console/issues/889)) ([ec55621](https://github.com/instill-ai/console/commit/ec55621c30e9848c33155d52d9ade52c29ad94c2))
+- Typo in component configuration ([#889](https://github.com/instill-ai/console/issues/889)) ([ec55621](https://github.com/instill-ai/console/commit/ec55621c30e9848c33155d52d9ade52c29ad94c2))
 
 ## [0.61.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.61.0...@instill-ai/design-system-v0.61.1) (2024-01-15)
 
-
 ### Miscellaneous
 
-* make creating private pipeline as default option ([#859](https://github.com/instill-ai/console/issues/859)) ([e078b57](https://github.com/instill-ai/console/commit/e078b5724f11adb168178ccf5a407db85aa52eb5))
+- make creating private pipeline as default option ([#859](https://github.com/instill-ai/console/issues/859)) ([e078b57](https://github.com/instill-ai/console/commit/e078b5724f11adb168178ccf5a407db85aa52eb5))
 
 ## [0.61.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.60.0...@instill-ai/design-system-v0.61.0) (2024-01-02)
 
-
 ### Features
 
-* **auto-gen-form:** support the action of merging Airbyte connectors into single one ([#835](https://github.com/instill-ai/console/issues/835)) ([64e3a69](https://github.com/instill-ai/console/commit/64e3a699737b23a1a92dbe5a27b4b7e6edb53c71))
-
+- **auto-gen-form:** support the action of merging Airbyte connectors into single one ([#835](https://github.com/instill-ai/console/issues/835)) ([64e3a69](https://github.com/instill-ai/console/commit/64e3a699737b23a1a92dbe5a27b4b7e6edb53c71))
 
 ### Bug Fixes
 
-* fix model icons are not correct or missing issue ([#822](https://github.com/instill-ai/console/issues/822)) ([0b3d2ad](https://github.com/instill-ai/console/commit/0b3d2ad3db52e70ee0a870a552e0a5abdbafa643))
-
+- fix model icons are not correct or missing issue ([#822](https://github.com/instill-ai/console/issues/822)) ([0b3d2ad](https://github.com/instill-ai/console/commit/0b3d2ad3db52e70ee0a870a552e0a5abdbafa643))
 
 ### Miscellaneous
 
-* apply prettier format and reject formatting errors in PRs ([#818](https://github.com/instill-ai/console/issues/818)) ([fa5c3b3](https://github.com/instill-ai/console/commit/fa5c3b362dfac92291926c0e9020bb53c8c10ddc))
+- apply prettier format and reject formatting errors in PRs ([#818](https://github.com/instill-ai/console/issues/818)) ([fa5c3b3](https://github.com/instill-ai/console/commit/fa5c3b362dfac92291926c0e9020bb53c8c10ddc))
 
 ## [0.60.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.59.0...@instill-ai/design-system-v0.60.0) (2023-12-22)
 

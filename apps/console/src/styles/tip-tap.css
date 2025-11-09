@@ -4,7 +4,7 @@
 */
 
 .tiptap p.is-editor-empty:first-child::before {
-  color: #1D2433;
+  color: #1d2433;
   opacity: 0.65;
   content: attr(data-placeholder);
   float: left;

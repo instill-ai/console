@@ -52,3 +52,5 @@ packages/design-system/public/tailwind.css
 
 # Protobufs for the SDK integration tests
 packages/sdk/protobufs/
+
+.pnpm-store/

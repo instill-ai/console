@@ -33,7 +33,6 @@ We plan to support using our component through OAuth, so user don't need to manu
 
 If you want to add a new integration connection, you can refer to the [Integration Connection document](/docs/integration-connection.md) for more details.
 
-
 ## Available scripts
 
 Please refer to the [Scripts document](/docs/scripts.md) for more details.

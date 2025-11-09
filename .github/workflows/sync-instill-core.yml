@@ -15,4 +15,4 @@ jobs:
     with:
       service: console
     secrets:
-      botGitHubToken: ${{ secrets.botGitHubToken }} 
+      botGitHubToken: ${{ secrets.botGitHubToken }}

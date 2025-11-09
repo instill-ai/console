@@ -4,8 +4,8 @@
     "lib": ["dom", "dom.iterable", "ES2022"],
     "jsx": "preserve",
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
-    "outDir": "dist",
+    "outDir": "dist"
   },
   "include": ["*.ts", "src"],
-  "exclude": ["./setupTests.ts", "vitest.config.ts", "tsup.config.ts", "dist"],
+  "exclude": ["./setupTests.ts", "vitest.config.ts", "tsup.config.ts", "dist"]
 }

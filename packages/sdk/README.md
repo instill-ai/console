@@ -34,8 +34,8 @@ import { InstillAPIClient } from "instill-sdk";
 const client = new InstillAPIClient({
   // Note: Model related endpoint is still in v1alpha version
   baseURL: "https://api.instill.tech/v1beta",
-  apiKey: "<YOUR_API_KEY>"
-})
+  apiKey: "<YOUR_API_KEY>",
+});
 ```
 
 ### Useful helper for you to reuse the client instance
@@ -54,8 +54,8 @@ export function getInstillAPIClient() {
 
     instillAPIClient = new InstillAPIClient({
       // Note: Model related endpoint is still in v1alpha version
-      baseURL: "https://api.instill.tech/v1beta", 
-      apiToken: "<YOUR_API_KEY>"
+      baseURL: "https://api.instill.tech/v1beta",
+      apiToken: "<YOUR_API_KEY>",
     });
   }
 
@@ -66,11 +66,9 @@ export function getInstillAPIClient() {
 ### Example: Get all accessible pipelines
 
 ```typescript
-
-export async function getAccessiblePipelines(){
+export async function getAccessiblePipelines() {
   try {
     const pipelines = await client.vdp.pipeline.listAccessiblePipelines({
-
       // This means you don't want to get the paginated response, instead,
       // you will get all the pipelines in one go
       enablePagination: false,
@@ -79,9 +77,9 @@ export async function getAccessiblePipelines(){
       view: "VIEW_FULL",
     });
 
-    return Promise.resolve(pipelines)
-  } catch(error){
-    return Promise.reject(error)
+    return Promise.resolve(pipelines);
+  } catch (error) {
+    return Promise.reject(error);
   }
 }
 ```
@@ -91,18 +89,17 @@ export async function getAccessiblePipelines(){
 Let's say your namespace is `users/instill-ai`
 
 ```typescript
-
-export async function getNamespaceModels(){
+export async function getNamespaceModels() {
   try {
     const models = await client.model.listNamespaceModels({
       namespaceName: "users/instill-ai",
       enablePagination: false,
-      view: "VIEW_FULL"
+      view: "VIEW_FULL",
     });
 
-    return Promise.resolve(models)
-  } catch(error){
-    return Promise.reject(error)
+    return Promise.resolve(models);
+  } catch (error) {
+    return Promise.reject(error);
   }
 }
 ```

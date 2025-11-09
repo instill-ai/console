@@ -2,808 +2,709 @@
 
 ## [0.68.6](https://github.com/instill-ai/console/compare/v0.68.5...v0.68.6) (2025-10-09)
 
-
 ### Miscellaneous
 
-* **deps:** bump axios from 1.11.0 to 1.12.0 ([#1828](https://github.com/instill-ai/console/issues/1828)) ([d70d2b5](https://github.com/instill-ai/console/commit/d70d2b5bd51e94dea8d2e4e8216c9c4c388d024f))
-* **public:** add Gemini component icon ([#1829](https://github.com/instill-ai/console/issues/1829)) ([9d30611](https://github.com/instill-ai/console/commit/9d3061191c813fcb29939a087c20898182f97106))
+- **deps:** bump axios from 1.11.0 to 1.12.0 ([#1828](https://github.com/instill-ai/console/issues/1828)) ([d70d2b5](https://github.com/instill-ai/console/commit/d70d2b5bd51e94dea8d2e4e8216c9c4c388d024f))
+- **public:** add Gemini component icon ([#1829](https://github.com/instill-ai/console/issues/1829)) ([9d30611](https://github.com/instill-ai/console/commit/9d3061191c813fcb29939a087c20898182f97106))
 
 ## [0.68.5](https://github.com/instill-ai/console/compare/v0.68.4...v0.68.5) (2025-09-09)
 
-
 ### Bug Fixes
 
-* **console,tookit:** fix misleading errors ([#1822](https://github.com/instill-ai/console/issues/1822)) ([c63ad71](https://github.com/instill-ai/console/commit/c63ad711329ad17118731b32dc1605b546028029))
-
+- **console,tookit:** fix misleading errors ([#1822](https://github.com/instill-ai/console/issues/1822)) ([c63ad71](https://github.com/instill-ai/console/commit/c63ad711329ad17118731b32dc1605b546028029))
 
 ### Miscellaneous
 
-* **deps:** bump next from 15.3.3 to 15.4.7 ([#1825](https://github.com/instill-ai/console/issues/1825)) ([198ab5c](https://github.com/instill-ai/console/commit/198ab5ccbacf1798565146560d6cf10a00b43bb7))
+- **deps:** bump next from 15.3.3 to 15.4.7 ([#1825](https://github.com/instill-ai/console/issues/1825)) ([198ab5c](https://github.com/instill-ai/console/commit/198ab5ccbacf1798565146560d6cf10a00b43bb7))
 
 ## [0.68.4](https://github.com/instill-ai/console/compare/v0.68.3...v0.68.4) (2025-08-27)
 
-
 ### Miscellaneous
 
-* **github,toolkit,radix,jsx:** houseclean  codebase ([#1814](https://github.com/instill-ai/console/issues/1814)) ([2329c5b](https://github.com/instill-ai/console/commit/2329c5b7b3273c31785e72965f093b41c5bfe667))
+- **github,toolkit,radix,jsx:** houseclean codebase ([#1814](https://github.com/instill-ai/console/issues/1814)) ([2329c5b](https://github.com/instill-ai/console/commit/2329c5b7b3273c31785e72965f093b41c5bfe667))
 
 ## [0.68.3](https://github.com/instill-ai/console/compare/v0.68.2...v0.68.3) (2025-07-16)
 
-
 ### Miscellaneous
 
-* bump up console version ([#1797](https://github.com/instill-ai/console/issues/1797)) ([59879c7](https://github.com/instill-ai/console/commit/59879c7e36a0b36ff652123def27fe8e3fabb52f))
+- bump up console version ([#1797](https://github.com/instill-ai/console/issues/1797)) ([59879c7](https://github.com/instill-ai/console/commit/59879c7e36a0b36ff652123def27fe8e3fabb52f))
 
 ## [0.68.2](https://github.com/instill-ai/console/compare/v0.68.1...v0.68.2) (2025-06-30)
 
-
 ### Bug Fixes
 
-* fix pnpm version ([#1778](https://github.com/instill-ai/console/issues/1778)) ([582a316](https://github.com/instill-ai/console/commit/582a316bfce784c8a90fa32df67959aafd0907e2))
+- fix pnpm version ([#1778](https://github.com/instill-ai/console/issues/1778)) ([582a316](https://github.com/instill-ai/console/commit/582a316bfce784c8a90fa32df67959aafd0907e2))
 
 ## [0.68.1](https://github.com/instill-ai/console/compare/v0.68.0...v0.68.1) (2025-06-17)
 
-
 ### Features
 
-* adapt kabab rule for resource like component, mode, and pipeline in console ([#1238](https://github.com/instill-ai/console/issues/1238)) ([88a3fde](https://github.com/instill-ai/console/commit/88a3fde925eda236051a59f1a727e4f79ce673ea))
-* adapt new ai task schema for auto gen form ([#1429](https://github.com/instill-ai/console/issues/1429)) ([95ce7e0](https://github.com/instill-ai/console/commit/95ce7e0f2f141b5e6bd92f39479284bed8a99d88))
-* adapt policy link and revamp setting pages ([#1629](https://github.com/instill-ai/console/issues/1629)) ([d11fab5](https://github.com/instill-ai/console/commit/d11fab5b7357c89e6c19da1e7b053431f77ba657))
-* adapt the camelcase change of BE api response in the console ([#1227](https://github.com/instill-ai/console/issues/1227)) ([552a7b4](https://github.com/instill-ai/console/commit/552a7b4c81b90dc9dcf338098bcd929420189060))
-* adapt the camelCase rule in the query param ([#1230](https://github.com/instill-ai/console/issues/1230)) ([2a9ee91](https://github.com/instill-ai/console/commit/2a9ee9182bcebeaf811a496a0f24d3bf685ef375))
-* add env example in console ([#1685](https://github.com/instill-ai/console/issues/1685)) ([d1f2457](https://github.com/instill-ai/console/commit/d1f245756eeacd325ee607b568e489dccbeaa43b))
-* add feature flag for chat ([#1628](https://github.com/instill-ai/console/issues/1628)) ([7455ce4](https://github.com/instill-ai/console/commit/7455ce4401b98854f103dfd3d1bc7c39ba1b14e8))
-* add table column definition metadata field ([#1765](https://github.com/instill-ai/console/issues/1765)) ([ac6339f](https://github.com/instill-ai/console/commit/ac6339f94cf95ece804100697c59ee0e403640fb))
-* automatically download icons ([#1551](https://github.com/instill-ai/console/issues/1551)) ([02c7223](https://github.com/instill-ai/console/commit/02c722362601e07bc37b646750ef29183b72fe0a))
-* bump console version ([#1751](https://github.com/instill-ai/console/issues/1751)) ([6079f7b](https://github.com/instill-ai/console/commit/6079f7b430052853a63aaecb43564a13c78075ab))
-* Catalog MVP ([#1340](https://github.com/instill-ai/console/issues/1340)) ([746793a](https://github.com/instill-ai/console/commit/746793a075a4e2aae3a642d8e3a4ae8701ea9fb5))
-* **catalog:** feat add 2 new API pages ([#1380](https://github.com/instill-ai/console/issues/1380)) ([4c2a5db](https://github.com/instill-ai/console/commit/4c2a5db337ee033c15ba01d7a2f90b09780a141d))
-* **catalog:** migrate API calls to sdk CatalogClient ([#1572](https://github.com/instill-ai/console/issues/1572)) ([a305c98](https://github.com/instill-ai/console/commit/a305c98bdb546f8f3e0d60ab1e4abb01eff84b83))
-* change "connector" to "component" ([#1476](https://github.com/instill-ai/console/issues/1476)) ([bb2129f](https://github.com/instill-ai/console/commit/bb2129f687657d68a8906eb2788444ff834b3a9b))
-* change pathname from /builder to /editor ([#1223](https://github.com/instill-ai/console/issues/1223)) ([88c4e04](https://github.com/instill-ai/console/commit/88c4e0473f6dad8478d0a562cb5453965ea6a840))
-* **chat:** user can use @ to add tool suggestion in chat ([#1617](https://github.com/instill-ai/console/issues/1617)) ([d76cd51](https://github.com/instill-ai/console/commit/d76cd516fc3fb27f6fbaa01b3c44c09c905d24db))
-* clean up the deps and upgrade nextjs to 15 ([#1758](https://github.com/instill-ai/console/issues/1758)) ([cc0fda0](https://github.com/instill-ai/console/commit/cc0fda067922ba5f0b8cd8f060dee266e2851671))
-* **component:** add email and anthropic icon ([#1266](https://github.com/instill-ai/console/issues/1266)) ([49417af](https://github.com/instill-ai/console/commit/49417af86588bb7aa70283b8d884a3db79f54ad2))
-* **dashboard:** add credit usage chart on dashboard ([#1265](https://github.com/instill-ai/console/issues/1265)) ([2304de7](https://github.com/instill-ai/console/commit/2304de7073f73f27c993e36899f70493ae8d87b8))
-* **dashboard:** revamp dashboard pathname to use singular noun ([#1276](https://github.com/instill-ai/console/issues/1276)) ([e1467f4](https://github.com/instill-ai/console/commit/e1467f4eed8054d6da19ec5f7ec246b6f7b91c57))
-* deprecate markdown-to-jsx and support Latex in markdown ([#1623](https://github.com/instill-ai/console/issues/1623)) ([cfea04e](https://github.com/instill-ai/console/commit/cfea04ed02ed69f9bbe2a3646e4dc467834cfbc5))
-* deprecate old design-system ([#1756](https://github.com/instill-ai/console/issues/1756)) ([03fca09](https://github.com/instill-ai/console/commit/03fca09f66b73b104631e540f570025a503dd3a4))
-* **editor:** support universal ai component on schema validation ([#1502](https://github.com/instill-ai/console/issues/1502)) ([4c3f93c](https://github.com/instill-ai/console/commit/4c3f93c408a0268290cefad6e319d03079599996))
-* enable namespace-switch to help user navigate pages ([#1224](https://github.com/instill-ai/console/issues/1224)) ([067b5a5](https://github.com/instill-ai/console/commit/067b5a59598b964fc7c46173bfa79b8ffd3124b0))
-* implement blob artifact when trigger pipeline ([#1604](https://github.com/instill-ai/console/issues/1604)) ([e93cb87](https://github.com/instill-ai/console/commit/e93cb879ebc300f3042778a1cb6f24528b6f790d))
-* Integration page ([#1411](https://github.com/instill-ai/console/issues/1411)) ([c1f800b](https://github.com/instill-ai/console/commit/c1f800b862ea3d766d6597d8ce81881d99220159))
-* **integration:** add google-drive integration ([#1569](https://github.com/instill-ai/console/issues/1569)) ([09eee30](https://github.com/instill-ai/console/commit/09eee3011b74877fb8352a2450ef6858b9134212))
-* introduce low-code editor ([#1385](https://github.com/instill-ai/console/issues/1385)) ([34a62b0](https://github.com/instill-ai/console/commit/34a62b0ea3f863014b0c892fa26340678281d1d6))
-* make the sdk e2e test mark every queryParam as required ([#1577](https://github.com/instill-ai/console/issues/1577)) ([99c16a2](https://github.com/instill-ai/console/commit/99c16a2b65716ebec8712300fa0fab98836b9b01))
-* merge sprint 39 changes ([#1302](https://github.com/instill-ai/console/issues/1302)) ([14194ab](https://github.com/instill-ai/console/commit/14194abb680c9a5156d35cbd5fe4c2fab25e8891))
-* move restapi component into generic type ([#1326](https://github.com/instill-ai/console/issues/1326)) ([fbaf1ab](https://github.com/instill-ai/console/commit/fbaf1ab3386d8edc767440d1431320354da2b5ec))
-* oauth wip ([#1509](https://github.com/instill-ai/console/issues/1509)) ([c8a92ad](https://github.com/instill-ai/console/commit/c8a92ad3d363a6ed65a67649cf8c45362e5aafec))
-* **pipeline-builder:** replace trigger node with variable node ([#1197](https://github.com/instill-ai/console/issues/1197)) ([8a6f06d](https://github.com/instill-ai/console/commit/8a6f06de42a5d5874d759f2c4915744d0a387e67))
-* re-export lodash for console-cloud usage ([#1229](https://github.com/instill-ai/console/issues/1229)) ([af35a00](https://github.com/instill-ai/console/commit/af35a001b7cb9a31cc5f7855893bc63c88b8a68c))
-* replace vdp-sdk/model with instill-sdk ([#1566](https://github.com/instill-ai/console/issues/1566)) ([014f3ae](https://github.com/instill-ai/console/commit/014f3ae71ed385c67fc887c6b19902a7a2150e00))
-* retire name parameter in the pipeline related endpoint ([#1575](https://github.com/instill-ai/console/issues/1575)) ([533e757](https://github.com/instill-ai/console/commit/533e757117e532a596b4e05d432af79e4834a4a7))
-* support default value for variable ([#1562](https://github.com/instill-ai/console/issues/1562)) ([1fdb718](https://github.com/instill-ai/console/commit/1fdb718a052d56c77e9773e4df5519fa9fe6f454))
-* support run-on-event webhook URL on editor ([#1498](https://github.com/instill-ai/console/issues/1498)) ([d0ed46d](https://github.com/instill-ai/console/commit/d0ed46dc02b24fc4085d8e6e8ac223d4a4239b8f))
-* support Slack OAuth integration ([#1534](https://github.com/instill-ai/console/issues/1534)) ([0a4da01](https://github.com/instill-ai/console/commit/0a4da01843f8cda178956ada167ea312970d7e53))
-* support sorting the last use date in api token table ([#1246](https://github.com/instill-ai/console/issues/1246)) ([55b3f74](https://github.com/instill-ai/console/commit/55b3f747f833cf6229c52fad12a30e4b865be667))
-* unify Avatar using new fallback rule ([#1240](https://github.com/instill-ai/console/issues/1240)) ([1f64140](https://github.com/instill-ai/console/commit/1f6414050f6fddb68285d6fd0e4088c6dab6bade))
-* unify retry option of react-query, clean up metabase issue and browserlist ([#1536](https://github.com/instill-ai/console/issues/1536)) ([057d4af](https://github.com/instill-ai/console/commit/057d4af8d0465171c2244d035de86cf61f8fb93f))
-* unify the Instill AI meeting schedule link ([#1619](https://github.com/instill-ai/console/issues/1619)) ([51e76ff](https://github.com/instill-ai/console/commit/51e76ffcd7dbad92b511965992e6d7170b2bddd3))
-* update document component icon ([#1517](https://github.com/instill-ai/console/issues/1517)) ([a0ac17b](https://github.com/instill-ai/console/commit/a0ac17bcc2f5fa8994d49088042cd0416394e39d))
-* update models list ui/ux ([#1136](https://github.com/instill-ai/console/issues/1136)) ([88944b4](https://github.com/instill-ai/console/commit/88944b4245c8270ebeb0ad4439c641257e8082a7))
-* update more deps vuln fixes ([#1709](https://github.com/instill-ai/console/issues/1709)) ([8de02a1](https://github.com/instill-ai/console/commit/8de02a165b6f7e372cac239d3fd77af1f9faf0c0))
-* update namespaces selector ux ([#1736](https://github.com/instill-ai/console/issues/1736)) ([fbf2c36](https://github.com/instill-ai/console/commit/fbf2c36e142fbf16657f08738523ef69db17ceac))
-* update open graph ([#1366](https://github.com/instill-ai/console/issues/1366)) ([418a2ee](https://github.com/instill-ai/console/commit/418a2ee31ba1105acb96a702acfb039c8960faa8))
-* use sonner as new toast ([#1760](https://github.com/instill-ai/console/issues/1760)) ([df8f7e0](https://github.com/instill-ai/console/commit/df8f7e0ee361ea7a6df12851309f24c0ff7afc08))
-* view pipeline and model run logs ([#1383](https://github.com/instill-ai/console/issues/1383)) ([f0b60fb](https://github.com/instill-ai/console/commit/f0b60fb592876a92c853b85d9fe216a6ee528f7c))
-
+- adapt kabab rule for resource like component, mode, and pipeline in console ([#1238](https://github.com/instill-ai/console/issues/1238)) ([88a3fde](https://github.com/instill-ai/console/commit/88a3fde925eda236051a59f1a727e4f79ce673ea))
+- adapt new ai task schema for auto gen form ([#1429](https://github.com/instill-ai/console/issues/1429)) ([95ce7e0](https://github.com/instill-ai/console/commit/95ce7e0f2f141b5e6bd92f39479284bed8a99d88))
+- adapt policy link and revamp setting pages ([#1629](https://github.com/instill-ai/console/issues/1629)) ([d11fab5](https://github.com/instill-ai/console/commit/d11fab5b7357c89e6c19da1e7b053431f77ba657))
+- adapt the camelcase change of BE api response in the console ([#1227](https://github.com/instill-ai/console/issues/1227)) ([552a7b4](https://github.com/instill-ai/console/commit/552a7b4c81b90dc9dcf338098bcd929420189060))
+- adapt the camelCase rule in the query param ([#1230](https://github.com/instill-ai/console/issues/1230)) ([2a9ee91](https://github.com/instill-ai/console/commit/2a9ee9182bcebeaf811a496a0f24d3bf685ef375))
+- add env example in console ([#1685](https://github.com/instill-ai/console/issues/1685)) ([d1f2457](https://github.com/instill-ai/console/commit/d1f245756eeacd325ee607b568e489dccbeaa43b))
+- add feature flag for chat ([#1628](https://github.com/instill-ai/console/issues/1628)) ([7455ce4](https://github.com/instill-ai/console/commit/7455ce4401b98854f103dfd3d1bc7c39ba1b14e8))
+- add table column definition metadata field ([#1765](https://github.com/instill-ai/console/issues/1765)) ([ac6339f](https://github.com/instill-ai/console/commit/ac6339f94cf95ece804100697c59ee0e403640fb))
+- automatically download icons ([#1551](https://github.com/instill-ai/console/issues/1551)) ([02c7223](https://github.com/instill-ai/console/commit/02c722362601e07bc37b646750ef29183b72fe0a))
+- bump console version ([#1751](https://github.com/instill-ai/console/issues/1751)) ([6079f7b](https://github.com/instill-ai/console/commit/6079f7b430052853a63aaecb43564a13c78075ab))
+- Catalog MVP ([#1340](https://github.com/instill-ai/console/issues/1340)) ([746793a](https://github.com/instill-ai/console/commit/746793a075a4e2aae3a642d8e3a4ae8701ea9fb5))
+- **catalog:** feat add 2 new API pages ([#1380](https://github.com/instill-ai/console/issues/1380)) ([4c2a5db](https://github.com/instill-ai/console/commit/4c2a5db337ee033c15ba01d7a2f90b09780a141d))
+- **catalog:** migrate API calls to sdk CatalogClient ([#1572](https://github.com/instill-ai/console/issues/1572)) ([a305c98](https://github.com/instill-ai/console/commit/a305c98bdb546f8f3e0d60ab1e4abb01eff84b83))
+- change "connector" to "component" ([#1476](https://github.com/instill-ai/console/issues/1476)) ([bb2129f](https://github.com/instill-ai/console/commit/bb2129f687657d68a8906eb2788444ff834b3a9b))
+- change pathname from /builder to /editor ([#1223](https://github.com/instill-ai/console/issues/1223)) ([88c4e04](https://github.com/instill-ai/console/commit/88c4e0473f6dad8478d0a562cb5453965ea6a840))
+- **chat:** user can use @ to add tool suggestion in chat ([#1617](https://github.com/instill-ai/console/issues/1617)) ([d76cd51](https://github.com/instill-ai/console/commit/d76cd516fc3fb27f6fbaa01b3c44c09c905d24db))
+- clean up the deps and upgrade nextjs to 15 ([#1758](https://github.com/instill-ai/console/issues/1758)) ([cc0fda0](https://github.com/instill-ai/console/commit/cc0fda067922ba5f0b8cd8f060dee266e2851671))
+- **component:** add email and anthropic icon ([#1266](https://github.com/instill-ai/console/issues/1266)) ([49417af](https://github.com/instill-ai/console/commit/49417af86588bb7aa70283b8d884a3db79f54ad2))
+- **dashboard:** add credit usage chart on dashboard ([#1265](https://github.com/instill-ai/console/issues/1265)) ([2304de7](https://github.com/instill-ai/console/commit/2304de7073f73f27c993e36899f70493ae8d87b8))
+- **dashboard:** revamp dashboard pathname to use singular noun ([#1276](https://github.com/instill-ai/console/issues/1276)) ([e1467f4](https://github.com/instill-ai/console/commit/e1467f4eed8054d6da19ec5f7ec246b6f7b91c57))
+- deprecate markdown-to-jsx and support Latex in markdown ([#1623](https://github.com/instill-ai/console/issues/1623)) ([cfea04e](https://github.com/instill-ai/console/commit/cfea04ed02ed69f9bbe2a3646e4dc467834cfbc5))
+- deprecate old design-system ([#1756](https://github.com/instill-ai/console/issues/1756)) ([03fca09](https://github.com/instill-ai/console/commit/03fca09f66b73b104631e540f570025a503dd3a4))
+- **editor:** support universal ai component on schema validation ([#1502](https://github.com/instill-ai/console/issues/1502)) ([4c3f93c](https://github.com/instill-ai/console/commit/4c3f93c408a0268290cefad6e319d03079599996))
+- enable namespace-switch to help user navigate pages ([#1224](https://github.com/instill-ai/console/issues/1224)) ([067b5a5](https://github.com/instill-ai/console/commit/067b5a59598b964fc7c46173bfa79b8ffd3124b0))
+- implement blob artifact when trigger pipeline ([#1604](https://github.com/instill-ai/console/issues/1604)) ([e93cb87](https://github.com/instill-ai/console/commit/e93cb879ebc300f3042778a1cb6f24528b6f790d))
+- Integration page ([#1411](https://github.com/instill-ai/console/issues/1411)) ([c1f800b](https://github.com/instill-ai/console/commit/c1f800b862ea3d766d6597d8ce81881d99220159))
+- **integration:** add google-drive integration ([#1569](https://github.com/instill-ai/console/issues/1569)) ([09eee30](https://github.com/instill-ai/console/commit/09eee3011b74877fb8352a2450ef6858b9134212))
+- introduce low-code editor ([#1385](https://github.com/instill-ai/console/issues/1385)) ([34a62b0](https://github.com/instill-ai/console/commit/34a62b0ea3f863014b0c892fa26340678281d1d6))
+- make the sdk e2e test mark every queryParam as required ([#1577](https://github.com/instill-ai/console/issues/1577)) ([99c16a2](https://github.com/instill-ai/console/commit/99c16a2b65716ebec8712300fa0fab98836b9b01))
+- merge sprint 39 changes ([#1302](https://github.com/instill-ai/console/issues/1302)) ([14194ab](https://github.com/instill-ai/console/commit/14194abb680c9a5156d35cbd5fe4c2fab25e8891))
+- move restapi component into generic type ([#1326](https://github.com/instill-ai/console/issues/1326)) ([fbaf1ab](https://github.com/instill-ai/console/commit/fbaf1ab3386d8edc767440d1431320354da2b5ec))
+- oauth wip ([#1509](https://github.com/instill-ai/console/issues/1509)) ([c8a92ad](https://github.com/instill-ai/console/commit/c8a92ad3d363a6ed65a67649cf8c45362e5aafec))
+- **pipeline-builder:** replace trigger node with variable node ([#1197](https://github.com/instill-ai/console/issues/1197)) ([8a6f06d](https://github.com/instill-ai/console/commit/8a6f06de42a5d5874d759f2c4915744d0a387e67))
+- re-export lodash for console-cloud usage ([#1229](https://github.com/instill-ai/console/issues/1229)) ([af35a00](https://github.com/instill-ai/console/commit/af35a001b7cb9a31cc5f7855893bc63c88b8a68c))
+- replace vdp-sdk/model with instill-sdk ([#1566](https://github.com/instill-ai/console/issues/1566)) ([014f3ae](https://github.com/instill-ai/console/commit/014f3ae71ed385c67fc887c6b19902a7a2150e00))
+- retire name parameter in the pipeline related endpoint ([#1575](https://github.com/instill-ai/console/issues/1575)) ([533e757](https://github.com/instill-ai/console/commit/533e757117e532a596b4e05d432af79e4834a4a7))
+- support default value for variable ([#1562](https://github.com/instill-ai/console/issues/1562)) ([1fdb718](https://github.com/instill-ai/console/commit/1fdb718a052d56c77e9773e4df5519fa9fe6f454))
+- support run-on-event webhook URL on editor ([#1498](https://github.com/instill-ai/console/issues/1498)) ([d0ed46d](https://github.com/instill-ai/console/commit/d0ed46dc02b24fc4085d8e6e8ac223d4a4239b8f))
+- support Slack OAuth integration ([#1534](https://github.com/instill-ai/console/issues/1534)) ([0a4da01](https://github.com/instill-ai/console/commit/0a4da01843f8cda178956ada167ea312970d7e53))
+- support sorting the last use date in api token table ([#1246](https://github.com/instill-ai/console/issues/1246)) ([55b3f74](https://github.com/instill-ai/console/commit/55b3f747f833cf6229c52fad12a30e4b865be667))
+- unify Avatar using new fallback rule ([#1240](https://github.com/instill-ai/console/issues/1240)) ([1f64140](https://github.com/instill-ai/console/commit/1f6414050f6fddb68285d6fd0e4088c6dab6bade))
+- unify retry option of react-query, clean up metabase issue and browserlist ([#1536](https://github.com/instill-ai/console/issues/1536)) ([057d4af](https://github.com/instill-ai/console/commit/057d4af8d0465171c2244d035de86cf61f8fb93f))
+- unify the Instill AI meeting schedule link ([#1619](https://github.com/instill-ai/console/issues/1619)) ([51e76ff](https://github.com/instill-ai/console/commit/51e76ffcd7dbad92b511965992e6d7170b2bddd3))
+- update document component icon ([#1517](https://github.com/instill-ai/console/issues/1517)) ([a0ac17b](https://github.com/instill-ai/console/commit/a0ac17bcc2f5fa8994d49088042cd0416394e39d))
+- update models list ui/ux ([#1136](https://github.com/instill-ai/console/issues/1136)) ([88944b4](https://github.com/instill-ai/console/commit/88944b4245c8270ebeb0ad4439c641257e8082a7))
+- update more deps vuln fixes ([#1709](https://github.com/instill-ai/console/issues/1709)) ([8de02a1](https://github.com/instill-ai/console/commit/8de02a165b6f7e372cac239d3fd77af1f9faf0c0))
+- update namespaces selector ux ([#1736](https://github.com/instill-ai/console/issues/1736)) ([fbf2c36](https://github.com/instill-ai/console/commit/fbf2c36e142fbf16657f08738523ef69db17ceac))
+- update open graph ([#1366](https://github.com/instill-ai/console/issues/1366)) ([418a2ee](https://github.com/instill-ai/console/commit/418a2ee31ba1105acb96a702acfb039c8960faa8))
+- use sonner as new toast ([#1760](https://github.com/instill-ai/console/issues/1760)) ([df8f7e0](https://github.com/instill-ai/console/commit/df8f7e0ee361ea7a6df12851309f24c0ff7afc08))
+- view pipeline and model run logs ([#1383](https://github.com/instill-ai/console/issues/1383)) ([f0b60fb](https://github.com/instill-ai/console/commit/f0b60fb592876a92c853b85d9fe216a6ee528f7c))
 
 ### Bug Fixes
 
-* **catalog:** fix rename knowledge base to catalog ([#1371](https://github.com/instill-ai/console/issues/1371)) ([aa64ddd](https://github.com/instill-ai/console/commit/aa64ddd99492c0787a0ecf3d94529a1c7195b990))
-* dashboard ui tweaks ([#1664](https://github.com/instill-ai/console/issues/1664)) ([faadf16](https://github.com/instill-ai/console/commit/faadf164780e4847cfdf9b53ff827831238c7c50))
-* **dashboard:** fix dashboard pipeline details page re-render issue ([#1280](https://github.com/instill-ai/console/issues/1280)) ([06bf112](https://github.com/instill-ai/console/commit/06bf112fdf2fe6da538efb0ac432a796f80eb2c6))
-* **editor:** fix can't construct multiple edges to multiple components from single component ([#1547](https://github.com/instill-ai/console/issues/1547)) ([7ef2795](https://github.com/instill-ai/console/commit/7ef279566e3140644909eec0bdbd317e60e77a46))
-* **editor:** fix not correctly add component skeleton ([#1398](https://github.com/instill-ai/console/issues/1398)) ([09054ff](https://github.com/instill-ai/console/commit/09054ffc272e961fc33279380ebf2b64d370b2d6))
-* **editor:** fix recipe didn't allow asana component ([#1478](https://github.com/instill-ai/console/issues/1478)) ([aabf360](https://github.com/instill-ai/console/commit/aabf360d444035ef83b2f9c72f6d4ba3b7fe60e8))
-* **editor:** fix selected task can't scroll to button result in covering up some text in CMDO ([#1485](https://github.com/instill-ai/console/issues/1485)) ([55dbcbe](https://github.com/instill-ai/console/commit/55dbcbe42b8c7a255bf76d9eb114aa09f165b48a))
-* fix and adapt new dashboard endpoint ([#1594](https://github.com/instill-ai/console/issues/1594)) ([e043500](https://github.com/instill-ai/console/commit/e043500c9063cd8fcd91f366247fe4c0298923db))
-* fix component documentation urls in the pipeline builder ([#1524](https://github.com/instill-ai/console/issues/1524)) ([ee880c8](https://github.com/instill-ai/console/commit/ee880c84c4f3f2a7e93fca3d3e6eccb482f1a03d))
-* fix console didn't trigger the correct pipeline version ([#1287](https://github.com/instill-ai/console/issues/1287)) ([8876366](https://github.com/instill-ai/console/commit/88763669af98b30a80277a546dd191f0090d84e3))
-* fix console not correctly update the namespace requester uid when requesting run related endpoint ([#1513](https://github.com/instill-ai/console/issues/1513)) ([ec89e4e](https://github.com/instill-ai/console/commit/ec89e4e17d5517a189ea1a7f0d6bf98b7e8b69bf))
-* fix console-deps-vuln ([#1707](https://github.com/instill-ai/console/issues/1707)) ([d2e4f6a](https://github.com/instill-ai/console/commit/d2e4f6a3504c3268ac366665b7afae70d7b2b937))
-* fix download component icon script to fallback invalid version ([#1553](https://github.com/instill-ai/console/issues/1553)) ([0416a7c](https://github.com/instill-ai/console/commit/0416a7c6519ac16496bae8acd9ca8a50c02bbfff))
-* fix onboarding form e2e ([#1545](https://github.com/instill-ai/console/issues/1545)) ([e630cb0](https://github.com/instill-ai/console/commit/e630cb068e43e5e4df5f7cca04d0adb7202167b8))
-* fix prettier issue around root folder and vscode plugin ([#1258](https://github.com/instill-ai/console/issues/1258)) ([d3eac49](https://github.com/instill-ai/console/commit/d3eac498ec78872392c9c5072c1b9aed303fc24f))
-* fix secure cookie issue, default to use not-secure cookie on http site ([#1761](https://github.com/instill-ai/console/issues/1761)) ([a2167ce](https://github.com/instill-ai/console/commit/a2167ce9d2ac65db9c90113a839902a7f62d2a00))
-* fix toaster style issue ([#1248](https://github.com/instill-ai/console/issues/1248)) ([aec1217](https://github.com/instill-ai/console/commit/aec12174ef6dd3b1843449b8210d264442928cb4))
-* fix ts version that cause build issue ([#1407](https://github.com/instill-ai/console/issues/1407)) ([f7b2b13](https://github.com/instill-ai/console/commit/f7b2b13f3e6494915b8e6555b5f23498d32f792e))
-* **namespace-switch:** fix namespace-switch not guard user private resource ([#1267](https://github.com/instill-ai/console/issues/1267)) ([3694ce8](https://github.com/instill-ai/console/commit/3694ce8c24529be6e1bdf9800fd3c05381c08fe4))
-* **namespace-switch:** fix not selecting the selected namespace as default namespace when create model ([#1233](https://github.com/instill-ai/console/issues/1233)) ([bc9f37e](https://github.com/instill-ai/console/commit/bc9f37ef6ba2e288f399a904c5f2fc3eca6d0e87))
-* **namespace-switch:** fix the namespace switch style and deviation  ([#1237](https://github.com/instill-ai/console/issues/1237)) ([5e3c925](https://github.com/instill-ai/console/commit/5e3c925265d321d5c38edd3322535b72e90fb74e))
-* patch high vulnerabilities deps issues ([#1631](https://github.com/instill-ai/console/issues/1631)) ([955355e](https://github.com/instill-ai/console/commit/955355e4ad14baa2690d1e87273257dba6468b71))
-* **pipeline/models:** fix add redirections ([#1446](https://github.com/instill-ai/console/issues/1446)) ([77ef8fa](https://github.com/instill-ai/console/commit/77ef8fa90bd8ce252f20b10c5eec7c68985d5720))
-* **pipelines:** fix add redirection to playground and to settings tab ([#1376](https://github.com/instill-ai/console/issues/1376)) ([2e31306](https://github.com/instill-ai/console/commit/2e31306f51017db7aa468e440e570f84c813327b))
-* refactor onboarding form and align topdown and profile page with cloud ([#1538](https://github.com/instill-ai/console/issues/1538)) ([e955b44](https://github.com/instill-ai/console/commit/e955b4463d8c68d9f359c066b9e1a8ffa7611dc6))
-* remove empty extra bottom space of recipe editor ([#1603](https://github.com/instill-ai/console/issues/1603)) ([7e45955](https://github.com/instill-ai/console/commit/7e4595558b40fc50129fd3f9b2c523c9162b0bf9))
-* replace logout link with button ([#1762](https://github.com/instill-ai/console/issues/1762)) ([6bd01df](https://github.com/instill-ai/console/commit/6bd01dfe1892a66da9ac0c0c23be1dc63fa2d9e4))
-* replace readme with description in both model and pipeline page metadata ([#1489](https://github.com/instill-ai/console/issues/1489)) ([6cd643f](https://github.com/instill-ai/console/commit/6cd643f24b11a27874966c3f094c242a756f9c4e))
-* replace sql icon ([#1643](https://github.com/instill-ai/console/issues/1643)) ([3da4d79](https://github.com/instill-ai/console/commit/3da4d79a2edeba2e848ecb997935cb59cebf36d2))
-* some props of the model trigger payload had snake_case, fixed them to camelCase ([#1254](https://github.com/instill-ai/console/issues/1254)) ([8da7b09](https://github.com/instill-ai/console/commit/8da7b0926930ae02ef7a296313f753b7a4e339cf))
-* the getInstillClient on the sdk has wrongly cache issue on Vercel SSR ([#1528](https://github.com/instill-ai/console/issues/1528)) ([c8e1fe3](https://github.com/instill-ai/console/commit/c8e1fe317b9e460047338e9ad3e583332c2385b5))
-* unify how we handle error ([#1331](https://github.com/instill-ai/console/issues/1331)) ([5d79849](https://github.com/instill-ai/console/commit/5d79849e5b1920dc2296422c8a46968219ee9fbf))
-* update nextjs version to cope with vulnerability ([#1663](https://github.com/instill-ai/console/issues/1663)) ([e2f33b3](https://github.com/instill-ai/console/commit/e2f33b39ad8fc5f47a904ddbfba7c3bd0b60e14a))
-
+- **catalog:** fix rename knowledge base to catalog ([#1371](https://github.com/instill-ai/console/issues/1371)) ([aa64ddd](https://github.com/instill-ai/console/commit/aa64ddd99492c0787a0ecf3d94529a1c7195b990))
+- dashboard ui tweaks ([#1664](https://github.com/instill-ai/console/issues/1664)) ([faadf16](https://github.com/instill-ai/console/commit/faadf164780e4847cfdf9b53ff827831238c7c50))
+- **dashboard:** fix dashboard pipeline details page re-render issue ([#1280](https://github.com/instill-ai/console/issues/1280)) ([06bf112](https://github.com/instill-ai/console/commit/06bf112fdf2fe6da538efb0ac432a796f80eb2c6))
+- **editor:** fix can't construct multiple edges to multiple components from single component ([#1547](https://github.com/instill-ai/console/issues/1547)) ([7ef2795](https://github.com/instill-ai/console/commit/7ef279566e3140644909eec0bdbd317e60e77a46))
+- **editor:** fix not correctly add component skeleton ([#1398](https://github.com/instill-ai/console/issues/1398)) ([09054ff](https://github.com/instill-ai/console/commit/09054ffc272e961fc33279380ebf2b64d370b2d6))
+- **editor:** fix recipe didn't allow asana component ([#1478](https://github.com/instill-ai/console/issues/1478)) ([aabf360](https://github.com/instill-ai/console/commit/aabf360d444035ef83b2f9c72f6d4ba3b7fe60e8))
+- **editor:** fix selected task can't scroll to button result in covering up some text in CMDO ([#1485](https://github.com/instill-ai/console/issues/1485)) ([55dbcbe](https://github.com/instill-ai/console/commit/55dbcbe42b8c7a255bf76d9eb114aa09f165b48a))
+- fix and adapt new dashboard endpoint ([#1594](https://github.com/instill-ai/console/issues/1594)) ([e043500](https://github.com/instill-ai/console/commit/e043500c9063cd8fcd91f366247fe4c0298923db))
+- fix component documentation urls in the pipeline builder ([#1524](https://github.com/instill-ai/console/issues/1524)) ([ee880c8](https://github.com/instill-ai/console/commit/ee880c84c4f3f2a7e93fca3d3e6eccb482f1a03d))
+- fix console didn't trigger the correct pipeline version ([#1287](https://github.com/instill-ai/console/issues/1287)) ([8876366](https://github.com/instill-ai/console/commit/88763669af98b30a80277a546dd191f0090d84e3))
+- fix console not correctly update the namespace requester uid when requesting run related endpoint ([#1513](https://github.com/instill-ai/console/issues/1513)) ([ec89e4e](https://github.com/instill-ai/console/commit/ec89e4e17d5517a189ea1a7f0d6bf98b7e8b69bf))
+- fix console-deps-vuln ([#1707](https://github.com/instill-ai/console/issues/1707)) ([d2e4f6a](https://github.com/instill-ai/console/commit/d2e4f6a3504c3268ac366665b7afae70d7b2b937))
+- fix download component icon script to fallback invalid version ([#1553](https://github.com/instill-ai/console/issues/1553)) ([0416a7c](https://github.com/instill-ai/console/commit/0416a7c6519ac16496bae8acd9ca8a50c02bbfff))
+- fix onboarding form e2e ([#1545](https://github.com/instill-ai/console/issues/1545)) ([e630cb0](https://github.com/instill-ai/console/commit/e630cb068e43e5e4df5f7cca04d0adb7202167b8))
+- fix prettier issue around root folder and vscode plugin ([#1258](https://github.com/instill-ai/console/issues/1258)) ([d3eac49](https://github.com/instill-ai/console/commit/d3eac498ec78872392c9c5072c1b9aed303fc24f))
+- fix secure cookie issue, default to use not-secure cookie on http site ([#1761](https://github.com/instill-ai/console/issues/1761)) ([a2167ce](https://github.com/instill-ai/console/commit/a2167ce9d2ac65db9c90113a839902a7f62d2a00))
+- fix toaster style issue ([#1248](https://github.com/instill-ai/console/issues/1248)) ([aec1217](https://github.com/instill-ai/console/commit/aec12174ef6dd3b1843449b8210d264442928cb4))
+- fix ts version that cause build issue ([#1407](https://github.com/instill-ai/console/issues/1407)) ([f7b2b13](https://github.com/instill-ai/console/commit/f7b2b13f3e6494915b8e6555b5f23498d32f792e))
+- **namespace-switch:** fix namespace-switch not guard user private resource ([#1267](https://github.com/instill-ai/console/issues/1267)) ([3694ce8](https://github.com/instill-ai/console/commit/3694ce8c24529be6e1bdf9800fd3c05381c08fe4))
+- **namespace-switch:** fix not selecting the selected namespace as default namespace when create model ([#1233](https://github.com/instill-ai/console/issues/1233)) ([bc9f37e](https://github.com/instill-ai/console/commit/bc9f37ef6ba2e288f399a904c5f2fc3eca6d0e87))
+- **namespace-switch:** fix the namespace switch style and deviation ([#1237](https://github.com/instill-ai/console/issues/1237)) ([5e3c925](https://github.com/instill-ai/console/commit/5e3c925265d321d5c38edd3322535b72e90fb74e))
+- patch high vulnerabilities deps issues ([#1631](https://github.com/instill-ai/console/issues/1631)) ([955355e](https://github.com/instill-ai/console/commit/955355e4ad14baa2690d1e87273257dba6468b71))
+- **pipeline/models:** fix add redirections ([#1446](https://github.com/instill-ai/console/issues/1446)) ([77ef8fa](https://github.com/instill-ai/console/commit/77ef8fa90bd8ce252f20b10c5eec7c68985d5720))
+- **pipelines:** fix add redirection to playground and to settings tab ([#1376](https://github.com/instill-ai/console/issues/1376)) ([2e31306](https://github.com/instill-ai/console/commit/2e31306f51017db7aa468e440e570f84c813327b))
+- refactor onboarding form and align topdown and profile page with cloud ([#1538](https://github.com/instill-ai/console/issues/1538)) ([e955b44](https://github.com/instill-ai/console/commit/e955b4463d8c68d9f359c066b9e1a8ffa7611dc6))
+- remove empty extra bottom space of recipe editor ([#1603](https://github.com/instill-ai/console/issues/1603)) ([7e45955](https://github.com/instill-ai/console/commit/7e4595558b40fc50129fd3f9b2c523c9162b0bf9))
+- replace logout link with button ([#1762](https://github.com/instill-ai/console/issues/1762)) ([6bd01df](https://github.com/instill-ai/console/commit/6bd01dfe1892a66da9ac0c0c23be1dc63fa2d9e4))
+- replace readme with description in both model and pipeline page metadata ([#1489](https://github.com/instill-ai/console/issues/1489)) ([6cd643f](https://github.com/instill-ai/console/commit/6cd643f24b11a27874966c3f094c242a756f9c4e))
+- replace sql icon ([#1643](https://github.com/instill-ai/console/issues/1643)) ([3da4d79](https://github.com/instill-ai/console/commit/3da4d79a2edeba2e848ecb997935cb59cebf36d2))
+- some props of the model trigger payload had snake_case, fixed them to camelCase ([#1254](https://github.com/instill-ai/console/issues/1254)) ([8da7b09](https://github.com/instill-ai/console/commit/8da7b0926930ae02ef7a296313f753b7a4e339cf))
+- the getInstillClient on the sdk has wrongly cache issue on Vercel SSR ([#1528](https://github.com/instill-ai/console/issues/1528)) ([c8e1fe3](https://github.com/instill-ai/console/commit/c8e1fe317b9e460047338e9ad3e583332c2385b5))
+- unify how we handle error ([#1331](https://github.com/instill-ai/console/issues/1331)) ([5d79849](https://github.com/instill-ai/console/commit/5d79849e5b1920dc2296422c8a46968219ee9fbf))
+- update nextjs version to cope with vulnerability ([#1663](https://github.com/instill-ai/console/issues/1663)) ([e2f33b3](https://github.com/instill-ai/console/commit/e2f33b39ad8fc5f47a904ddbfba7c3bd0b60e14a))
 
 ### Miscellaneous
 
-* adapt backend instill-artifact naming changes ([#1503](https://github.com/instill-ai/console/issues/1503)) ([fa027a8](https://github.com/instill-ai/console/commit/fa027a822f65e8263f066092a863400ce34d39ab))
-* add Collection component ([#1501](https://github.com/instill-ai/console/issues/1501)) ([101af5f](https://github.com/instill-ai/console/commit/101af5f62c0c58832978643643cde1a668a23f95))
-* add new component icons ([#1359](https://github.com/instill-ai/console/issues/1359)) ([dd37377](https://github.com/instill-ai/console/commit/dd373770bbe002a12895037f90b235a090631e86))
-* add sdk readme ([#1307](https://github.com/instill-ai/console/issues/1307)) ([10bd6d5](https://github.com/instill-ai/console/commit/10bd6d5f8e95360ba1757e8f63e793962196fb0d))
-* **component:** add `scheduler` component ([#1637](https://github.com/instill-ai/console/issues/1637)) ([406361a](https://github.com/instill-ai/console/commit/406361adbf331d291f28cdb2bf31c94d235dc9b4))
-* **component:** add icon ([#1630](https://github.com/instill-ai/console/issues/1630)) ([87174b9](https://github.com/instill-ai/console/commit/87174b9c69b9beb248fb8d3d4d1a97357fbd58f4))
-* **component:** add icons for google-drive, perplexity-ai and leadiq ([#1627](https://github.com/instill-ai/console/issues/1627)) ([4bed7fc](https://github.com/instill-ai/console/commit/4bed7fcaa88ac3358cf50352456203260ebbdabe))
-* **component:** rename restapi component to http component ([#1579](https://github.com/instill-ai/console/issues/1579)) ([be56f33](https://github.com/instill-ai/console/commit/be56f333efbd1fb0f5bc089e1b427c9a05b03ffe))
-* **deps:** bump up next js version ([#1661](https://github.com/instill-ai/console/issues/1661)) ([4b96901](https://github.com/instill-ai/console/commit/4b96901edfb1889435dd94487cdafd719e1beb4a))
-* release main ([#1189](https://github.com/instill-ai/console/issues/1189)) ([8f2f600](https://github.com/instill-ai/console/commit/8f2f600dc03a43e85812b809d5d229de6fec8721))
-* release main ([#1225](https://github.com/instill-ai/console/issues/1225)) ([967b3ef](https://github.com/instill-ai/console/commit/967b3ef4850c19dd7f03183deadc7e1ff30c1cc9))
-* release main ([#1250](https://github.com/instill-ai/console/issues/1250)) ([90a4c05](https://github.com/instill-ai/console/commit/90a4c058fe0e0af79953689d112ba93bb02bcfa9))
-* release main ([#1255](https://github.com/instill-ai/console/issues/1255)) ([50e951d](https://github.com/instill-ai/console/commit/50e951da0399bdb0b80cfe40137cef0eafe6c06a))
-* release main ([#1257](https://github.com/instill-ai/console/issues/1257)) ([97030eb](https://github.com/instill-ai/console/commit/97030eb1f99aa8a00aea6c095ef278a8a29a303c))
-* release main ([#1281](https://github.com/instill-ai/console/issues/1281)) ([2e384a5](https://github.com/instill-ai/console/commit/2e384a546dba9ca6e7309316dd5110112b296325))
-* release main ([#1283](https://github.com/instill-ai/console/issues/1283)) ([dd638b6](https://github.com/instill-ai/console/commit/dd638b6f9435a70c7bbb75776239ab2fba68df21))
-* release main ([#1320](https://github.com/instill-ai/console/issues/1320)) ([2f797b8](https://github.com/instill-ai/console/commit/2f797b85d660db9a5ca05555e25c0f4e65d02f84))
-* release main ([#1339](https://github.com/instill-ai/console/issues/1339)) ([5135c8b](https://github.com/instill-ai/console/commit/5135c8b1b6cdb2a91ccb5d63564874ed2b68a414))
-* release main ([#1354](https://github.com/instill-ai/console/issues/1354)) ([54b140c](https://github.com/instill-ai/console/commit/54b140c553e64f609d5da43893743e4e91044cc8))
-* release main ([#1372](https://github.com/instill-ai/console/issues/1372)) ([edd61ca](https://github.com/instill-ai/console/commit/edd61caadb6be97a46dcdeb380a728c75be0133f))
-* release main ([#1425](https://github.com/instill-ai/console/issues/1425)) ([a2ba260](https://github.com/instill-ai/console/commit/a2ba26055393b6b0853e14f23429ce4bb1ad2186))
-* release main ([#1464](https://github.com/instill-ai/console/issues/1464)) ([930330e](https://github.com/instill-ai/console/commit/930330e796021ec79c31a34a9dba43a3e70968c4))
-* release main ([#1482](https://github.com/instill-ai/console/issues/1482)) ([c9e54e2](https://github.com/instill-ai/console/commit/c9e54e2db24dea899a4b24d4306c73accc9aa40d))
-* release main ([#1490](https://github.com/instill-ai/console/issues/1490)) ([17e0cae](https://github.com/instill-ai/console/commit/17e0cae7f5e0202476358652204b9dfc4574c9aa))
-* release main ([#1499](https://github.com/instill-ai/console/issues/1499)) ([bd1f6c9](https://github.com/instill-ai/console/commit/bd1f6c9e07cb4e4383e20e3aaa3ce3636f5c047c))
-* release main ([#1511](https://github.com/instill-ai/console/issues/1511)) ([4dd135e](https://github.com/instill-ai/console/commit/4dd135e132952d76dc27c6a82f8e2964f65c522d))
-* release main ([#1525](https://github.com/instill-ai/console/issues/1525)) ([febef5b](https://github.com/instill-ai/console/commit/febef5b440dee9ccc1deacc0ca9372bc7a307c49))
-* release main ([#1527](https://github.com/instill-ai/console/issues/1527)) ([75f30ab](https://github.com/instill-ai/console/commit/75f30ab3e51236ce4cce9d82e54174d58e59f4ed))
-* release main ([#1537](https://github.com/instill-ai/console/issues/1537)) ([adf89be](https://github.com/instill-ai/console/commit/adf89bea19d09c7d43549fb3f2362d24b4e30272))
-* release main ([#1558](https://github.com/instill-ai/console/issues/1558)) ([365a5b9](https://github.com/instill-ai/console/commit/365a5b94739d041ba9bc61c08625280c615efac5))
-* release main ([#1563](https://github.com/instill-ai/console/issues/1563)) ([ae051d1](https://github.com/instill-ai/console/commit/ae051d1d98ed93f88fd25b5c853c9a4be63e9014))
-* release main ([#1598](https://github.com/instill-ai/console/issues/1598)) ([675ceb0](https://github.com/instill-ai/console/commit/675ceb09586f743247764cb355def29b8b725def))
-* release main ([#1618](https://github.com/instill-ai/console/issues/1618)) ([1a71dbd](https://github.com/instill-ai/console/commit/1a71dbd617c6aaf289897c5f67dac6bad0499eac))
-* release main ([#1642](https://github.com/instill-ai/console/issues/1642)) ([91e8bc4](https://github.com/instill-ai/console/commit/91e8bc4e33392d5de9d05262b86d982a0d256cd6))
-* release main ([#1658](https://github.com/instill-ai/console/issues/1658)) ([f55b650](https://github.com/instill-ai/console/commit/f55b6509e7571192ac5f070df8cb8987b67e6ae5))
-* release main ([#1665](https://github.com/instill-ai/console/issues/1665)) ([93688e7](https://github.com/instill-ai/console/commit/93688e778bb2565163725f4dd2fb9f89d771419f))
-* release main ([#1686](https://github.com/instill-ai/console/issues/1686)) ([446067a](https://github.com/instill-ai/console/commit/446067af39cd5150fad7766c99d21244cf45f15a))
-* release main ([#1708](https://github.com/instill-ai/console/issues/1708)) ([2a39ca3](https://github.com/instill-ai/console/commit/2a39ca312e1e0ed7a6bc3611ca7f907dd5c75c64))
-* release main ([#1733](https://github.com/instill-ai/console/issues/1733)) ([cfded3b](https://github.com/instill-ai/console/commit/cfded3b9bf6979e7b0f8a91a693bfbe308bcde25))
-* release main ([#1749](https://github.com/instill-ai/console/issues/1749)) ([c57997c](https://github.com/instill-ai/console/commit/c57997c2cf36880f02ed1311239ea14ec7cfe33d))
-* replace pipeline type in toolkit with type in sdk ([#1319](https://github.com/instill-ai/console/issues/1319)) ([48de6c3](https://github.com/instill-ai/console/commit/48de6c366e29f17df7c1da22a203f210065404c4))
-* retire vdp-sdk/mgmt ([#1557](https://github.com/instill-ai/console/issues/1557)) ([f683265](https://github.com/instill-ai/console/commit/f683265fa766631abf5fa417864b4e94927591b2))
-* update Collection component icon ([#1508](https://github.com/instill-ai/console/issues/1508)) ([8ea6793](https://github.com/instill-ai/console/commit/8ea6793eec7b27c18f114f13b706f6dcdff8518c))
-* update nextjs version to 14.2.10, clean up playwright deps ([#1483](https://github.com/instill-ai/console/issues/1483)) ([d5ae86a](https://github.com/instill-ai/console/commit/d5ae86a051e0816e7138066bde2005e5ff29b24e))
-* use prettier to sort import order ([#1261](https://github.com/instill-ai/console/issues/1261)) ([4640c24](https://github.com/instill-ai/console/commit/4640c24ce73940d204111880b8bb367d690e32d1))
+- adapt backend instill-artifact naming changes ([#1503](https://github.com/instill-ai/console/issues/1503)) ([fa027a8](https://github.com/instill-ai/console/commit/fa027a822f65e8263f066092a863400ce34d39ab))
+- add Collection component ([#1501](https://github.com/instill-ai/console/issues/1501)) ([101af5f](https://github.com/instill-ai/console/commit/101af5f62c0c58832978643643cde1a668a23f95))
+- add new component icons ([#1359](https://github.com/instill-ai/console/issues/1359)) ([dd37377](https://github.com/instill-ai/console/commit/dd373770bbe002a12895037f90b235a090631e86))
+- add sdk readme ([#1307](https://github.com/instill-ai/console/issues/1307)) ([10bd6d5](https://github.com/instill-ai/console/commit/10bd6d5f8e95360ba1757e8f63e793962196fb0d))
+- **component:** add `scheduler` component ([#1637](https://github.com/instill-ai/console/issues/1637)) ([406361a](https://github.com/instill-ai/console/commit/406361adbf331d291f28cdb2bf31c94d235dc9b4))
+- **component:** add icon ([#1630](https://github.com/instill-ai/console/issues/1630)) ([87174b9](https://github.com/instill-ai/console/commit/87174b9c69b9beb248fb8d3d4d1a97357fbd58f4))
+- **component:** add icons for google-drive, perplexity-ai and leadiq ([#1627](https://github.com/instill-ai/console/issues/1627)) ([4bed7fc](https://github.com/instill-ai/console/commit/4bed7fcaa88ac3358cf50352456203260ebbdabe))
+- **component:** rename restapi component to http component ([#1579](https://github.com/instill-ai/console/issues/1579)) ([be56f33](https://github.com/instill-ai/console/commit/be56f333efbd1fb0f5bc089e1b427c9a05b03ffe))
+- **deps:** bump up next js version ([#1661](https://github.com/instill-ai/console/issues/1661)) ([4b96901](https://github.com/instill-ai/console/commit/4b96901edfb1889435dd94487cdafd719e1beb4a))
+- release main ([#1189](https://github.com/instill-ai/console/issues/1189)) ([8f2f600](https://github.com/instill-ai/console/commit/8f2f600dc03a43e85812b809d5d229de6fec8721))
+- release main ([#1225](https://github.com/instill-ai/console/issues/1225)) ([967b3ef](https://github.com/instill-ai/console/commit/967b3ef4850c19dd7f03183deadc7e1ff30c1cc9))
+- release main ([#1250](https://github.com/instill-ai/console/issues/1250)) ([90a4c05](https://github.com/instill-ai/console/commit/90a4c058fe0e0af79953689d112ba93bb02bcfa9))
+- release main ([#1255](https://github.com/instill-ai/console/issues/1255)) ([50e951d](https://github.com/instill-ai/console/commit/50e951da0399bdb0b80cfe40137cef0eafe6c06a))
+- release main ([#1257](https://github.com/instill-ai/console/issues/1257)) ([97030eb](https://github.com/instill-ai/console/commit/97030eb1f99aa8a00aea6c095ef278a8a29a303c))
+- release main ([#1281](https://github.com/instill-ai/console/issues/1281)) ([2e384a5](https://github.com/instill-ai/console/commit/2e384a546dba9ca6e7309316dd5110112b296325))
+- release main ([#1283](https://github.com/instill-ai/console/issues/1283)) ([dd638b6](https://github.com/instill-ai/console/commit/dd638b6f9435a70c7bbb75776239ab2fba68df21))
+- release main ([#1320](https://github.com/instill-ai/console/issues/1320)) ([2f797b8](https://github.com/instill-ai/console/commit/2f797b85d660db9a5ca05555e25c0f4e65d02f84))
+- release main ([#1339](https://github.com/instill-ai/console/issues/1339)) ([5135c8b](https://github.com/instill-ai/console/commit/5135c8b1b6cdb2a91ccb5d63564874ed2b68a414))
+- release main ([#1354](https://github.com/instill-ai/console/issues/1354)) ([54b140c](https://github.com/instill-ai/console/commit/54b140c553e64f609d5da43893743e4e91044cc8))
+- release main ([#1372](https://github.com/instill-ai/console/issues/1372)) ([edd61ca](https://github.com/instill-ai/console/commit/edd61caadb6be97a46dcdeb380a728c75be0133f))
+- release main ([#1425](https://github.com/instill-ai/console/issues/1425)) ([a2ba260](https://github.com/instill-ai/console/commit/a2ba26055393b6b0853e14f23429ce4bb1ad2186))
+- release main ([#1464](https://github.com/instill-ai/console/issues/1464)) ([930330e](https://github.com/instill-ai/console/commit/930330e796021ec79c31a34a9dba43a3e70968c4))
+- release main ([#1482](https://github.com/instill-ai/console/issues/1482)) ([c9e54e2](https://github.com/instill-ai/console/commit/c9e54e2db24dea899a4b24d4306c73accc9aa40d))
+- release main ([#1490](https://github.com/instill-ai/console/issues/1490)) ([17e0cae](https://github.com/instill-ai/console/commit/17e0cae7f5e0202476358652204b9dfc4574c9aa))
+- release main ([#1499](https://github.com/instill-ai/console/issues/1499)) ([bd1f6c9](https://github.com/instill-ai/console/commit/bd1f6c9e07cb4e4383e20e3aaa3ce3636f5c047c))
+- release main ([#1511](https://github.com/instill-ai/console/issues/1511)) ([4dd135e](https://github.com/instill-ai/console/commit/4dd135e132952d76dc27c6a82f8e2964f65c522d))
+- release main ([#1525](https://github.com/instill-ai/console/issues/1525)) ([febef5b](https://github.com/instill-ai/console/commit/febef5b440dee9ccc1deacc0ca9372bc7a307c49))
+- release main ([#1527](https://github.com/instill-ai/console/issues/1527)) ([75f30ab](https://github.com/instill-ai/console/commit/75f30ab3e51236ce4cce9d82e54174d58e59f4ed))
+- release main ([#1537](https://github.com/instill-ai/console/issues/1537)) ([adf89be](https://github.com/instill-ai/console/commit/adf89bea19d09c7d43549fb3f2362d24b4e30272))
+- release main ([#1558](https://github.com/instill-ai/console/issues/1558)) ([365a5b9](https://github.com/instill-ai/console/commit/365a5b94739d041ba9bc61c08625280c615efac5))
+- release main ([#1563](https://github.com/instill-ai/console/issues/1563)) ([ae051d1](https://github.com/instill-ai/console/commit/ae051d1d98ed93f88fd25b5c853c9a4be63e9014))
+- release main ([#1598](https://github.com/instill-ai/console/issues/1598)) ([675ceb0](https://github.com/instill-ai/console/commit/675ceb09586f743247764cb355def29b8b725def))
+- release main ([#1618](https://github.com/instill-ai/console/issues/1618)) ([1a71dbd](https://github.com/instill-ai/console/commit/1a71dbd617c6aaf289897c5f67dac6bad0499eac))
+- release main ([#1642](https://github.com/instill-ai/console/issues/1642)) ([91e8bc4](https://github.com/instill-ai/console/commit/91e8bc4e33392d5de9d05262b86d982a0d256cd6))
+- release main ([#1658](https://github.com/instill-ai/console/issues/1658)) ([f55b650](https://github.com/instill-ai/console/commit/f55b6509e7571192ac5f070df8cb8987b67e6ae5))
+- release main ([#1665](https://github.com/instill-ai/console/issues/1665)) ([93688e7](https://github.com/instill-ai/console/commit/93688e778bb2565163725f4dd2fb9f89d771419f))
+- release main ([#1686](https://github.com/instill-ai/console/issues/1686)) ([446067a](https://github.com/instill-ai/console/commit/446067af39cd5150fad7766c99d21244cf45f15a))
+- release main ([#1708](https://github.com/instill-ai/console/issues/1708)) ([2a39ca3](https://github.com/instill-ai/console/commit/2a39ca312e1e0ed7a6bc3611ca7f907dd5c75c64))
+- release main ([#1733](https://github.com/instill-ai/console/issues/1733)) ([cfded3b](https://github.com/instill-ai/console/commit/cfded3b9bf6979e7b0f8a91a693bfbe308bcde25))
+- release main ([#1749](https://github.com/instill-ai/console/issues/1749)) ([c57997c](https://github.com/instill-ai/console/commit/c57997c2cf36880f02ed1311239ea14ec7cfe33d))
+- replace pipeline type in toolkit with type in sdk ([#1319](https://github.com/instill-ai/console/issues/1319)) ([48de6c3](https://github.com/instill-ai/console/commit/48de6c366e29f17df7c1da22a203f210065404c4))
+- retire vdp-sdk/mgmt ([#1557](https://github.com/instill-ai/console/issues/1557)) ([f683265](https://github.com/instill-ai/console/commit/f683265fa766631abf5fa417864b4e94927591b2))
+- update Collection component icon ([#1508](https://github.com/instill-ai/console/issues/1508)) ([8ea6793](https://github.com/instill-ai/console/commit/8ea6793eec7b27c18f114f13b706f6dcdff8518c))
+- update nextjs version to 14.2.10, clean up playwright deps ([#1483](https://github.com/instill-ai/console/issues/1483)) ([d5ae86a](https://github.com/instill-ai/console/commit/d5ae86a051e0816e7138066bde2005e5ff29b24e))
+- use prettier to sort import order ([#1261](https://github.com/instill-ai/console/issues/1261)) ([4640c24](https://github.com/instill-ai/console/commit/4640c24ce73940d204111880b8bb367d690e32d1))
 
 ## [0.68.0-beta](https://github.com/instill-ai/console/compare/v0.67.0-beta...v0.68.0-beta) (2025-06-03)
 
-
 ### Features
 
-* bump console version ([#1751](https://github.com/instill-ai/console/issues/1751)) ([6079f7b](https://github.com/instill-ai/console/commit/6079f7b430052853a63aaecb43564a13c78075ab))
+- bump console version ([#1751](https://github.com/instill-ai/console/issues/1751)) ([6079f7b](https://github.com/instill-ai/console/commit/6079f7b430052853a63aaecb43564a13c78075ab))
 
 ## [0.67.0-beta](https://github.com/instill-ai/console/compare/v0.66.0-beta...v0.67.0-beta) (2025-05-28)
 
-
 ### Features
 
-* update namespaces selector ux ([#1736](https://github.com/instill-ai/console/issues/1736)) ([fbf2c36](https://github.com/instill-ai/console/commit/fbf2c36e142fbf16657f08738523ef69db17ceac))
+- update namespaces selector ux ([#1736](https://github.com/instill-ai/console/issues/1736)) ([fbf2c36](https://github.com/instill-ai/console/commit/fbf2c36e142fbf16657f08738523ef69db17ceac))
 
 ## [0.66.0-beta](https://github.com/instill-ai/console/compare/v0.65.0-beta...v0.66.0-beta) (2025-05-20)
 
-
 ### Features
 
-* update more deps vuln fixes ([#1709](https://github.com/instill-ai/console/issues/1709)) ([8de02a1](https://github.com/instill-ai/console/commit/8de02a165b6f7e372cac239d3fd77af1f9faf0c0))
-
+- update more deps vuln fixes ([#1709](https://github.com/instill-ai/console/issues/1709)) ([8de02a1](https://github.com/instill-ai/console/commit/8de02a165b6f7e372cac239d3fd77af1f9faf0c0))
 
 ### Bug Fixes
 
-* fix console-deps-vuln ([#1707](https://github.com/instill-ai/console/issues/1707)) ([d2e4f6a](https://github.com/instill-ai/console/commit/d2e4f6a3504c3268ac366665b7afae70d7b2b937))
+- fix console-deps-vuln ([#1707](https://github.com/instill-ai/console/issues/1707)) ([d2e4f6a](https://github.com/instill-ai/console/commit/d2e4f6a3504c3268ac366665b7afae70d7b2b937))
 
 ## [0.65.0-beta](https://github.com/instill-ai/console/compare/v0.64.3-beta...v0.65.0-beta) (2025-02-25)
 
-
 ### Features
 
-* add env example in console ([#1685](https://github.com/instill-ai/console/issues/1685)) ([d1f2457](https://github.com/instill-ai/console/commit/d1f245756eeacd325ee607b568e489dccbeaa43b))
+- add env example in console ([#1685](https://github.com/instill-ai/console/issues/1685)) ([d1f2457](https://github.com/instill-ai/console/commit/d1f245756eeacd325ee607b568e489dccbeaa43b))
 
 ## [0.64.3-beta](https://github.com/instill-ai/console/compare/v0.64.2-beta...v0.64.3-beta) (2025-01-20)
 
-
 ### Bug Fixes
 
-* dashboard ui tweaks ([#1664](https://github.com/instill-ai/console/issues/1664)) ([faadf16](https://github.com/instill-ai/console/commit/faadf164780e4847cfdf9b53ff827831238c7c50))
+- dashboard ui tweaks ([#1664](https://github.com/instill-ai/console/issues/1664)) ([faadf16](https://github.com/instill-ai/console/commit/faadf164780e4847cfdf9b53ff827831238c7c50))
 
 ## [0.64.2-beta](https://github.com/instill-ai/console/compare/v0.64.1-beta...v0.64.2-beta) (2025-01-08)
 
-
 ### Bug Fixes
 
-* update nextjs version to cope with vulnerability ([#1663](https://github.com/instill-ai/console/issues/1663)) ([e2f33b3](https://github.com/instill-ai/console/commit/e2f33b39ad8fc5f47a904ddbfba7c3bd0b60e14a))
-
+- update nextjs version to cope with vulnerability ([#1663](https://github.com/instill-ai/console/issues/1663)) ([e2f33b3](https://github.com/instill-ai/console/commit/e2f33b39ad8fc5f47a904ddbfba7c3bd0b60e14a))
 
 ### Miscellaneous
 
-* **deps:** bump up next js version ([#1661](https://github.com/instill-ai/console/issues/1661)) ([4b96901](https://github.com/instill-ai/console/commit/4b96901edfb1889435dd94487cdafd719e1beb4a))
+- **deps:** bump up next js version ([#1661](https://github.com/instill-ai/console/issues/1661)) ([4b96901](https://github.com/instill-ai/console/commit/4b96901edfb1889435dd94487cdafd719e1beb4a))
 
 ## [0.64.1-beta](https://github.com/instill-ai/console/compare/v0.64.0-beta...v0.64.1-beta) (2024-12-09)
 
-
 ### Bug Fixes
 
-* replace sql icon ([#1643](https://github.com/instill-ai/console/issues/1643)) ([3da4d79](https://github.com/instill-ai/console/commit/3da4d79a2edeba2e848ecb997935cb59cebf36d2))
+- replace sql icon ([#1643](https://github.com/instill-ai/console/issues/1643)) ([3da4d79](https://github.com/instill-ai/console/commit/3da4d79a2edeba2e848ecb997935cb59cebf36d2))
 
 ## [0.64.0-beta](https://github.com/instill-ai/console/compare/v0.63.0-beta...v0.64.0-beta) (2024-12-03)
 
-
 ### Features
 
-* adapt policy link and revamp setting pages ([#1629](https://github.com/instill-ai/console/issues/1629)) ([d11fab5](https://github.com/instill-ai/console/commit/d11fab5b7357c89e6c19da1e7b053431f77ba657))
-* add feature flag for chat ([#1628](https://github.com/instill-ai/console/issues/1628)) ([7455ce4](https://github.com/instill-ai/console/commit/7455ce4401b98854f103dfd3d1bc7c39ba1b14e8))
-* **chat:** user can use @ to add tool suggestion in chat ([#1617](https://github.com/instill-ai/console/issues/1617)) ([d76cd51](https://github.com/instill-ai/console/commit/d76cd516fc3fb27f6fbaa01b3c44c09c905d24db))
-* deprecate markdown-to-jsx and support Latex in markdown ([#1623](https://github.com/instill-ai/console/issues/1623)) ([cfea04e](https://github.com/instill-ai/console/commit/cfea04ed02ed69f9bbe2a3646e4dc467834cfbc5))
-* unify the Instill AI meeting schedule link ([#1619](https://github.com/instill-ai/console/issues/1619)) ([51e76ff](https://github.com/instill-ai/console/commit/51e76ffcd7dbad92b511965992e6d7170b2bddd3))
-
+- adapt policy link and revamp setting pages ([#1629](https://github.com/instill-ai/console/issues/1629)) ([d11fab5](https://github.com/instill-ai/console/commit/d11fab5b7357c89e6c19da1e7b053431f77ba657))
+- add feature flag for chat ([#1628](https://github.com/instill-ai/console/issues/1628)) ([7455ce4](https://github.com/instill-ai/console/commit/7455ce4401b98854f103dfd3d1bc7c39ba1b14e8))
+- **chat:** user can use @ to add tool suggestion in chat ([#1617](https://github.com/instill-ai/console/issues/1617)) ([d76cd51](https://github.com/instill-ai/console/commit/d76cd516fc3fb27f6fbaa01b3c44c09c905d24db))
+- deprecate markdown-to-jsx and support Latex in markdown ([#1623](https://github.com/instill-ai/console/issues/1623)) ([cfea04e](https://github.com/instill-ai/console/commit/cfea04ed02ed69f9bbe2a3646e4dc467834cfbc5))
+- unify the Instill AI meeting schedule link ([#1619](https://github.com/instill-ai/console/issues/1619)) ([51e76ff](https://github.com/instill-ai/console/commit/51e76ffcd7dbad92b511965992e6d7170b2bddd3))
 
 ### Bug Fixes
 
-* patch high vulnerabilities deps issues ([#1631](https://github.com/instill-ai/console/issues/1631)) ([955355e](https://github.com/instill-ai/console/commit/955355e4ad14baa2690d1e87273257dba6468b71))
-
+- patch high vulnerabilities deps issues ([#1631](https://github.com/instill-ai/console/issues/1631)) ([955355e](https://github.com/instill-ai/console/commit/955355e4ad14baa2690d1e87273257dba6468b71))
 
 ### Miscellaneous
 
-* **component:** add `scheduler` component ([#1637](https://github.com/instill-ai/console/issues/1637)) ([406361a](https://github.com/instill-ai/console/commit/406361adbf331d291f28cdb2bf31c94d235dc9b4))
-* **component:** add icon ([#1630](https://github.com/instill-ai/console/issues/1630)) ([87174b9](https://github.com/instill-ai/console/commit/87174b9c69b9beb248fb8d3d4d1a97357fbd58f4))
-* **component:** add icons for google-drive, perplexity-ai and leadiq ([#1627](https://github.com/instill-ai/console/issues/1627)) ([4bed7fc](https://github.com/instill-ai/console/commit/4bed7fcaa88ac3358cf50352456203260ebbdabe))
+- **component:** add `scheduler` component ([#1637](https://github.com/instill-ai/console/issues/1637)) ([406361a](https://github.com/instill-ai/console/commit/406361adbf331d291f28cdb2bf31c94d235dc9b4))
+- **component:** add icon ([#1630](https://github.com/instill-ai/console/issues/1630)) ([87174b9](https://github.com/instill-ai/console/commit/87174b9c69b9beb248fb8d3d4d1a97357fbd58f4))
+- **component:** add icons for google-drive, perplexity-ai and leadiq ([#1627](https://github.com/instill-ai/console/issues/1627)) ([4bed7fc](https://github.com/instill-ai/console/commit/4bed7fcaa88ac3358cf50352456203260ebbdabe))
 
 ## [0.63.0-beta](https://github.com/instill-ai/console/compare/v0.62.0-beta...v0.63.0-beta) (2024-11-20)
 
-
 ### Features
 
-* implement blob artifact when trigger pipeline ([#1604](https://github.com/instill-ai/console/issues/1604)) ([e93cb87](https://github.com/instill-ai/console/commit/e93cb879ebc300f3042778a1cb6f24528b6f790d))
-
+- implement blob artifact when trigger pipeline ([#1604](https://github.com/instill-ai/console/issues/1604)) ([e93cb87](https://github.com/instill-ai/console/commit/e93cb879ebc300f3042778a1cb6f24528b6f790d))
 
 ### Bug Fixes
 
-* remove empty extra bottom space of recipe editor ([#1603](https://github.com/instill-ai/console/issues/1603)) ([7e45955](https://github.com/instill-ai/console/commit/7e4595558b40fc50129fd3f9b2c523c9162b0bf9))
+- remove empty extra bottom space of recipe editor ([#1603](https://github.com/instill-ai/console/issues/1603)) ([7e45955](https://github.com/instill-ai/console/commit/7e4595558b40fc50129fd3f9b2c523c9162b0bf9))
 
 ## [0.62.0-beta](https://github.com/instill-ai/console/compare/v0.61.0-beta...v0.62.0-beta) (2024-11-05)
 
-
 ### Features
 
-* **catalog:** migrate API calls to sdk CatalogClient ([#1572](https://github.com/instill-ai/console/issues/1572)) ([a305c98](https://github.com/instill-ai/console/commit/a305c98bdb546f8f3e0d60ab1e4abb01eff84b83))
-* **integration:** add google-drive integration ([#1569](https://github.com/instill-ai/console/issues/1569)) ([09eee30](https://github.com/instill-ai/console/commit/09eee3011b74877fb8352a2450ef6858b9134212))
-* make the sdk e2e test mark every queryParam as required ([#1577](https://github.com/instill-ai/console/issues/1577)) ([99c16a2](https://github.com/instill-ai/console/commit/99c16a2b65716ebec8712300fa0fab98836b9b01))
-* replace vdp-sdk/model with instill-sdk ([#1566](https://github.com/instill-ai/console/issues/1566)) ([014f3ae](https://github.com/instill-ai/console/commit/014f3ae71ed385c67fc887c6b19902a7a2150e00))
-* retire name parameter in the pipeline related endpoint ([#1575](https://github.com/instill-ai/console/issues/1575)) ([533e757](https://github.com/instill-ai/console/commit/533e757117e532a596b4e05d432af79e4834a4a7))
-
+- **catalog:** migrate API calls to sdk CatalogClient ([#1572](https://github.com/instill-ai/console/issues/1572)) ([a305c98](https://github.com/instill-ai/console/commit/a305c98bdb546f8f3e0d60ab1e4abb01eff84b83))
+- **integration:** add google-drive integration ([#1569](https://github.com/instill-ai/console/issues/1569)) ([09eee30](https://github.com/instill-ai/console/commit/09eee3011b74877fb8352a2450ef6858b9134212))
+- make the sdk e2e test mark every queryParam as required ([#1577](https://github.com/instill-ai/console/issues/1577)) ([99c16a2](https://github.com/instill-ai/console/commit/99c16a2b65716ebec8712300fa0fab98836b9b01))
+- replace vdp-sdk/model with instill-sdk ([#1566](https://github.com/instill-ai/console/issues/1566)) ([014f3ae](https://github.com/instill-ai/console/commit/014f3ae71ed385c67fc887c6b19902a7a2150e00))
+- retire name parameter in the pipeline related endpoint ([#1575](https://github.com/instill-ai/console/issues/1575)) ([533e757](https://github.com/instill-ai/console/commit/533e757117e532a596b4e05d432af79e4834a4a7))
 
 ### Bug Fixes
 
-* fix and adapt new dashboard endpoint ([#1594](https://github.com/instill-ai/console/issues/1594)) ([e043500](https://github.com/instill-ai/console/commit/e043500c9063cd8fcd91f366247fe4c0298923db))
-
+- fix and adapt new dashboard endpoint ([#1594](https://github.com/instill-ai/console/issues/1594)) ([e043500](https://github.com/instill-ai/console/commit/e043500c9063cd8fcd91f366247fe4c0298923db))
 
 ### Miscellaneous
 
-* **component:** rename restapi component to http component ([#1579](https://github.com/instill-ai/console/issues/1579)) ([be56f33](https://github.com/instill-ai/console/commit/be56f333efbd1fb0f5bc089e1b427c9a05b03ffe))
+- **component:** rename restapi component to http component ([#1579](https://github.com/instill-ai/console/issues/1579)) ([be56f33](https://github.com/instill-ai/console/commit/be56f333efbd1fb0f5bc089e1b427c9a05b03ffe))
 
 ## [0.61.0-beta](https://github.com/instill-ai/console/compare/v0.60.0-beta...v0.61.0-beta) (2024-10-24)
 
-
 ### Features
 
-* support default value for variable ([#1562](https://github.com/instill-ai/console/issues/1562)) ([1fdb718](https://github.com/instill-ai/console/commit/1fdb718a052d56c77e9773e4df5519fa9fe6f454))
-
+- support default value for variable ([#1562](https://github.com/instill-ai/console/issues/1562)) ([1fdb718](https://github.com/instill-ai/console/commit/1fdb718a052d56c77e9773e4df5519fa9fe6f454))
 
 ### Miscellaneous
 
-* retire vdp-sdk/mgmt ([#1557](https://github.com/instill-ai/console/issues/1557)) ([f683265](https://github.com/instill-ai/console/commit/f683265fa766631abf5fa417864b4e94927591b2))
+- retire vdp-sdk/mgmt ([#1557](https://github.com/instill-ai/console/issues/1557)) ([f683265](https://github.com/instill-ai/console/commit/f683265fa766631abf5fa417864b4e94927591b2))
 
 ## [0.60.0-beta](https://github.com/instill-ai/console/compare/v0.59.2-beta...v0.60.0-beta) (2024-10-22)
 
-
 ### Features
 
-* automatically download icons ([#1551](https://github.com/instill-ai/console/issues/1551)) ([02c7223](https://github.com/instill-ai/console/commit/02c722362601e07bc37b646750ef29183b72fe0a))
-* support Slack OAuth integration ([#1534](https://github.com/instill-ai/console/issues/1534)) ([0a4da01](https://github.com/instill-ai/console/commit/0a4da01843f8cda178956ada167ea312970d7e53))
-* unify retry option of react-query, clean up metabase issue and browserlist ([#1536](https://github.com/instill-ai/console/issues/1536)) ([057d4af](https://github.com/instill-ai/console/commit/057d4af8d0465171c2244d035de86cf61f8fb93f))
-
+- automatically download icons ([#1551](https://github.com/instill-ai/console/issues/1551)) ([02c7223](https://github.com/instill-ai/console/commit/02c722362601e07bc37b646750ef29183b72fe0a))
+- support Slack OAuth integration ([#1534](https://github.com/instill-ai/console/issues/1534)) ([0a4da01](https://github.com/instill-ai/console/commit/0a4da01843f8cda178956ada167ea312970d7e53))
+- unify retry option of react-query, clean up metabase issue and browserlist ([#1536](https://github.com/instill-ai/console/issues/1536)) ([057d4af](https://github.com/instill-ai/console/commit/057d4af8d0465171c2244d035de86cf61f8fb93f))
 
 ### Bug Fixes
 
-* **editor:** fix can't construct multiple edges to multiple components from single component ([#1547](https://github.com/instill-ai/console/issues/1547)) ([7ef2795](https://github.com/instill-ai/console/commit/7ef279566e3140644909eec0bdbd317e60e77a46))
-* fix download component icon script to fallback invalid version ([#1553](https://github.com/instill-ai/console/issues/1553)) ([0416a7c](https://github.com/instill-ai/console/commit/0416a7c6519ac16496bae8acd9ca8a50c02bbfff))
-* fix onboarding form e2e ([#1545](https://github.com/instill-ai/console/issues/1545)) ([e630cb0](https://github.com/instill-ai/console/commit/e630cb068e43e5e4df5f7cca04d0adb7202167b8))
-* refactor onboarding form and align topdown and profile page with cloud ([#1538](https://github.com/instill-ai/console/issues/1538)) ([e955b44](https://github.com/instill-ai/console/commit/e955b4463d8c68d9f359c066b9e1a8ffa7611dc6))
+- **editor:** fix can't construct multiple edges to multiple components from single component ([#1547](https://github.com/instill-ai/console/issues/1547)) ([7ef2795](https://github.com/instill-ai/console/commit/7ef279566e3140644909eec0bdbd317e60e77a46))
+- fix download component icon script to fallback invalid version ([#1553](https://github.com/instill-ai/console/issues/1553)) ([0416a7c](https://github.com/instill-ai/console/commit/0416a7c6519ac16496bae8acd9ca8a50c02bbfff))
+- fix onboarding form e2e ([#1545](https://github.com/instill-ai/console/issues/1545)) ([e630cb0](https://github.com/instill-ai/console/commit/e630cb068e43e5e4df5f7cca04d0adb7202167b8))
+- refactor onboarding form and align topdown and profile page with cloud ([#1538](https://github.com/instill-ai/console/issues/1538)) ([e955b44](https://github.com/instill-ai/console/commit/e955b4463d8c68d9f359c066b9e1a8ffa7611dc6))
 
 ## [0.59.2-beta](https://github.com/instill-ai/console/compare/v0.59.1-beta...v0.59.2-beta) (2024-10-09)
 
-
 ### Bug Fixes
 
-* the getInstillClient on the sdk has wrongly cache issue on Vercel SSR ([#1528](https://github.com/instill-ai/console/issues/1528)) ([c8e1fe3](https://github.com/instill-ai/console/commit/c8e1fe317b9e460047338e9ad3e583332c2385b5))
+- the getInstillClient on the sdk has wrongly cache issue on Vercel SSR ([#1528](https://github.com/instill-ai/console/issues/1528)) ([c8e1fe3](https://github.com/instill-ai/console/commit/c8e1fe317b9e460047338e9ad3e583332c2385b5))
 
 ## [0.59.1-beta](https://github.com/instill-ai/console/compare/v0.59.0-beta...v0.59.1-beta) (2024-10-08)
 
-
 ### Bug Fixes
 
-* fix component documentation urls in the pipeline builder ([#1524](https://github.com/instill-ai/console/issues/1524)) ([ee880c8](https://github.com/instill-ai/console/commit/ee880c84c4f3f2a7e93fca3d3e6eccb482f1a03d))
+- fix component documentation urls in the pipeline builder ([#1524](https://github.com/instill-ai/console/issues/1524)) ([ee880c8](https://github.com/instill-ai/console/commit/ee880c84c4f3f2a7e93fca3d3e6eccb482f1a03d))
 
 ## [0.59.0-beta](https://github.com/instill-ai/console/compare/v0.58.0-beta...v0.59.0-beta) (2024-10-08)
 
-
 ### Features
 
-* oauth wip ([#1509](https://github.com/instill-ai/console/issues/1509)) ([c8a92ad](https://github.com/instill-ai/console/commit/c8a92ad3d363a6ed65a67649cf8c45362e5aafec))
-* update document component icon ([#1517](https://github.com/instill-ai/console/issues/1517)) ([a0ac17b](https://github.com/instill-ai/console/commit/a0ac17bcc2f5fa8994d49088042cd0416394e39d))
-
+- oauth wip ([#1509](https://github.com/instill-ai/console/issues/1509)) ([c8a92ad](https://github.com/instill-ai/console/commit/c8a92ad3d363a6ed65a67649cf8c45362e5aafec))
+- update document component icon ([#1517](https://github.com/instill-ai/console/issues/1517)) ([a0ac17b](https://github.com/instill-ai/console/commit/a0ac17bcc2f5fa8994d49088042cd0416394e39d))
 
 ### Bug Fixes
 
-* fix console not correctly update the namespace requester uid when requesting run related endpoint ([#1513](https://github.com/instill-ai/console/issues/1513)) ([ec89e4e](https://github.com/instill-ai/console/commit/ec89e4e17d5517a189ea1a7f0d6bf98b7e8b69bf))
-
+- fix console not correctly update the namespace requester uid when requesting run related endpoint ([#1513](https://github.com/instill-ai/console/issues/1513)) ([ec89e4e](https://github.com/instill-ai/console/commit/ec89e4e17d5517a189ea1a7f0d6bf98b7e8b69bf))
 
 ### Miscellaneous
 
-* update Collection component icon ([#1508](https://github.com/instill-ai/console/issues/1508)) ([8ea6793](https://github.com/instill-ai/console/commit/8ea6793eec7b27c18f114f13b706f6dcdff8518c))
+- update Collection component icon ([#1508](https://github.com/instill-ai/console/issues/1508)) ([8ea6793](https://github.com/instill-ai/console/commit/8ea6793eec7b27c18f114f13b706f6dcdff8518c))
 
 ## [0.58.0-beta](https://github.com/instill-ai/console/compare/v0.57.2-beta...v0.58.0-beta) (2024-09-24)
 
-
 ### Features
 
-* **editor:** support universal ai component on schema validation ([#1502](https://github.com/instill-ai/console/issues/1502)) ([4c3f93c](https://github.com/instill-ai/console/commit/4c3f93c408a0268290cefad6e319d03079599996))
-* support run-on-event webhook URL on editor ([#1498](https://github.com/instill-ai/console/issues/1498)) ([d0ed46d](https://github.com/instill-ai/console/commit/d0ed46dc02b24fc4085d8e6e8ac223d4a4239b8f))
-
+- **editor:** support universal ai component on schema validation ([#1502](https://github.com/instill-ai/console/issues/1502)) ([4c3f93c](https://github.com/instill-ai/console/commit/4c3f93c408a0268290cefad6e319d03079599996))
+- support run-on-event webhook URL on editor ([#1498](https://github.com/instill-ai/console/issues/1498)) ([d0ed46d](https://github.com/instill-ai/console/commit/d0ed46dc02b24fc4085d8e6e8ac223d4a4239b8f))
 
 ### Miscellaneous
 
-* adapt backend instill-artifact naming changes ([#1503](https://github.com/instill-ai/console/issues/1503)) ([fa027a8](https://github.com/instill-ai/console/commit/fa027a822f65e8263f066092a863400ce34d39ab))
-* add Collection component ([#1501](https://github.com/instill-ai/console/issues/1501)) ([101af5f](https://github.com/instill-ai/console/commit/101af5f62c0c58832978643643cde1a668a23f95))
+- adapt backend instill-artifact naming changes ([#1503](https://github.com/instill-ai/console/issues/1503)) ([fa027a8](https://github.com/instill-ai/console/commit/fa027a822f65e8263f066092a863400ce34d39ab))
+- add Collection component ([#1501](https://github.com/instill-ai/console/issues/1501)) ([101af5f](https://github.com/instill-ai/console/commit/101af5f62c0c58832978643643cde1a668a23f95))
 
 ## [0.57.2-beta](https://github.com/instill-ai/console/compare/v0.57.1-beta...v0.57.2-beta) (2024-09-21)
 
-
 ### Bug Fixes
 
-* replace readme with description in both model and pipeline page metadata ([#1489](https://github.com/instill-ai/console/issues/1489)) ([6cd643f](https://github.com/instill-ai/console/commit/6cd643f24b11a27874966c3f094c242a756f9c4e))
+- replace readme with description in both model and pipeline page metadata ([#1489](https://github.com/instill-ai/console/issues/1489)) ([6cd643f](https://github.com/instill-ai/console/commit/6cd643f24b11a27874966c3f094c242a756f9c4e))
 
 ## [0.57.1-beta](https://github.com/instill-ai/console/compare/v0.57.0-beta...v0.57.1-beta) (2024-09-19)
 
-
 ### Bug Fixes
 
-* **editor:** fix selected task can't scroll to button result in covering up some text in CMDO ([#1485](https://github.com/instill-ai/console/issues/1485)) ([55dbcbe](https://github.com/instill-ai/console/commit/55dbcbe42b8c7a255bf76d9eb114aa09f165b48a))
-
+- **editor:** fix selected task can't scroll to button result in covering up some text in CMDO ([#1485](https://github.com/instill-ai/console/issues/1485)) ([55dbcbe](https://github.com/instill-ai/console/commit/55dbcbe42b8c7a255bf76d9eb114aa09f165b48a))
 
 ### Miscellaneous
 
-* update nextjs version to 14.2.10, clean up playwright deps ([#1483](https://github.com/instill-ai/console/issues/1483)) ([d5ae86a](https://github.com/instill-ai/console/commit/d5ae86a051e0816e7138066bde2005e5ff29b24e))
+- update nextjs version to 14.2.10, clean up playwright deps ([#1483](https://github.com/instill-ai/console/issues/1483)) ([d5ae86a](https://github.com/instill-ai/console/commit/d5ae86a051e0816e7138066bde2005e5ff29b24e))
 
 ## [0.57.0-beta](https://github.com/instill-ai/console/compare/v0.56.0-beta...v0.57.0-beta) (2024-09-18)
 
-
 ### Features
 
-* change "connector" to "component" ([#1476](https://github.com/instill-ai/console/issues/1476)) ([bb2129f](https://github.com/instill-ai/console/commit/bb2129f687657d68a8906eb2788444ff834b3a9b))
-
+- change "connector" to "component" ([#1476](https://github.com/instill-ai/console/issues/1476)) ([bb2129f](https://github.com/instill-ai/console/commit/bb2129f687657d68a8906eb2788444ff834b3a9b))
 
 ### Bug Fixes
 
-* **editor:** fix recipe didn't allow asana component ([#1478](https://github.com/instill-ai/console/issues/1478)) ([aabf360](https://github.com/instill-ai/console/commit/aabf360d444035ef83b2f9c72f6d4ba3b7fe60e8))
-* **pipeline/models:** fix add redirections ([#1446](https://github.com/instill-ai/console/issues/1446)) ([77ef8fa](https://github.com/instill-ai/console/commit/77ef8fa90bd8ce252f20b10c5eec7c68985d5720))
+- **editor:** fix recipe didn't allow asana component ([#1478](https://github.com/instill-ai/console/issues/1478)) ([aabf360](https://github.com/instill-ai/console/commit/aabf360d444035ef83b2f9c72f6d4ba3b7fe60e8))
+- **pipeline/models:** fix add redirections ([#1446](https://github.com/instill-ai/console/issues/1446)) ([77ef8fa](https://github.com/instill-ai/console/commit/77ef8fa90bd8ce252f20b10c5eec7c68985d5720))
 
 ## [0.56.0-beta](https://github.com/instill-ai/console/compare/v0.55.0-beta...v0.56.0-beta) (2024-09-11)
 
-
 ### Features
 
-* adapt new ai task schema for auto gen form ([#1429](https://github.com/instill-ai/console/issues/1429)) ([95ce7e0](https://github.com/instill-ai/console/commit/95ce7e0f2f141b5e6bd92f39479284bed8a99d88))
-* Integration page ([#1411](https://github.com/instill-ai/console/issues/1411)) ([c1f800b](https://github.com/instill-ai/console/commit/c1f800b862ea3d766d6597d8ce81881d99220159))
+- adapt new ai task schema for auto gen form ([#1429](https://github.com/instill-ai/console/issues/1429)) ([95ce7e0](https://github.com/instill-ai/console/commit/95ce7e0f2f141b5e6bd92f39479284bed8a99d88))
+- Integration page ([#1411](https://github.com/instill-ai/console/issues/1411)) ([c1f800b](https://github.com/instill-ai/console/commit/c1f800b862ea3d766d6597d8ce81881d99220159))
 
 ## [0.55.0-beta](https://github.com/instill-ai/console/compare/v0.54.0-beta...v0.55.0-beta) (2024-08-29)
 
-
 ### Features
 
-* **catalog:** feat add 2 new API pages ([#1380](https://github.com/instill-ai/console/issues/1380)) ([4c2a5db](https://github.com/instill-ai/console/commit/4c2a5db337ee033c15ba01d7a2f90b09780a141d))
-* introduce low-code editor ([#1385](https://github.com/instill-ai/console/issues/1385)) ([34a62b0](https://github.com/instill-ai/console/commit/34a62b0ea3f863014b0c892fa26340678281d1d6))
-* view pipeline and model run logs ([#1383](https://github.com/instill-ai/console/issues/1383)) ([f0b60fb](https://github.com/instill-ai/console/commit/f0b60fb592876a92c853b85d9fe216a6ee528f7c))
-
+- **catalog:** feat add 2 new API pages ([#1380](https://github.com/instill-ai/console/issues/1380)) ([4c2a5db](https://github.com/instill-ai/console/commit/4c2a5db337ee033c15ba01d7a2f90b09780a141d))
+- introduce low-code editor ([#1385](https://github.com/instill-ai/console/issues/1385)) ([34a62b0](https://github.com/instill-ai/console/commit/34a62b0ea3f863014b0c892fa26340678281d1d6))
+- view pipeline and model run logs ([#1383](https://github.com/instill-ai/console/issues/1383)) ([f0b60fb](https://github.com/instill-ai/console/commit/f0b60fb592876a92c853b85d9fe216a6ee528f7c))
 
 ### Bug Fixes
 
-* **catalog:** fix rename knowledge base to catalog ([#1371](https://github.com/instill-ai/console/issues/1371)) ([aa64ddd](https://github.com/instill-ai/console/commit/aa64ddd99492c0787a0ecf3d94529a1c7195b990))
-* **editor:** fix not correctly add component skeleton ([#1398](https://github.com/instill-ai/console/issues/1398)) ([09054ff](https://github.com/instill-ai/console/commit/09054ffc272e961fc33279380ebf2b64d370b2d6))
-* fix ts version that cause build issue ([#1407](https://github.com/instill-ai/console/issues/1407)) ([f7b2b13](https://github.com/instill-ai/console/commit/f7b2b13f3e6494915b8e6555b5f23498d32f792e))
-* **pipelines:** fix add redirection to playground and to settings tab ([#1376](https://github.com/instill-ai/console/issues/1376)) ([2e31306](https://github.com/instill-ai/console/commit/2e31306f51017db7aa468e440e570f84c813327b))
+- **catalog:** fix rename knowledge base to catalog ([#1371](https://github.com/instill-ai/console/issues/1371)) ([aa64ddd](https://github.com/instill-ai/console/commit/aa64ddd99492c0787a0ecf3d94529a1c7195b990))
+- **editor:** fix not correctly add component skeleton ([#1398](https://github.com/instill-ai/console/issues/1398)) ([09054ff](https://github.com/instill-ai/console/commit/09054ffc272e961fc33279380ebf2b64d370b2d6))
+- fix ts version that cause build issue ([#1407](https://github.com/instill-ai/console/issues/1407)) ([f7b2b13](https://github.com/instill-ai/console/commit/f7b2b13f3e6494915b8e6555b5f23498d32f792e))
+- **pipelines:** fix add redirection to playground and to settings tab ([#1376](https://github.com/instill-ai/console/issues/1376)) ([2e31306](https://github.com/instill-ai/console/commit/2e31306f51017db7aa468e440e570f84c813327b))
 
 ## [0.54.0-beta](https://github.com/instill-ai/console/compare/v0.53.0-beta...v0.54.0-beta) (2024-08-13)
 
-
 ### Features
 
-* update open graph ([#1366](https://github.com/instill-ai/console/issues/1366)) ([418a2ee](https://github.com/instill-ai/console/commit/418a2ee31ba1105acb96a702acfb039c8960faa8))
-
+- update open graph ([#1366](https://github.com/instill-ai/console/issues/1366)) ([418a2ee](https://github.com/instill-ai/console/commit/418a2ee31ba1105acb96a702acfb039c8960faa8))
 
 ### Miscellaneous
 
-* add new component icons ([#1359](https://github.com/instill-ai/console/issues/1359)) ([dd37377](https://github.com/instill-ai/console/commit/dd373770bbe002a12895037f90b235a090631e86))
+- add new component icons ([#1359](https://github.com/instill-ai/console/issues/1359)) ([dd37377](https://github.com/instill-ai/console/commit/dd373770bbe002a12895037f90b235a090631e86))
 
 ## [0.53.0-beta](https://github.com/instill-ai/console/compare/v0.52.0-beta...v0.53.0-beta) (2024-08-02)
 
-
 ### Features
 
-* Catalog MVP ([#1340](https://github.com/instill-ai/console/issues/1340)) ([746793a](https://github.com/instill-ai/console/commit/746793a075a4e2aae3a642d8e3a4ae8701ea9fb5))
+- Catalog MVP ([#1340](https://github.com/instill-ai/console/issues/1340)) ([746793a](https://github.com/instill-ai/console/commit/746793a075a4e2aae3a642d8e3a4ae8701ea9fb5))
 
 ## [0.52.0-beta](https://github.com/instill-ai/console/compare/v0.51.0-beta...v0.52.0-beta) (2024-07-31)
 
-
 ### Features
 
-* move restapi component into generic type ([#1326](https://github.com/instill-ai/console/issues/1326)) ([fbaf1ab](https://github.com/instill-ai/console/commit/fbaf1ab3386d8edc767440d1431320354da2b5ec))
-
+- move restapi component into generic type ([#1326](https://github.com/instill-ai/console/issues/1326)) ([fbaf1ab](https://github.com/instill-ai/console/commit/fbaf1ab3386d8edc767440d1431320354da2b5ec))
 
 ### Bug Fixes
 
-* unify how we handle error ([#1331](https://github.com/instill-ai/console/issues/1331)) ([5d79849](https://github.com/instill-ai/console/commit/5d79849e5b1920dc2296422c8a46968219ee9fbf))
-
+- unify how we handle error ([#1331](https://github.com/instill-ai/console/issues/1331)) ([5d79849](https://github.com/instill-ai/console/commit/5d79849e5b1920dc2296422c8a46968219ee9fbf))
 
 ### Miscellaneous
 
-* replace pipeline type in toolkit with type in sdk ([#1319](https://github.com/instill-ai/console/issues/1319)) ([48de6c3](https://github.com/instill-ai/console/commit/48de6c366e29f17df7c1da22a203f210065404c4))
+- replace pipeline type in toolkit with type in sdk ([#1319](https://github.com/instill-ai/console/issues/1319)) ([48de6c3](https://github.com/instill-ai/console/commit/48de6c366e29f17df7c1da22a203f210065404c4))
 
 ## [0.51.0-beta](https://github.com/instill-ai/console/compare/v0.50.1-beta...v0.51.0-beta) (2024-07-16)
 
-
 ### Features
 
-* merge sprint 39 changes ([#1302](https://github.com/instill-ai/console/issues/1302)) ([14194ab](https://github.com/instill-ai/console/commit/14194abb680c9a5156d35cbd5fe4c2fab25e8891))
-
+- merge sprint 39 changes ([#1302](https://github.com/instill-ai/console/issues/1302)) ([14194ab](https://github.com/instill-ai/console/commit/14194abb680c9a5156d35cbd5fe4c2fab25e8891))
 
 ### Bug Fixes
 
-* fix console didn't trigger the correct pipeline version ([#1287](https://github.com/instill-ai/console/issues/1287)) ([8876366](https://github.com/instill-ai/console/commit/88763669af98b30a80277a546dd191f0090d84e3))
-
+- fix console didn't trigger the correct pipeline version ([#1287](https://github.com/instill-ai/console/issues/1287)) ([8876366](https://github.com/instill-ai/console/commit/88763669af98b30a80277a546dd191f0090d84e3))
 
 ### Miscellaneous
 
-* add sdk readme ([#1307](https://github.com/instill-ai/console/issues/1307)) ([10bd6d5](https://github.com/instill-ai/console/commit/10bd6d5f8e95360ba1757e8f63e793962196fb0d))
+- add sdk readme ([#1307](https://github.com/instill-ai/console/issues/1307)) ([10bd6d5](https://github.com/instill-ai/console/commit/10bd6d5f8e95360ba1757e8f63e793962196fb0d))
 
 ## [0.50.1-beta](https://github.com/instill-ai/console/compare/v0.50.0-beta...v0.50.1-beta) (2024-07-03)
 
-
 ### Bug Fixes
 
-* **dashboard:** fix dashboard pipeline details page re-render issue ([#1280](https://github.com/instill-ai/console/issues/1280)) ([06bf112](https://github.com/instill-ai/console/commit/06bf112fdf2fe6da538efb0ac432a796f80eb2c6))
+- **dashboard:** fix dashboard pipeline details page re-render issue ([#1280](https://github.com/instill-ai/console/issues/1280)) ([06bf112](https://github.com/instill-ai/console/commit/06bf112fdf2fe6da538efb0ac432a796f80eb2c6))
 
 ## [0.50.0-beta](https://github.com/instill-ai/console/compare/v0.49.2-beta...v0.50.0-beta) (2024-07-02)
 
-
 ### Features
 
-* **component:** add email and anthropic icon ([#1266](https://github.com/instill-ai/console/issues/1266)) ([49417af](https://github.com/instill-ai/console/commit/49417af86588bb7aa70283b8d884a3db79f54ad2))
-* **dashboard:** add credit usage chart on dashboard ([#1265](https://github.com/instill-ai/console/issues/1265)) ([2304de7](https://github.com/instill-ai/console/commit/2304de7073f73f27c993e36899f70493ae8d87b8))
-* **dashboard:** revamp dashboard pathname to use singular noun ([#1276](https://github.com/instill-ai/console/issues/1276)) ([e1467f4](https://github.com/instill-ai/console/commit/e1467f4eed8054d6da19ec5f7ec246b6f7b91c57))
-
+- **component:** add email and anthropic icon ([#1266](https://github.com/instill-ai/console/issues/1266)) ([49417af](https://github.com/instill-ai/console/commit/49417af86588bb7aa70283b8d884a3db79f54ad2))
+- **dashboard:** add credit usage chart on dashboard ([#1265](https://github.com/instill-ai/console/issues/1265)) ([2304de7](https://github.com/instill-ai/console/commit/2304de7073f73f27c993e36899f70493ae8d87b8))
+- **dashboard:** revamp dashboard pathname to use singular noun ([#1276](https://github.com/instill-ai/console/issues/1276)) ([e1467f4](https://github.com/instill-ai/console/commit/e1467f4eed8054d6da19ec5f7ec246b6f7b91c57))
 
 ### Bug Fixes
 
-* fix prettier issue around root folder and vscode plugin ([#1258](https://github.com/instill-ai/console/issues/1258)) ([d3eac49](https://github.com/instill-ai/console/commit/d3eac498ec78872392c9c5072c1b9aed303fc24f))
-* **namespace-switch:** fix namespace-switch not guard user private resource ([#1267](https://github.com/instill-ai/console/issues/1267)) ([3694ce8](https://github.com/instill-ai/console/commit/3694ce8c24529be6e1bdf9800fd3c05381c08fe4))
-
+- fix prettier issue around root folder and vscode plugin ([#1258](https://github.com/instill-ai/console/issues/1258)) ([d3eac49](https://github.com/instill-ai/console/commit/d3eac498ec78872392c9c5072c1b9aed303fc24f))
+- **namespace-switch:** fix namespace-switch not guard user private resource ([#1267](https://github.com/instill-ai/console/issues/1267)) ([3694ce8](https://github.com/instill-ai/console/commit/3694ce8c24529be6e1bdf9800fd3c05381c08fe4))
 
 ### Miscellaneous
 
-* use prettier to sort import order ([#1261](https://github.com/instill-ai/console/issues/1261)) ([4640c24](https://github.com/instill-ai/console/commit/4640c24ce73940d204111880b8bb367d690e32d1))
+- use prettier to sort import order ([#1261](https://github.com/instill-ai/console/issues/1261)) ([4640c24](https://github.com/instill-ai/console/commit/4640c24ce73940d204111880b8bb367d690e32d1))
 
 ## [0.49.2-beta](https://github.com/instill-ai/console/compare/v0.49.1-beta...v0.49.2-beta) (2024-06-20)
 
-
 ### Bug Fixes
 
-* some props of the model trigger payload had snake_case, fixed them to camelCase ([#1254](https://github.com/instill-ai/console/issues/1254)) ([8da7b09](https://github.com/instill-ai/console/commit/8da7b0926930ae02ef7a296313f753b7a4e339cf))
+- some props of the model trigger payload had snake_case, fixed them to camelCase ([#1254](https://github.com/instill-ai/console/issues/1254)) ([8da7b09](https://github.com/instill-ai/console/commit/8da7b0926930ae02ef7a296313f753b7a4e339cf))
 
 ## [0.49.1-beta](https://github.com/instill-ai/console/compare/v0.49.0-beta...v0.49.1-beta) (2024-06-19)
 
-
 ### Bug Fixes
 
-* fix toaster style issue ([#1248](https://github.com/instill-ai/console/issues/1248)) ([aec1217](https://github.com/instill-ai/console/commit/aec12174ef6dd3b1843449b8210d264442928cb4))
+- fix toaster style issue ([#1248](https://github.com/instill-ai/console/issues/1248)) ([aec1217](https://github.com/instill-ai/console/commit/aec12174ef6dd3b1843449b8210d264442928cb4))
 
 ## [0.49.0-beta](https://github.com/instill-ai/console/compare/v0.48.0-beta...v0.49.0-beta) (2024-06-19)
 
-
 ### Features
 
-* adapt kabab rule for resource like component, mode, and pipeline in console ([#1238](https://github.com/instill-ai/console/issues/1238)) ([88a3fde](https://github.com/instill-ai/console/commit/88a3fde925eda236051a59f1a727e4f79ce673ea))
-* adapt the camelcase change of BE api response in the console ([#1227](https://github.com/instill-ai/console/issues/1227)) ([552a7b4](https://github.com/instill-ai/console/commit/552a7b4c81b90dc9dcf338098bcd929420189060))
-* adapt the camelCase rule in the query param ([#1230](https://github.com/instill-ai/console/issues/1230)) ([2a9ee91](https://github.com/instill-ai/console/commit/2a9ee9182bcebeaf811a496a0f24d3bf685ef375))
-* change pathname from /builder to /editor ([#1223](https://github.com/instill-ai/console/issues/1223)) ([88c4e04](https://github.com/instill-ai/console/commit/88c4e0473f6dad8478d0a562cb5453965ea6a840))
-* enable namespace-switch to help user navigate pages ([#1224](https://github.com/instill-ai/console/issues/1224)) ([067b5a5](https://github.com/instill-ai/console/commit/067b5a59598b964fc7c46173bfa79b8ffd3124b0))
-* re-export lodash for console-cloud usage ([#1229](https://github.com/instill-ai/console/issues/1229)) ([af35a00](https://github.com/instill-ai/console/commit/af35a001b7cb9a31cc5f7855893bc63c88b8a68c))
-* support sorting the last use date in api token table ([#1246](https://github.com/instill-ai/console/issues/1246)) ([55b3f74](https://github.com/instill-ai/console/commit/55b3f747f833cf6229c52fad12a30e4b865be667))
-* unify Avatar using new fallback rule ([#1240](https://github.com/instill-ai/console/issues/1240)) ([1f64140](https://github.com/instill-ai/console/commit/1f6414050f6fddb68285d6fd0e4088c6dab6bade))
-
+- adapt kabab rule for resource like component, mode, and pipeline in console ([#1238](https://github.com/instill-ai/console/issues/1238)) ([88a3fde](https://github.com/instill-ai/console/commit/88a3fde925eda236051a59f1a727e4f79ce673ea))
+- adapt the camelcase change of BE api response in the console ([#1227](https://github.com/instill-ai/console/issues/1227)) ([552a7b4](https://github.com/instill-ai/console/commit/552a7b4c81b90dc9dcf338098bcd929420189060))
+- adapt the camelCase rule in the query param ([#1230](https://github.com/instill-ai/console/issues/1230)) ([2a9ee91](https://github.com/instill-ai/console/commit/2a9ee9182bcebeaf811a496a0f24d3bf685ef375))
+- change pathname from /builder to /editor ([#1223](https://github.com/instill-ai/console/issues/1223)) ([88c4e04](https://github.com/instill-ai/console/commit/88c4e0473f6dad8478d0a562cb5453965ea6a840))
+- enable namespace-switch to help user navigate pages ([#1224](https://github.com/instill-ai/console/issues/1224)) ([067b5a5](https://github.com/instill-ai/console/commit/067b5a59598b964fc7c46173bfa79b8ffd3124b0))
+- re-export lodash for console-cloud usage ([#1229](https://github.com/instill-ai/console/issues/1229)) ([af35a00](https://github.com/instill-ai/console/commit/af35a001b7cb9a31cc5f7855893bc63c88b8a68c))
+- support sorting the last use date in api token table ([#1246](https://github.com/instill-ai/console/issues/1246)) ([55b3f74](https://github.com/instill-ai/console/commit/55b3f747f833cf6229c52fad12a30e4b865be667))
+- unify Avatar using new fallback rule ([#1240](https://github.com/instill-ai/console/issues/1240)) ([1f64140](https://github.com/instill-ai/console/commit/1f6414050f6fddb68285d6fd0e4088c6dab6bade))
 
 ### Bug Fixes
 
-* **namespace-switch:** fix not selecting the selected namespace as default namespace when create model ([#1233](https://github.com/instill-ai/console/issues/1233)) ([bc9f37e](https://github.com/instill-ai/console/commit/bc9f37ef6ba2e288f399a904c5f2fc3eca6d0e87))
-* **namespace-switch:** fix the namespace switch style and deviation  ([#1237](https://github.com/instill-ai/console/issues/1237)) ([5e3c925](https://github.com/instill-ai/console/commit/5e3c925265d321d5c38edd3322535b72e90fb74e))
+- **namespace-switch:** fix not selecting the selected namespace as default namespace when create model ([#1233](https://github.com/instill-ai/console/issues/1233)) ([bc9f37e](https://github.com/instill-ai/console/commit/bc9f37ef6ba2e288f399a904c5f2fc3eca6d0e87))
+- **namespace-switch:** fix the namespace switch style and deviation ([#1237](https://github.com/instill-ai/console/issues/1237)) ([5e3c925](https://github.com/instill-ai/console/commit/5e3c925265d321d5c38edd3322535b72e90fb74e))
 
 ## [0.48.0-beta](https://github.com/instill-ai/console/compare/v0.47.2-beta...v0.48.0-beta) (2024-06-06)
 
-
 ### Features
 
-* **pipeline-builder:** replace trigger node with variable node ([#1197](https://github.com/instill-ai/console/issues/1197)) ([8a6f06d](https://github.com/instill-ai/console/commit/8a6f06de42a5d5874d759f2c4915744d0a387e67))
-* update models list ui/ux ([#1136](https://github.com/instill-ai/console/issues/1136)) ([88944b4](https://github.com/instill-ai/console/commit/88944b4245c8270ebeb0ad4439c641257e8082a7))
-
+- **pipeline-builder:** replace trigger node with variable node ([#1197](https://github.com/instill-ai/console/issues/1197)) ([8a6f06d](https://github.com/instill-ai/console/commit/8a6f06de42a5d5874d759f2c4915744d0a387e67))
+- update models list ui/ux ([#1136](https://github.com/instill-ai/console/issues/1136)) ([88944b4](https://github.com/instill-ai/console/commit/88944b4245c8270ebeb0ad4439c641257e8082a7))
 
 ### Miscellaneous
 
-* update demanded pnpm version to 9.1.4 ([#1188](https://github.com/instill-ai/console/issues/1188)) ([bfa6544](https://github.com/instill-ai/console/commit/bfa6544f47879d422ae37df20d0af512a3994335))
+- update demanded pnpm version to 9.1.4 ([#1188](https://github.com/instill-ai/console/issues/1188)) ([bfa6544](https://github.com/instill-ai/console/commit/bfa6544f47879d422ae37df20d0af512a3994335))
 
 ## [0.47.2-beta](https://github.com/instill-ai/console/compare/v0.47.1-beta...v0.47.2-beta) (2024-05-28)
 
-
 ### Bug Fixes
 
-* fix deps alerts and zod denial issue ([#1184](https://github.com/instill-ai/console/issues/1184)) ([3db9a78](https://github.com/instill-ai/console/commit/3db9a786767db1c9902bc3945e7b3defe4dd331d))
+- fix deps alerts and zod denial issue ([#1184](https://github.com/instill-ai/console/issues/1184)) ([3db9a78](https://github.com/instill-ai/console/commit/3db9a786767db1c9902bc3945e7b3defe4dd331d))
 
 ## [0.47.1-beta](https://github.com/instill-ai/console/compare/v0.47.0-beta...v0.47.1-beta) (2024-05-24)
 
-
 ### Bug Fixes
 
-* adjust search and visibility options style in Pipelines  ([#1174](https://github.com/instill-ai/console/issues/1174)) ([e922cdd](https://github.com/instill-ai/console/commit/e922cdd2292ba7fb056b038829074bee84620b54))
-* fix eslint version and error ([#1177](https://github.com/instill-ai/console/issues/1177)) ([7e9893d](https://github.com/instill-ai/console/commit/7e9893d8368c8b2aebf8f9948d5d1994b9ae537d))
+- adjust search and visibility options style in Pipelines ([#1174](https://github.com/instill-ai/console/issues/1174)) ([e922cdd](https://github.com/instill-ai/console/commit/e922cdd2292ba7fb056b038829074bee84620b54))
+- fix eslint version and error ([#1177](https://github.com/instill-ai/console/issues/1177)) ([7e9893d](https://github.com/instill-ai/console/commit/7e9893d8368c8b2aebf8f9948d5d1994b9ae537d))
 
 ## [0.47.0-beta](https://github.com/instill-ai/console/compare/v0.46.0-beta...v0.47.0-beta) (2024-05-16)
 
-
 ### Features
 
-* **pipeline-builder:** implement the instill credit interaction on component ([#1139](https://github.com/instill-ai/console/issues/1139)) ([03e1596](https://github.com/instill-ai/console/commit/03e1596531d5a8c429a84a10d545f8bf219b7350))
-
+- **pipeline-builder:** implement the instill credit interaction on component ([#1139](https://github.com/instill-ai/console/issues/1139)) ([03e1596](https://github.com/instill-ai/console/commit/03e1596531d5a8c429a84a10d545f8bf219b7350))
 
 ### Bug Fixes
 
-* fix ci and docker node version to adapt node20 ([#1143](https://github.com/instill-ai/console/issues/1143)) ([5aed24b](https://github.com/instill-ai/console/commit/5aed24b538b2c73743602f41110c8b1adf8c6f59))
-* fix initial instill credit hint issue and remaining credit text ([#1152](https://github.com/instill-ai/console/issues/1152)) ([cfc6d43](https://github.com/instill-ai/console/commit/cfc6d43e9736e59b22659d7bfc0d87141fd46999))
-* fix wrongly generate instillFormat for trigger component ([#1144](https://github.com/instill-ai/console/issues/1144)) ([a59a6c3](https://github.com/instill-ai/console/commit/a59a6c34b052c0051d73a87eda743cc2de21f0c9))
-* **pipeline-builder:** fix field will collapsed on input when component support credit ([#1157](https://github.com/instill-ai/console/issues/1157)) ([b82b65d](https://github.com/instill-ai/console/commit/b82b65d1e8207e30b3de83d87bca0086597059f7))
+- fix ci and docker node version to adapt node20 ([#1143](https://github.com/instill-ai/console/issues/1143)) ([5aed24b](https://github.com/instill-ai/console/commit/5aed24b538b2c73743602f41110c8b1adf8c6f59))
+- fix initial instill credit hint issue and remaining credit text ([#1152](https://github.com/instill-ai/console/issues/1152)) ([cfc6d43](https://github.com/instill-ai/console/commit/cfc6d43e9736e59b22659d7bfc0d87141fd46999))
+- fix wrongly generate instillFormat for trigger component ([#1144](https://github.com/instill-ai/console/issues/1144)) ([a59a6c3](https://github.com/instill-ai/console/commit/a59a6c34b052c0051d73a87eda743cc2de21f0c9))
+- **pipeline-builder:** fix field will collapsed on input when component support credit ([#1157](https://github.com/instill-ai/console/issues/1157)) ([b82b65d](https://github.com/instill-ai/console/commit/b82b65d1e8207e30b3de83d87bca0086597059f7))
 
 ## [0.46.0-beta](https://github.com/instill-ai/console/compare/v0.45.2-beta...v0.46.0-beta) (2024-05-07)
 
-
 ### Features
 
-* adapt the retirement of api prefix ([#1124](https://github.com/instill-ai/console/issues/1124)) ([3654fb4](https://github.com/instill-ai/console/commit/3654fb427dda9401714f095249ec722ff988e599))
+- adapt the retirement of api prefix ([#1124](https://github.com/instill-ai/console/issues/1124)) ([3654fb4](https://github.com/instill-ai/console/commit/3654fb427dda9401714f095249ec722ff988e599))
 
 ## [0.45.2-beta](https://github.com/instill-ai/console/compare/v0.45.1-beta...v0.45.2-beta) (2024-05-02)
 
-
 ### Bug Fixes
 
-* fix pipeline-view head button and style ([#1115](https://github.com/instill-ai/console/issues/1115)) ([2335cee](https://github.com/instill-ai/console/commit/2335ceee3a419b102397cdd63407d2bc95359cf2))
+- fix pipeline-view head button and style ([#1115](https://github.com/instill-ai/console/issues/1115)) ([2335cee](https://github.com/instill-ai/console/commit/2335ceee3a419b102397cdd63407d2bc95359cf2))
 
 ## [0.45.1-beta](https://github.com/instill-ai/console/compare/v0.45.0-beta...v0.45.1-beta) (2024-05-01)
 
-
 ### Bug Fixes
 
-* fix deps that have issues ([#1107](https://github.com/instill-ai/console/issues/1107)) ([751e266](https://github.com/instill-ai/console/commit/751e2663995e9965e4ce155953030f4ed65b6f89))
-* fix vscode settings to use tsconfigs in subfolders ([#1114](https://github.com/instill-ai/console/issues/1114)) ([af1bb2d](https://github.com/instill-ai/console/commit/af1bb2d306e09637eef2e67bc562a84ddeb2938d))
-* fix wrongly initiate pipeline builder ([#1113](https://github.com/instill-ai/console/issues/1113)) ([1ddf754](https://github.com/instill-ai/console/commit/1ddf7547ebc2457fddb8d161e57b568e823c2639))
+- fix deps that have issues ([#1107](https://github.com/instill-ai/console/issues/1107)) ([751e266](https://github.com/instill-ai/console/commit/751e2663995e9965e4ce155953030f4ed65b6f89))
+- fix vscode settings to use tsconfigs in subfolders ([#1114](https://github.com/instill-ai/console/issues/1114)) ([af1bb2d](https://github.com/instill-ai/console/commit/af1bb2d306e09637eef2e67bc562a84ddeb2938d))
+- fix wrongly initiate pipeline builder ([#1113](https://github.com/instill-ai/console/issues/1113)) ([1ddf754](https://github.com/instill-ai/console/commit/1ddf7547ebc2457fddb8d161e57b568e823c2639))
 
 ## [0.45.0-beta](https://github.com/instill-ai/console/compare/v0.44.0-beta...v0.45.0-beta) (2024-04-25)
 
-
 ### Features
 
-* retire connector resource ([#1098](https://github.com/instill-ai/console/issues/1098)) ([a4befc7](https://github.com/instill-ai/console/commit/a4befc773f523964f7bc3a4a4f1456e348127e8d))
-
+- retire connector resource ([#1098](https://github.com/instill-ai/console/issues/1098)) ([a4befc7](https://github.com/instill-ai/console/commit/a4befc773f523964f7bc3a4a4f1456e348127e8d))
 
 ### Bug Fixes
 
-* fix sitemap generation error block building process ([#1082](https://github.com/instill-ai/console/issues/1082)) ([9fedb1f](https://github.com/instill-ai/console/commit/9fedb1fda9387f4c4d15203ba541d8991b6b8b3b))
-
+- fix sitemap generation error block building process ([#1082](https://github.com/instill-ai/console/issues/1082)) ([9fedb1f](https://github.com/instill-ai/console/commit/9fedb1fda9387f4c4d15203ba541d8991b6b8b3b))
 
 ### Miscellaneous
 
-* remove the page route components from console ([#1084](https://github.com/instill-ai/console/issues/1084)) ([f91338e](https://github.com/instill-ai/console/commit/f91338ec93f1dd88f94a858c5f866ff7bf9f5856))
+- remove the page route components from console ([#1084](https://github.com/instill-ai/console/issues/1084)) ([f91338e](https://github.com/instill-ai/console/commit/f91338ec93f1dd88f94a858c5f866ff7bf9f5856))
 
 ## [0.44.0-beta](https://github.com/instill-ai/console/compare/v0.43.0-beta...v0.44.0-beta) (2024-04-12)
 
-
 ### Features
 
-* migrate all the page to app route and support SEO index ([#1078](https://github.com/instill-ai/console/issues/1078)) ([98f9df8](https://github.com/instill-ai/console/commit/98f9df89d3c71fcb510e6e7919c37110f928be9a))
+- migrate all the page to app route and support SEO index ([#1078](https://github.com/instill-ai/console/issues/1078)) ([98f9df8](https://github.com/instill-ai/console/commit/98f9df89d3c71fcb510e6e7919c37110f928be9a))
 
 ## [0.43.0-beta](https://github.com/instill-ai/console/compare/v0.42.3-beta...v0.43.0-beta) (2024-04-09)
 
-
 ### Features
 
-* merge sprint 33 feature branch ([#1066](https://github.com/instill-ai/console/issues/1066)) ([052f6f9](https://github.com/instill-ai/console/commit/052f6f9b44fc1624afd1fb44dc3e1f0c37b09440))
-
+- merge sprint 33 feature branch ([#1066](https://github.com/instill-ai/console/issues/1066)) ([052f6f9](https://github.com/instill-ai/console/commit/052f6f9b44fc1624afd1fb44dc3e1f0c37b09440))
 
 ### Miscellaneous
 
-* make the page title consistent using Pascal Case ([#1054](https://github.com/instill-ai/console/issues/1054)) ([7361aa5](https://github.com/instill-ai/console/commit/7361aa59806503990a25299f78692d8847c5eadd))
+- make the page title consistent using Pascal Case ([#1054](https://github.com/instill-ai/console/issues/1054)) ([7361aa5](https://github.com/instill-ai/console/commit/7361aa59806503990a25299f78692d8847c5eadd))
 
 ## [0.42.3-beta](https://github.com/instill-ai/console/compare/v0.42.2-beta...v0.42.3-beta) (2024-04-02)
 
-
 ### Miscellaneous
 
-* stabilize test related to save pipeline action ([#1052](https://github.com/instill-ai/console/issues/1052)) ([02557ec](https://github.com/instill-ai/console/commit/02557ec5298eb4d96f8fdafa8e6b466de85cbf97))
+- stabilize test related to save pipeline action ([#1052](https://github.com/instill-ai/console/issues/1052)) ([02557ec](https://github.com/instill-ai/console/commit/02557ec5298eb4d96f8fdafa8e6b466de85cbf97))
 
 ## [0.42.2-beta](https://github.com/instill-ai/console/compare/v0.42.1-beta...v0.42.2-beta) (2024-04-02)
 
-
 ### Bug Fixes
 
-* **app-migration:** fix app route issue in organization related components ([#1050](https://github.com/instill-ai/console/issues/1050)) ([aff205d](https://github.com/instill-ai/console/commit/aff205d25d0ea3536e35ab9bd7063c29ea95c2a0))
+- **app-migration:** fix app route issue in organization related components ([#1050](https://github.com/instill-ai/console/issues/1050)) ([aff205d](https://github.com/instill-ai/console/commit/aff205d25d0ea3536e35ab9bd7063c29ea95c2a0))
 
 ## [0.42.1-beta](https://github.com/instill-ai/console/compare/v0.42.0-beta...v0.42.1-beta) (2024-04-01)
 
-
 ### Bug Fixes
 
-* fix non login user can not access profile page ([#1049](https://github.com/instill-ai/console/issues/1049)) ([93a0b45](https://github.com/instill-ai/console/commit/93a0b45771e2ff3ed96d6df00f1b36d13fc96337))
-
+- fix non login user can not access profile page ([#1049](https://github.com/instill-ai/console/issues/1049)) ([93a0b45](https://github.com/instill-ai/console/commit/93a0b45771e2ff3ed96d6df00f1b36d13fc96337))
 
 ### Miscellaneous
 
-* enable e2e testing ([#1047](https://github.com/instill-ai/console/issues/1047)) ([22170dc](https://github.com/instill-ai/console/commit/22170dc0cae4d37185ac766ce3bceea91367a4f5))
+- enable e2e testing ([#1047](https://github.com/instill-ai/console/issues/1047)) ([22170dc](https://github.com/instill-ai/console/commit/22170dc0cae4d37185ac766ce3bceea91367a4f5))
 
 ## [0.42.0-beta](https://github.com/instill-ai/console/compare/v0.41.0-beta...v0.42.0-beta) (2024-03-29)
 
-
 ### Features
 
-* migrate /pipelines/pid from page-route to app-route ([#1030](https://github.com/instill-ai/console/issues/1030)) ([1c6d5da](https://github.com/instill-ai/console/commit/1c6d5da50530998347ce492f6ab87426622f2d85))
-* **pipeline-builder QoL:** stop automatically generating key when editing start/end field ([#1045](https://github.com/instill-ai/console/issues/1045)) ([eb925fd](https://github.com/instill-ai/console/commit/eb925fd7a316a5b866f2cfff58d27bad4041d85d))
-
+- migrate /pipelines/pid from page-route to app-route ([#1030](https://github.com/instill-ai/console/issues/1030)) ([1c6d5da](https://github.com/instill-ai/console/commit/1c6d5da50530998347ce492f6ab87426622f2d85))
+- **pipeline-builder QoL:** stop automatically generating key when editing start/end field ([#1045](https://github.com/instill-ai/console/issues/1045)) ([eb925fd](https://github.com/instill-ai/console/commit/eb925fd7a316a5b866f2cfff58d27bad4041d85d))
 
 ### Bug Fixes
 
-* fix missing toaster instance in app route ([#1041](https://github.com/instill-ai/console/issues/1041)) ([6402c0e](https://github.com/instill-ai/console/commit/6402c0ebaca48852454b37062c3ff1d3d3d0fb25))
-* **pipeline-builder, test:** fix json is not being unmarshalled on the pipelinespid page ([#1033](https://github.com/instill-ai/console/issues/1033)) ([0093c05](https://github.com/instill-ai/console/commit/0093c05a834d275998bf8e05243b6c3e1f2a856b))
-* **pipeline-builder, test:** fix not correctly guard duplicated start/end operator field ([#1036](https://github.com/instill-ai/console/issues/1036)) ([5760dc2](https://github.com/instill-ai/console/commit/5760dc2a53835033d78b9679a4001e2494910647))
-* **pipeline-builder, test:** fix pipeline-builder not correctly update component id ([#1034](https://github.com/instill-ai/console/issues/1034)) ([4000425](https://github.com/instill-ai/console/commit/4000425f8dec39a870e11312899b5204f00955c5))
-
+- fix missing toaster instance in app route ([#1041](https://github.com/instill-ai/console/issues/1041)) ([6402c0e](https://github.com/instill-ai/console/commit/6402c0ebaca48852454b37062c3ff1d3d3d0fb25))
+- **pipeline-builder, test:** fix json is not being unmarshalled on the pipelinespid page ([#1033](https://github.com/instill-ai/console/issues/1033)) ([0093c05](https://github.com/instill-ai/console/commit/0093c05a834d275998bf8e05243b6c3e1f2a856b))
+- **pipeline-builder, test:** fix not correctly guard duplicated start/end operator field ([#1036](https://github.com/instill-ai/console/issues/1036)) ([5760dc2](https://github.com/instill-ai/console/commit/5760dc2a53835033d78b9679a4001e2494910647))
+- **pipeline-builder, test:** fix pipeline-builder not correctly update component id ([#1034](https://github.com/instill-ai/console/issues/1034)) ([4000425](https://github.com/instill-ai/console/commit/4000425f8dec39a870e11312899b5204f00955c5))
 
 ### Miscellaneous
 
-* refactor how we bundle toolkit and design system ([#1028](https://github.com/instill-ai/console/issues/1028)) ([1bc0628](https://github.com/instill-ai/console/commit/1bc0628aee9e93749ed04bb956f58884ba7a0a4c))
+- refactor how we bundle toolkit and design system ([#1028](https://github.com/instill-ai/console/issues/1028)) ([1bc0628](https://github.com/instill-ai/console/commit/1bc0628aee9e93749ed04bb956f58884ba7a0a4c))
 
 ## [0.41.0-beta](https://github.com/instill-ai/console/compare/v0.40.0-beta...v0.41.0-beta) (2024-03-13)
 
-
 ### Features
 
-* bump nextjs version to 14 and update react-hook-form ([#1008](https://github.com/instill-ai/console/issues/1008)) ([235847f](https://github.com/instill-ai/console/commit/235847f1a3b57e9f340040320ddcdc7789dafe2d))
-* migrate react-query from v4 to v5 ([#1007](https://github.com/instill-ai/console/issues/1007)) ([f0399aa](https://github.com/instill-ai/console/commit/f0399aa6b9cc42df8ff13331e4b82df89c1ab6e8))
-* migrate the topbar component back to toolkit ([#994](https://github.com/instill-ai/console/issues/994)) ([056cc78](https://github.com/instill-ai/console/commit/056cc785552497099cabf1455797bb22b3892090))
-* **pipeline-builder:** implement the iterator editor ([#1006](https://github.com/instill-ai/console/issues/1006)) ([8a57837](https://github.com/instill-ai/console/commit/8a57837fb62fb22d700c86c32af6253939fe085a))
-* **pipeline-builder:** revamp and adapt the new topbar navigation on pipeline builder ([#997](https://github.com/instill-ai/console/issues/997)) ([774aa92](https://github.com/instill-ai/console/commit/774aa92902f77e2ebc1404984f0da0cd23694ddc))
-* **pipeline-builder:** support real-time update the hints for iterator ([#1017](https://github.com/instill-ai/console/issues/1017)) ([6d91d7d](https://github.com/instill-ai/console/commit/6d91d7d6b1fc58e5699619828b82807c04a44590))
-
+- bump nextjs version to 14 and update react-hook-form ([#1008](https://github.com/instill-ai/console/issues/1008)) ([235847f](https://github.com/instill-ai/console/commit/235847f1a3b57e9f340040320ddcdc7789dafe2d))
+- migrate react-query from v4 to v5 ([#1007](https://github.com/instill-ai/console/issues/1007)) ([f0399aa](https://github.com/instill-ai/console/commit/f0399aa6b9cc42df8ff13331e4b82df89c1ab6e8))
+- migrate the topbar component back to toolkit ([#994](https://github.com/instill-ai/console/issues/994)) ([056cc78](https://github.com/instill-ai/console/commit/056cc785552497099cabf1455797bb22b3892090))
+- **pipeline-builder:** implement the iterator editor ([#1006](https://github.com/instill-ai/console/issues/1006)) ([8a57837](https://github.com/instill-ai/console/commit/8a57837fb62fb22d700c86c32af6253939fe085a))
+- **pipeline-builder:** revamp and adapt the new topbar navigation on pipeline builder ([#997](https://github.com/instill-ai/console/issues/997)) ([774aa92](https://github.com/instill-ai/console/commit/774aa92902f77e2ebc1404984f0da0cd23694ddc))
+- **pipeline-builder:** support real-time update the hints for iterator ([#1017](https://github.com/instill-ai/console/issues/1017)) ([6d91d7d](https://github.com/instill-ai/console/commit/6d91d7d6b1fc58e5699619828b82807c04a44590))
 
 ### Miscellaneous
 
-* add missing use client in design-system ([#1009](https://github.com/instill-ai/console/issues/1009)) ([7b01eeb](https://github.com/instill-ai/console/commit/7b01eeb22cfb33ad0cb160068fcdd31ab03ad87d))
+- add missing use client in design-system ([#1009](https://github.com/instill-ai/console/issues/1009)) ([7b01eeb](https://github.com/instill-ai/console/commit/7b01eeb22cfb33ad0cb160068fcdd31ab03ad87d))
 
 ## [0.40.0-beta](https://github.com/instill-ai/console/compare/v0.39.0-beta...v0.40.0-beta) (2024-02-29)
 
-
 ### Features
 
-* prepare for console 0.40.0-beta release ([#993](https://github.com/instill-ai/console/issues/993)) ([92a3e97](https://github.com/instill-ai/console/commit/92a3e97620ec5ba4ff62fba6281642df4b254a32))
+- prepare for console 0.40.0-beta release ([#993](https://github.com/instill-ai/console/issues/993)) ([92a3e97](https://github.com/instill-ai/console/commit/92a3e97620ec5ba4ff62fba6281642df4b254a32))
 
 ## [0.39.0-beta](https://github.com/instill-ai/console/compare/v0.38.0-beta...v0.39.0-beta) (2024-02-15)
 
-
 ### Features
 
-* adapt new backend breaking changes about mgmt backend ([#940](https://github.com/instill-ai/console/issues/940)) ([3351262](https://github.com/instill-ai/console/commit/3351262b0768a47166e57d42ca81cff53deb29aa))
-* support the backend breaking changes of icon path ([#959](https://github.com/instill-ai/console/issues/959)) ([e7d7ad3](https://github.com/instill-ai/console/commit/e7d7ad39e80588bacb4b524c151a622d1ddaf26a))
-
+- adapt new backend breaking changes about mgmt backend ([#940](https://github.com/instill-ai/console/issues/940)) ([3351262](https://github.com/instill-ai/console/commit/3351262b0768a47166e57d42ca81cff53deb29aa))
+- support the backend breaking changes of icon path ([#959](https://github.com/instill-ai/console/issues/959)) ([e7d7ad3](https://github.com/instill-ai/console/commit/e7d7ad39e80588bacb4b524c151a622d1ddaf26a))
 
 ### Bug Fixes
 
-* fix pinecone svg padding is too small issue ([#968](https://github.com/instill-ai/console/issues/968)) ([cfbc703](https://github.com/instill-ai/console/commit/cfbc70309fee33f4c6fb1bb28497a145a68f3f2d))
+- fix pinecone svg padding is too small issue ([#968](https://github.com/instill-ai/console/issues/968)) ([cfbc703](https://github.com/instill-ai/console/commit/cfbc70309fee33f4c6fb1bb28497a145a68f3f2d))
 
 ## [0.38.0-beta](https://github.com/instill-ai/console/compare/v0.37.0-beta...v0.38.0-beta) (2024-01-30)
 
-
 ### Features
 
-* add Archetype AI logo ([#900](https://github.com/instill-ai/console/issues/900)) ([f06b9e2](https://github.com/instill-ai/console/commit/f06b9e205a43ac31613dc1c1011fe87940897672))
-* **pipeline-builder:** add reference hint at the start operator ([#902](https://github.com/instill-ai/console/issues/902)) ([d87de86](https://github.com/instill-ai/console/commit/d87de86845e385465279e995e78c9c4bb4d0d3c0))
-* **pipeline-builder:** support group by format for component output reference hints ([#906](https://github.com/instill-ai/console/issues/906)) ([537c6f6](https://github.com/instill-ai/console/commit/537c6f647ee5a05a20bc2d88081345d3fb0e4e7c))
-* support filtering the visibility of pipelines ([#903](https://github.com/instill-ai/console/issues/903)) ([57fd548](https://github.com/instill-ai/console/commit/57fd5488105108c549b9fa386596925586a81c2c))
-* **test:** adapt new page object model and new playwright ([#901](https://github.com/instill-ai/console/issues/901)) ([f716870](https://github.com/instill-ai/console/commit/f7168705b219ee52bb9953291bcc95126107f57e))
-* update the amplitude action type ([#897](https://github.com/instill-ai/console/issues/897)) ([40cb1c2](https://github.com/instill-ai/console/commit/40cb1c2962fbb649dd8320ee8dc93e07dc26d1d1))
-
+- add Archetype AI logo ([#900](https://github.com/instill-ai/console/issues/900)) ([f06b9e2](https://github.com/instill-ai/console/commit/f06b9e205a43ac31613dc1c1011fe87940897672))
+- **pipeline-builder:** add reference hint at the start operator ([#902](https://github.com/instill-ai/console/issues/902)) ([d87de86](https://github.com/instill-ai/console/commit/d87de86845e385465279e995e78c9c4bb4d0d3c0))
+- **pipeline-builder:** support group by format for component output reference hints ([#906](https://github.com/instill-ai/console/issues/906)) ([537c6f6](https://github.com/instill-ai/console/commit/537c6f647ee5a05a20bc2d88081345d3fb0e4e7c))
+- support filtering the visibility of pipelines ([#903](https://github.com/instill-ai/console/issues/903)) ([57fd548](https://github.com/instill-ai/console/commit/57fd5488105108c549b9fa386596925586a81c2c))
+- **test:** adapt new page object model and new playwright ([#901](https://github.com/instill-ai/console/issues/901)) ([f716870](https://github.com/instill-ai/console/commit/f7168705b219ee52bb9953291bcc95126107f57e))
+- update the amplitude action type ([#897](https://github.com/instill-ai/console/issues/897)) ([40cb1c2](https://github.com/instill-ai/console/commit/40cb1c2962fbb649dd8320ee8dc93e07dc26d1d1))
 
 ### Miscellaneous
 
-* refactor top bar navigation to make it dry, add default query options for react-query ([#821](https://github.com/instill-ai/console/issues/821)) ([0e5decd](https://github.com/instill-ai/console/commit/0e5decdb6bd920aad14d4c655e54bd636f63a6f8))
-* **testing:** add placeholder test ([#918](https://github.com/instill-ai/console/issues/918)) ([2d74924](https://github.com/instill-ai/console/commit/2d74924513df955fc998349bff42eeba0310e307))
+- refactor top bar navigation to make it dry, add default query options for react-query ([#821](https://github.com/instill-ai/console/issues/821)) ([0e5decd](https://github.com/instill-ai/console/commit/0e5decdb6bd920aad14d4c655e54bd636f63a6f8))
+- **testing:** add placeholder test ([#918](https://github.com/instill-ai/console/issues/918)) ([2d74924](https://github.com/instill-ai/console/commit/2d74924513df955fc998349bff42eeba0310e307))
 
 ## [0.37.0-beta](https://github.com/instill-ai/console/compare/v0.36.0-beta...v0.37.0-beta) (2024-01-24)
 
-
 ### Features
 
-* implement the unit test for nested auto gen form ([#896](https://github.com/instill-ai/console/issues/896)) ([51c4630](https://github.com/instill-ai/console/commit/51c46305e93372ae652e38eda0fed82545afc714))
+- implement the unit test for nested auto gen form ([#896](https://github.com/instill-ai/console/issues/896)) ([51c4630](https://github.com/instill-ai/console/commit/51c46305e93372ae652e38eda0fed82545afc714))
 
 ## [0.36.0-beta](https://github.com/instill-ai/console/compare/v0.35.1-beta...v0.36.0-beta) (2024-01-15)
 
-
 ### Features
 
-* adapt the new icon path for operators and connectors ([#867](https://github.com/instill-ai/console/issues/867)) ([7311370](https://github.com/instill-ai/console/commit/7311370b6c6da535fbab67a9c0f6d5d32da38f8f))
-* add the placeholder for the pipeline description editor ([#872](https://github.com/instill-ai/console/issues/872)) ([511a520](https://github.com/instill-ai/console/commit/511a52030b73da2e50f3e1b4ab1dcbcaac435ccd))
-
+- adapt the new icon path for operators and connectors ([#867](https://github.com/instill-ai/console/issues/867)) ([7311370](https://github.com/instill-ai/console/commit/7311370b6c6da535fbab67a9c0f6d5d32da38f8f))
+- add the placeholder for the pipeline description editor ([#872](https://github.com/instill-ai/console/issues/872)) ([511a520](https://github.com/instill-ai/console/commit/511a52030b73da2e50f3e1b4ab1dcbcaac435ccd))
 
 ### Bug Fixes
 
-* fix console fetch the wrong model readme namespace ([#863](https://github.com/instill-ai/console/issues/863)) ([85ce0a8](https://github.com/instill-ai/console/commit/85ce0a89858f97ce2900ea557e55428c1deed15e))
-* fix duplicate pipeline didnt carry over pipeline brief ([#876](https://github.com/instill-ai/console/issues/876)) ([54752ee](https://github.com/instill-ai/console/commit/54752ee0487f0b38999204efc501abd0f98a7e79))
-* fix font not consistent on dashboard and improve the font optimization ([#873](https://github.com/instill-ai/console/issues/873)) ([18fc2c3](https://github.com/instill-ai/console/commit/18fc2c318734a7d1a4a2166adb47c00b2b46a3b7))
-* fix markdown editor of pipeline description can not show ol and ul ([#871](https://github.com/instill-ai/console/issues/871)) ([fb0da5a](https://github.com/instill-ai/console/commit/fb0da5aea85356b824da4afd3aa338f1b9594ec5))
-
+- fix console fetch the wrong model readme namespace ([#863](https://github.com/instill-ai/console/issues/863)) ([85ce0a8](https://github.com/instill-ai/console/commit/85ce0a89858f97ce2900ea557e55428c1deed15e))
+- fix duplicate pipeline didnt carry over pipeline brief ([#876](https://github.com/instill-ai/console/issues/876)) ([54752ee](https://github.com/instill-ai/console/commit/54752ee0487f0b38999204efc501abd0f98a7e79))
+- fix font not consistent on dashboard and improve the font optimization ([#873](https://github.com/instill-ai/console/issues/873)) ([18fc2c3](https://github.com/instill-ai/console/commit/18fc2c318734a7d1a4a2166adb47c00b2b46a3b7))
+- fix markdown editor of pipeline description can not show ol and ul ([#871](https://github.com/instill-ai/console/issues/871)) ([fb0da5a](https://github.com/instill-ai/console/commit/fb0da5aea85356b824da4afd3aa338f1b9594ec5))
 
 ### Miscellaneous
 
-* **deps:** bump axios from 1.5.1 to 1.6.0 ([#674](https://github.com/instill-ai/console/issues/674)) ([44d868b](https://github.com/instill-ai/console/commit/44d868bac41d701710da5eb1468a98ddaa0ac83d))
-* **deps:** bump sharp from 0.30.7 to 0.32.6 ([#697](https://github.com/instill-ai/console/issues/697)) ([32db44a](https://github.com/instill-ai/console/commit/32db44ae9d99f56ee472a0b504cb7d715519f0b5))
+- **deps:** bump axios from 1.5.1 to 1.6.0 ([#674](https://github.com/instill-ai/console/issues/674)) ([44d868b](https://github.com/instill-ai/console/commit/44d868bac41d701710da5eb1468a98ddaa0ac83d))
+- **deps:** bump sharp from 0.30.7 to 0.32.6 ([#697](https://github.com/instill-ai/console/issues/697)) ([32db44a](https://github.com/instill-ai/console/commit/32db44ae9d99f56ee472a0b504cb7d715519f0b5))
 
 ## [0.35.1-beta](https://github.com/instill-ai/console/compare/v0.35.0-beta...v0.35.1-beta) (2024-01-02)
 
-
 ### Bug Fixes
 
-* fix model setting page query issue ([#850](https://github.com/instill-ai/console/issues/850)) ([a5978a3](https://github.com/instill-ai/console/commit/a5978a3a879285cfb6970d7351ce7af37ebfb768))
+- fix model setting page query issue ([#850](https://github.com/instill-ai/console/issues/850)) ([a5978a3](https://github.com/instill-ai/console/commit/a5978a3a879285cfb6970d7351ce7af37ebfb768))
 
 ## [0.35.0-beta](https://github.com/instill-ai/console/compare/v0.34.2-beta...v0.35.0-beta) (2024-01-02)
 
-
 ### Features
 
-* add the loading state indicator for user-profile ([#845](https://github.com/instill-ai/console/issues/845)) ([914afa3](https://github.com/instill-ai/console/commit/914afa35b06bfb9350728a2c44f3f293ff6f2b51))
-* **pipeline-builder:** make right-panel float on top of canvas to have bigger working space ([#834](https://github.com/instill-ai/console/issues/834)) ([b8bc0e4](https://github.com/instill-ai/console/commit/b8bc0e476b05557ef419ff5826de336ecd0951ab))
-
+- add the loading state indicator for user-profile ([#845](https://github.com/instill-ai/console/issues/845)) ([914afa3](https://github.com/instill-ai/console/commit/914afa35b06bfb9350728a2c44f3f293ff6f2b51))
+- **pipeline-builder:** make right-panel float on top of canvas to have bigger working space ([#834](https://github.com/instill-ai/console/issues/834)) ([b8bc0e4](https://github.com/instill-ai/console/commit/b8bc0e476b05557ef419ff5826de336ecd0951ab))
 
 ### Bug Fixes
 
-* **pipeline-builder:** fix not correctly add nodes at the center of the nodes ([#820](https://github.com/instill-ai/console/issues/820)) ([f6f25ba](https://github.com/instill-ai/console/commit/f6f25ba182a194783872999f262f96f64a3c36c4))
-
+- **pipeline-builder:** fix not correctly add nodes at the center of the nodes ([#820](https://github.com/instill-ai/console/issues/820)) ([f6f25ba](https://github.com/instill-ai/console/commit/f6f25ba182a194783872999f262f96f64a3c36c4))
 
 ### Miscellaneous
 
-* add ts check for unused variables, remove unused useLayoutEffect import ([#830](https://github.com/instill-ai/console/issues/830)) ([18e1f2e](https://github.com/instill-ai/console/commit/18e1f2e5fdba52ece712638a2a22c765b7a18638))
-* apply prettier format and reject formatting errors in PRs ([#818](https://github.com/instill-ai/console/issues/818)) ([fa5c3b3](https://github.com/instill-ai/console/commit/fa5c3b362dfac92291926c0e9020bb53c8c10ddc))
-* fix format issues in `apps/console/src/pages/_app.tsx`  ([#839](https://github.com/instill-ai/console/issues/839)) ([ab6b994](https://github.com/instill-ai/console/commit/ab6b9947ed1ae37444ed67f736fb4b6f1613cb93))
-* redirect user to 404 page if the user is not found ([#841](https://github.com/instill-ai/console/issues/841)) ([39ec410](https://github.com/instill-ai/console/commit/39ec410be5b102a83fdfc566164ab6fdb45a4b80))
+- add ts check for unused variables, remove unused useLayoutEffect import ([#830](https://github.com/instill-ai/console/issues/830)) ([18e1f2e](https://github.com/instill-ai/console/commit/18e1f2e5fdba52ece712638a2a22c765b7a18638))
+- apply prettier format and reject formatting errors in PRs ([#818](https://github.com/instill-ai/console/issues/818)) ([fa5c3b3](https://github.com/instill-ai/console/commit/fa5c3b362dfac92291926c0e9020bb53c8c10ddc))
+- fix format issues in `apps/console/src/pages/_app.tsx` ([#839](https://github.com/instill-ai/console/issues/839)) ([ab6b994](https://github.com/instill-ai/console/commit/ab6b9947ed1ae37444ed67f736fb4b6f1613cb93))
+- redirect user to 404 page if the user is not found ([#841](https://github.com/instill-ai/console/issues/841)) ([39ec410](https://github.com/instill-ai/console/commit/39ec410be5b102a83fdfc566164ab6fdb45a4b80))
 
 ## [0.34.2-beta](https://github.com/instill-ai/console/compare/v0.34.1-beta...v0.34.2-beta) (2023-12-25)
 
