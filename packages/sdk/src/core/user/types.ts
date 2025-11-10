@@ -20,7 +20,7 @@ export type UserProfile = {
   companyName?: string;
   avatar?: string;
   socialProfileLinks?: {
-    webiste?: string;
+    website?: string;
     x?: string;
     github?: string;
   };
@@ -34,7 +34,7 @@ export const UserProfileSchema = z.object({
   avatar: z.string().optional(),
   socialProfileLinks: z
     .object({
-      webiste: z.string().optional(),
+      website: z.string().optional(),
       x: z.string().optional(),
       github: z.string().optional(),
     })
