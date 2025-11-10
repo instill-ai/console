@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.12](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.11...instill-sdk-v0.18.12) (2025-11-10)
+
+
+### Miscellaneous
+
+* **main:** fix typos and remove non-CE codes ([#1845](https://github.com/instill-ai/console/issues/1845)) ([58e7c17](https://github.com/instill-ai/console/commit/58e7c177b71c5ffe64dbcba7097e9b44987b81f7))
+
 ## [0.18.11](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.10...instill-sdk-v0.18.11) (2025-11-09)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.120.17](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.16...@instill-ai/toolkit-v0.120.17) (2025-11-10)
+
+
+### Miscellaneous
+
+* **main:** fix typos and remove non-CE codes ([#1845](https://github.com/instill-ai/console/issues/1845)) ([58e7c17](https://github.com/instill-ai/console/commit/58e7c177b71c5ffe64dbcba7097e9b44987b81f7))
+
 ## [0.120.16](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.15...@instill-ai/toolkit-v0.120.16) (2025-11-09)
 
 
