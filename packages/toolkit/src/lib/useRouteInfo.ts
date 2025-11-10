@@ -2,7 +2,7 @@
 
 import type { NamespaceType, Nullable } from "instill-sdk";
 import * as React from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 
 import { useNamespaceType } from "./react-query-service";
 import { InstillStore, useInstillStore, useShallow } from "./use-instill-store";
@@ -22,9 +22,6 @@ export type UseRouteInfoSuccessReturn = {
     connectorName: Nullable<string>;
     namespaceName: Nullable<string>;
     modelName: Nullable<string>;
-    chatUid: Nullable<string>;
-    tableUid: Nullable<string>;
-    folderUid: Nullable<string>;
   };
 };
 
@@ -38,9 +35,6 @@ export type UseRouteInfoFailedReturn = {
     connectorName: null;
     namespaceName: null;
     modelName: null;
-    chatUid: null;
-    tableUid: null;
-    folderUid: null;
   };
 };
 
@@ -49,18 +43,8 @@ export function useRouteInfo():
   | UseRouteInfoFailedReturn {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const params = useParams();
-  const paramsSearch = useSearchParams();
   const entity = params.entity ? String(params.entity) : null;
   const id = params.id ? String(params.id) : null;
-  const chatUid = paramsSearch?.get("chatUid")
-    ? String(paramsSearch.get("chatUid"))
-    : null;
-  const tableUid = paramsSearch?.get("tableUid")
-    ? String(paramsSearch.get("tableUid"))
-    : null;
-  const folderUid = paramsSearch?.get("folderUid")
-    ? String(paramsSearch.get("folderUid"))
-    : null;
 
   const namespaceType = useNamespaceType({
     enabled: enabledQuery && !!entity,
@@ -105,9 +89,6 @@ export function useRouteInfo():
         pipelineName,
         connectorName,
         modelName,
-        chatUid,
-        tableUid,
-        folderUid,
       },
       isSuccess: true,
     };
@@ -122,9 +103,6 @@ export function useRouteInfo():
         pipelineName: null,
         connectorName: null,
         modelName: null,
-        chatUid: null,
-        tableUid: null,
-        folderUid: null,
       },
     };
   }
