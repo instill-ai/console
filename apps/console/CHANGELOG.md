@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.68.8](https://github.com/instill-ai/console/compare/v0.68.7...v0.68.8) (2025-11-18)
+
+
+### Miscellaneous
+
+* **deps:** bump js-yaml from 4.1.0 to 4.1.1 ([#1850](https://github.com/instill-ai/console/issues/1850)) ([0d0213a](https://github.com/instill-ai/console/commit/0d0213a9c52e48f7d288eec7feb39dbdab90943f))
+
 ## [0.68.7](https://github.com/instill-ai/console/compare/v0.68.6...v0.68.7) (2025-11-09)
 
 

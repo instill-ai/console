@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.90.7](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.6...@instill-ai/design-system-v0.90.7) (2025-11-18)
+
+
+### Bug Fixes
+
+* **icons:** fix mp4 and webm file type icons ([#1848](https://github.com/instill-ai/console/issues/1848)) ([cf3c794](https://github.com/instill-ai/console/commit/cf3c794c4bb83807c645b7bc14827a6a7b92eacf))
+
 ## [0.90.6](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.5...@instill-ai/design-system-v0.90.6) (2025-11-09)
 
 
