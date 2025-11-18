@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { IconBase, IconBaseProps } from "./IconBase";
 
-export const MP4File = React.forwardRef<
+export const WEBMVideoFile = React.forwardRef<
   SVGSVGElement,
   Omit<IconBaseProps, "viewBox" | "children">
 >((props, ref) => {
@@ -32,4 +32,5 @@ export const MP4File = React.forwardRef<
     </IconBase>
   );
 });
-MP4File.displayName = "IconMP4File";
+
+WEBMVideoFile.displayName = "IconWEBMVideoFile";
