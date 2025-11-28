@@ -776,10 +776,18 @@ const tableQueryKeyStore = {
   },
   getUseListNamespaceTablesQueryKey({
     namespaceId,
+    tableUids,
   }: {
     namespaceId: Nullable<string>;
+    tableUids?: Nullable<string[]>;
   }) {
-    return [namespaceId, "tables"];
+    const path = [namespaceId, "tables"];
+
+    if (tableUids) {
+      return path.concat(`collection-${tableUids.join()}`);
+    }
+
+    return path;
   },
   getUseGetNamespaceTableColumnDefinitionsQueryKey({
     namespaceId,
@@ -823,10 +831,18 @@ const chatQueryKeyStore = {
 const folderQueryKeyStore = {
   getUseListNamespaceFoldersQueryKey({
     namespaceId,
+    folderUids,
   }: {
     namespaceId: Nullable<string>;
+    folderUids?: Nullable<string[]>;
   }) {
-    return [namespaceId, "folders"];
+    const path = [namespaceId, "folders"];
+
+    if (folderUids) {
+      return path.concat(`collection-${folderUids.join("")}`);
+    }
+
+    return path;
   },
   getUseListNamespaceFolderQueryKey({
     namespaceId,
