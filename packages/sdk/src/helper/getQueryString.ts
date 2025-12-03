@@ -203,7 +203,7 @@ export const getQueryString = ({
     url += `rootProjectUid=${rootProjectUid}&`;
   }
 
-  if (maxDepth) {
+  if (typeof maxDepth !== "undefined") {
     url += `maxDepth=${maxDepth}&`;
   }
 
