@@ -26,6 +26,11 @@ export const getQueryString = ({
   objectExpireDays,
   datetime,
   sort,
+  rootProjectUid,
+  maxDepth,
+  includeCollections,
+  parentProjectUid,
+  projectUid,
 }: {
   baseURL: string;
   pageSize?: number;
@@ -54,6 +59,11 @@ export const getQueryString = ({
   objectExpireDays?: number;
   datetime?: string;
   sort?: string;
+  rootProjectUid?: string;
+  maxDepth?: number;
+  includeCollections?: boolean;
+  parentProjectUid?: string;
+  projectUid?: string;
 }) => {
   let url = baseURL;
 
@@ -76,7 +86,12 @@ export const getQueryString = ({
     objectName ||
     objectUid ||
     datetime ||
-    sort
+    sort ||
+    rootProjectUid ||
+    maxDepth ||
+    includeCollections ||
+    parentProjectUid ||
+    projectUid
   ) {
     // Check if the baseURL already has a query string
     if (baseURL.includes("?")) {
@@ -182,6 +197,26 @@ export const getQueryString = ({
 
   if (sort) {
     url += `sort=${sort}&`;
+  }
+
+  if (rootProjectUid) {
+    url += `rootProjectUid=${rootProjectUid}&`;
+  }
+
+  if (typeof maxDepth !== "undefined") {
+    url += `maxDepth=${maxDepth}&`;
+  }
+
+  if (includeCollections) {
+    url += `includeCollections=${includeCollections}&`;
+  }
+
+  if (parentProjectUid) {
+    url += `parentProjectUid=${parentProjectUid}&`;
+  }
+
+  if (projectUid) {
+    url += `projectUid=${projectUid}&`;
   }
 
   if (url.endsWith("&")) {
