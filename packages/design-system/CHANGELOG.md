@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.90.8](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.7...@instill-ai/design-system-v0.90.8) (2025-12-09)
+
+
+### Miscellaneous
+
+* **deps:** bump next from 15.4.7 to 15.4.8 ([#1854](https://github.com/instill-ai/console/issues/1854)) ([23f423c](https://github.com/instill-ai/console/commit/23f423c4168ac596838069428ec86c559e43b1c6))
+
 ## [0.90.7](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.6...@instill-ai/design-system-v0.90.7) (2025-11-18)
 
 

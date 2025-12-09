@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.13](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.12...instill-sdk-v0.18.13) (2025-12-09)
+
+
+### Miscellaneous
+
+* **sdk:** sdk update ([#1853](https://github.com/instill-ai/console/issues/1853)) ([5ac5763](https://github.com/instill-ai/console/commit/5ac5763fc8e51b980306839c5b5ae2898dbd7a11))
+
 ## [0.18.12](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.11...instill-sdk-v0.18.12) (2025-11-10)
 
 

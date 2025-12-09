@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.120.18](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.17...@instill-ai/toolkit-v0.120.18) (2025-12-09)
+
+
+### Miscellaneous
+
+* **query:** update query for tabs ([#1851](https://github.com/instill-ai/console/issues/1851)) ([01e82b5](https://github.com/instill-ai/console/commit/01e82b5dda342f1d01e41f378cb9f99e73569b8e))
+* **sdk:** sdk update ([#1853](https://github.com/instill-ai/console/issues/1853)) ([5ac5763](https://github.com/instill-ai/console/commit/5ac5763fc8e51b980306839c5b5ae2898dbd7a11))
+
 ## [0.120.17](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.16...@instill-ai/toolkit-v0.120.17) (2025-11-10)
 
 
