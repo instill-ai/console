@@ -47,7 +47,8 @@ const tagVariants = cva("inline-flex items-center rounded-full font-semibold", {
 });
 
 export interface TagProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends
+    React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof tagVariants> {}
 
 const Tag = React.forwardRef<HTMLDivElement, TagProps>(
