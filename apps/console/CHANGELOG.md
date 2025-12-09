@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.68.9](https://github.com/instill-ai/console/compare/v0.68.8...v0.68.9) (2025-12-09)
+
+
+### Miscellaneous
+
+* **deps:** bump next from 15.4.7 to 15.4.8 ([#1854](https://github.com/instill-ai/console/issues/1854)) ([23f423c](https://github.com/instill-ai/console/commit/23f423c4168ac596838069428ec86c559e43b1c6))
+
 ## [0.68.8](https://github.com/instill-ai/console/compare/v0.68.7...v0.68.8) (2025-11-18)
 
 
