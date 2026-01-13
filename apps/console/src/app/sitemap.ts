@@ -1,6 +1,7 @@
-import type { Organization, Pipeline, User } from "instill-sdk";
+import type { Pipeline, User } from "instill-sdk";
 import { MetadataRoute } from "next";
 
+// NOTE: Organization sitemap entries are EE-only (available in console-ee)
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const sitemaps: MetadataRoute.Sitemap = [];
   const defaultApiUrl = "https://api.instill.tech";
@@ -60,31 +61,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       users.map((user: User) => {
         sitemaps.push({
           url: `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/${user?.id}`,
-          lastModified: new Date(),
-          changeFrequency: "daily",
-          priority: 1,
-        });
-      });
-    }
-  } catch (error) {
-    console.error(error);
-  }
-
-  const organizationsUrl = `${
-    process.env.NEXT_PUBLIC_API_GATEWAY_URL || defaultApiUrl
-  }/core/v1beta/organizations`;
-
-  try {
-    const organizationsResponse = await fetch(organizationsUrl);
-
-    if (organizationsResponse.ok) {
-      const { organizations } = await organizationsResponse.json();
-
-      organizations.map((organization: Organization) => {
-        sitemaps.push({
-          url: `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL || defaultBaseUrl}/${
-            organization?.id
-          }`,
           lastModified: new Date(),
           changeFrequency: "daily",
           priority: 1,

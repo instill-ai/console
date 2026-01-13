@@ -2,7 +2,6 @@
 
 import type {
   Nullable,
-  OrganizationOwner,
   UpdateNamespacePipelineRequest,
   UserOwner,
 } from "instill-sdk";
@@ -183,13 +182,7 @@ export const TabShare = ({
       return (pipeline.data.owner as UserOwner).user.profile?.avatar ?? null;
     }
 
-    if (pipeline.data.ownerName.split("/")[0] === "organizations") {
-      return (
-        (pipeline.data.owner as OrganizationOwner).organization.profile
-          ?.avatar ?? null
-      );
-    }
-
+    // NOTE: Organizations are EE-only. In CE, owner is always a user.
     return null;
   }, [pipeline.isSuccess, pipeline.data]);
 

@@ -52,9 +52,10 @@ export const Share = () => {
           namespaceId={routeInfo.data.namespaceId}
           id={routeInfo.data.resourceId}
           ownerDisplayName={
+            // In CE, owner is always a user (organizations are EE-only)
             "user" in pipeline.data.owner
               ? (pipeline.data.owner.user.profile?.displayName ?? null)
-              : (pipeline.data.owner.organization.profile?.displayName ?? null)
+              : null
           }
         />
       ) : null}

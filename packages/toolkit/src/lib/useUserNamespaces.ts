@@ -2,10 +2,7 @@
 
 import * as React from "react";
 
-import {
-  useAuthenticatedUser,
-  useUserMemberships,
-} from "./react-query-service";
+import { useAuthenticatedUser } from "./react-query-service";
 import { Nullable } from "./type";
 import { InstillStore, useInstillStore, useShallow } from "./use-instill-store";
 
@@ -35,6 +32,7 @@ export type UseUserNamespacesReturn =
       data: null;
     };
 
+// NOTE: Organizations are EE-only. In CE, this hook only returns the user namespace.
 export function useUserNamespaces(): UseUserNamespacesReturn {
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [namespaces, setNamespaces] =
@@ -46,49 +44,13 @@ export function useUserNamespaces(): UseUserNamespacesReturn {
     accessToken,
   });
 
-  const userMemberships = useUserMemberships({
-    enabled: me.isSuccess,
-    userId: me.isSuccess ? me.data.id : null,
-    accessToken,
-  });
-
   React.useEffect(() => {
-    const orgsAndUserList: UserNamespace[] = [];
-
-    if (!userMemberships.isSuccess || !me.isSuccess) {
+    if (!me.isSuccess) {
       return;
     }
 
-    userMemberships.data
-      .filter((org) => org.state === "MEMBERSHIP_STATE_ACTIVE")
-      .sort((a, b) => {
-        if (a.organization.name < b.organization.name) {
-          return -1;
-        }
-        if (a.organization.name > b.organization.name) {
-          return 1;
-        }
-        return 0;
-      })
-      .forEach((org) => {
-        if (
-          orgsAndUserList.findIndex((e) => e.id === org.organization.id) === -1
-        ) {
-          orgsAndUserList.push({
-            id: org.organization.id,
-            uid: org.organization.uid,
-            name: org.organization.name,
-            type: "organization",
-            avatarUrl: org.organization.profile?.avatar ?? null,
-            displayName: org.organization.profile?.displayName ?? null,
-            email: null,
-            userCount: org.organization.stats.userCount ?? null,
-          });
-        }
-      });
-
-    if (orgsAndUserList.findIndex((e) => e.id === me.data.id) === -1) {
-      orgsAndUserList.push({
+    const userNamespaces: UserNamespace[] = [
+      {
         id: me.data.id,
         uid: me.data.uid,
         name: me.data.name,
@@ -97,12 +59,12 @@ export function useUserNamespaces(): UseUserNamespacesReturn {
         displayName: me.data.profile?.displayName ?? null,
         email: me.data.email ?? null,
         userCount: null,
-      });
-    }
+      },
+    ];
 
-    setNamespaces(orgsAndUserList);
+    setNamespaces(userNamespaces);
     setIsSuccess(true);
-  }, [userMemberships.isSuccess, userMemberships.data, me.isSuccess, me.data]);
+  }, [me.isSuccess, me.data]);
 
   if (isSuccess) {
     return {

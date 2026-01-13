@@ -2,7 +2,6 @@
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import { z } from "zod";
 
-import { Organization, OrganizationSchema } from "./core/organization";
 import { User, UserSchema } from "./core/user";
 
 export type ErrorDetails = {
@@ -40,13 +39,8 @@ export const UserOwnerSchema = z.object({
   user: UserSchema,
 });
 
-export type OrganizationOwner = {
-  organization: Organization;
-};
-
-export const OrganizationOwnerSchema = z.object({
-  organization: OrganizationSchema,
-});
+// NOTE: Organization-related types have been moved to EE (console-ee).
+// OrganizationOwner type is no longer available in CE.
 
 export type Nullable<T> = T | null;
 
@@ -56,9 +50,10 @@ export type WithNullableFields<T extends object> = {
 
 export type GeneralRecord = Record<string, any>;
 
-export type Owner = UserOwner | OrganizationOwner;
+// In CE, Owner is just UserOwner (organizations are EE-only)
+export type Owner = UserOwner;
 
-export const OwnerSchema = z.union([UserOwnerSchema, OrganizationOwnerSchema]);
+export const OwnerSchema = UserOwnerSchema;
 
 export type InstillCredentialMap = {
   targets: string[];

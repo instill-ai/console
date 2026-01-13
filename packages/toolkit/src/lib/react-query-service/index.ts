@@ -6,7 +6,6 @@ export * from "./metric";
 export * from "./mgmt";
 export * from "./model";
 export * from "./pipeline";
-export * from "./organization";
 export * from "./misc";
 export * from "./release";
 export * from "./secret";

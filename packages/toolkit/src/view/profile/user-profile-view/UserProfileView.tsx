@@ -82,7 +82,6 @@ export const UserProfileView = () => {
             name={user.data?.profile?.displayName ?? user.data.id}
             bio={user.data.profile?.bio ?? null}
             avatar={user.data.profile?.avatar ?? null}
-            userMemberships={null}
             isOwner={
               me.isSuccess &&
               routeInfo.isSuccess &&

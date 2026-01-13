@@ -16,7 +16,6 @@ import {
   useInstillStore,
   useListNamespaceFiles,
   useListNamespaceKnowledgeBases,
-  useOrganizationSubscription,
   useShallow,
 } from "../../lib";
 import { env } from "../../server";
@@ -92,19 +91,14 @@ export const KnowledgeBaseMainView = (props: KnowledgeBaseViewProps) => {
     accessToken,
   });
 
-  const orgSub = useOrganizationSubscription({
-    organizationId: selectedNamespace ? selectedNamespace : null,
-    accessToken,
-    enabled: enabledQuery && namespaceType === "organization",
-  });
-
+  // NOTE: Organization subscriptions are EE-only. In CE, orgSub is always null.
   const subscriptionInfo = React.useMemo(() => {
     return getSubscriptionInfo(
       namespaceType,
       userSub.data || null,
-      orgSub.data || null,
+      null, // orgSub is EE-only
     );
-  }, [namespaceType, userSub.data, orgSub.data]);
+  }, [namespaceType, userSub.data]);
 
   React.useEffect(() => {
     const getNamespaceType = async () => {

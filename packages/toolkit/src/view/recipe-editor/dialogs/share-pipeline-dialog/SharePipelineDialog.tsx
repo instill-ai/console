@@ -51,9 +51,10 @@ export const SharePipelineDialog = () => {
       return null;
     }
 
+    // In CE, owner is always a user (organizations are EE-only)
     return "user" in pipeline.data.owner
       ? (pipeline.data.owner.user.profile?.displayName ?? null)
-      : (pipeline.data.owner.organization.profile?.displayName ?? null);
+      : null;
   }, [pipeline.data, pipeline.isSuccess]);
 
   return (
