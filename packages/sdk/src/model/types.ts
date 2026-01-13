@@ -1,5 +1,5 @@
 import { ResourceView, RunSource, RunStatus } from "..";
-import { Organization, User } from "../core";
+import { User } from "../core";
 import {
   GeneralRecord,
   InstillJSONSchema,
@@ -79,9 +79,10 @@ export type Model = {
   updateTime: string | null;
   deleteTime: string | null;
   ownerName: string;
+  // NOTE: organization owner is EE-only (available in console-ee)
   owner: {
     user?: User;
-    organization?: Organization;
+    organization?: GeneralRecord;
   };
   region: string;
   hardware: string;

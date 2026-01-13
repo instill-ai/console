@@ -12,14 +12,12 @@ import {
   useAuthenticatedUser,
   useInstillStore,
   useShallow,
-  useUserMemberships,
 } from "../lib";
 import { NamespaceAvatarWithFallback } from "./NamespaceAvatarWithFallback";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
-  updateNavigationNamespaceAnchor: store.updateNavigationNamespaceAnchor,
 });
 
 export type UserProfileCardProps = {
@@ -31,24 +29,18 @@ export type UserProfileCardProps = {
   };
 };
 
+// NOTE: Organization memberships display is EE-only (available in console-ee)
 export const UserProfileCard = ({
   totalPipelines,
   totalPublicPipelines,
   visitorCta,
 }: UserProfileCardProps) => {
-  const { accessToken, enabledQuery, updateNavigationNamespaceAnchor } =
-    useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const router = useRouter();
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
-    accessToken,
-  });
-
-  const memberships = useUserMemberships({
-    enabled: enabledQuery && me.isSuccess,
-    userId: me.isSuccess ? me.data.id : null,
     accessToken,
   });
 
@@ -91,30 +83,6 @@ export const UserProfileCard = ({
             ) : null}
           </div>
           <Separator orientation="horizontal" className="my-4" />
-          {memberships.isSuccess && memberships.data.length !== 0 ? (
-            <React.Fragment>
-              <div className="flex flex-col gap-y-2">
-                <p className="text-semantic-fg-primary product-body-text-2-semibold">
-                  Organizations
-                </p>
-                {memberships.data.map((membership) => (
-                  <button
-                    key={membership.organization.id}
-                    onClick={() => {
-                      router.push(`/${membership.organization.id}`);
-                      updateNavigationNamespaceAnchor(
-                        () => membership.organization.id,
-                      );
-                    }}
-                    className="flex !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
-                  >
-                    {membership.organization.id}
-                  </button>
-                ))}
-              </div>
-              <Separator orientation="horizontal" className="my-4" />
-            </React.Fragment>
-          ) : null}
           <div className="flex flex-col gap-y-2">
             {totalPipelines ? (
               <div className="flex flex-row gap-x-2">

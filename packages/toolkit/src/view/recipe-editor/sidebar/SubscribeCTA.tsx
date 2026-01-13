@@ -6,7 +6,6 @@ import {
   InstillStore,
   useAuthenticatedUserSubscription,
   useInstillStore,
-  useOrganizationSubscription,
   useRouteInfo,
   useShallow,
 } from "../../../lib";
@@ -30,22 +29,8 @@ export const SubscribeCTA = () => {
       env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
   });
 
-  const orgSub = useOrganizationSubscription({
-    organizationId: routeInfo.data.namespaceId,
-    accessToken,
-    enabled:
-      enabledQuery && routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION",
-  });
-
+  // NOTE: Organization subscriptions are EE-only. In CE, users only.
   let redirectURL: Nullable<string> = null;
-
-  if (
-    routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION" &&
-    (orgSub.data?.plan === "PLAN_FREE" ||
-      orgSub.data?.plan === "PLAN_UNSPECIFIED")
-  ) {
-    redirectURL = `/${routeInfo.data.namespaceId}/organization-settings/billing/subscriptions/plan`;
-  }
 
   if (
     routeInfo.data.namespaceType === "NAMESPACE_USER" &&

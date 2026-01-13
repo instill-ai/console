@@ -15,8 +15,6 @@ export * from "../lib/react-query-service/mgmt/use-authenticated-user/server";
 export * from "../lib/react-query-service/mgmt/use-namespace-type/server";
 export * from "../lib/react-query-service/mgmt/use-user/server";
 export * from "../lib/react-query-service/mgmt/use-api-tokens/server";
-export * from "../lib/react-query-service/organization/use-organization/server";
-export * from "../lib/react-query-service/organization/use-organization-memberships/server";
 export * from "../lib/react-query-service/model/use-namespace-model/server";
 export * from "../lib/react-query-service/secret/use-namespace-secret/server";
 export * from "../lib/react-query-service/secret/use-namespace-secrets/server";

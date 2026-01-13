@@ -1,10 +1,6 @@
 "use client";
 
-import type {
-  OrganizationOwner,
-  UpdateNamespacePipelineRequest,
-  UserOwner,
-} from "instill-sdk";
+import type { UpdateNamespacePipelineRequest, UserOwner } from "instill-sdk";
 import * as React from "react";
 import { InstillNameInterpreter } from "instill-sdk";
 
@@ -175,15 +171,9 @@ export const TabShare = ({
       return null;
     }
 
+    // In CE, owner is always a user (organizations are EE-only)
     if (pipeline.data.ownerName.split("/")[0] === "users") {
       return (pipeline.data.owner as UserOwner).user.profile?.avatar ?? null;
-    }
-
-    if (pipeline.data.ownerName.split("/")[0] === "organizations") {
-      return (
-        (pipeline.data.owner as OrganizationOwner).organization.profile
-          ?.avatar ?? null
-      );
     }
 
     return null;

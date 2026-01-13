@@ -110,24 +110,22 @@ export const Head = ({
     }
   }
 
+  // NOTE: In CE, owner is always a user (organizations are EE-only)
   const owner = React.useMemo(() => {
     if (!pipeline) {
       return DEFAULT_OWNER;
     }
 
-    const owner =
-      "user" in pipeline.owner
-        ? pipeline.owner.user
-        : pipeline.owner.organization;
+    const user = pipeline.owner?.user;
 
-    if (!owner || !owner.profile) {
+    if (!user || !user.profile) {
       return DEFAULT_OWNER;
     }
 
     return {
-      avatarUrl: owner.profile.avatar || "",
-      id: owner.id || "",
-      displayName: owner.profile.displayName || "",
+      avatarUrl: user.profile.avatar || "",
+      id: user.id || "",
+      displayName: user.profile.displayName || "",
     };
   }, [pipeline]);
 

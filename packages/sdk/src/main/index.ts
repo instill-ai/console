@@ -3,9 +3,7 @@ import "whatwg-fetch";
 import { ArtifactClient } from "../artifact";
 import {
   IntegrationClient,
-  MembershipClient,
   MetricClient,
-  OrganizationClient,
   SubscriptionClient,
   TokenClient,
   UserClient,
@@ -140,14 +138,13 @@ export class InstillAPIClient {
     secret: new SecretClient(this),
   };
 
+  // NOTE: organization and membership clients are EE-only (available in console-ee)
   core = {
     metric: new MetricClient(this),
     user: new UserClient(this),
-    organization: new OrganizationClient(this),
     token: new TokenClient(this),
     subscription: new SubscriptionClient(this),
     utils: new UtilsClient(this),
-    membership: new MembershipClient(this),
     integration: new IntegrationClient(this),
   };
 

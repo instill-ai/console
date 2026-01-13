@@ -3,7 +3,6 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { UserMembership } from "instill-sdk";
 
 import {
   Button,
@@ -38,6 +37,8 @@ export const UserBioSkeleton = () => {
   );
 };
 
+// NOTE: Organization memberships (userMemberships prop) are EE-only.
+// This CE version only shows user profile without organization memberships.
 export const UserProfileBio = ({
   name,
   id,
@@ -45,7 +46,6 @@ export const UserProfileBio = ({
   githubLink,
   twitterLink,
   isOwner,
-  userMemberships,
   avatar,
   displayName,
 }: {
@@ -55,7 +55,6 @@ export const UserProfileBio = ({
   githubLink: Nullable<string>;
   twitterLink: Nullable<string>;
   isOwner: boolean;
-  userMemberships: Nullable<UserMembership[]>;
   avatar: Nullable<string>;
   displayName: Nullable<string>;
 }) => {
@@ -123,35 +122,7 @@ export const UserProfileBio = ({
           </Button>
         </div>
       ) : null}
-      {userMemberships ? (
-        <div className="flex flex-col gap-y-4">
-          <p className="text-semantic-fg-primary product-headings-heading-5">
-            Organizations
-          </p>
-          <div className="flex w-full flex-row flex-wrap gap-4">
-            {userMemberships.map((membership) => (
-              <button
-                key={membership.name}
-                className="flex items-center rounded-sm border border-semantic-bg-line p-2.5"
-              >
-                <NamespaceAvatarWithFallback.Root
-                  src={membership.organization.profile?.avatar ?? null}
-                  className="h-5 w-5"
-                  fallback={
-                    <NamespaceAvatarWithFallback.Fallback
-                      namespaceId={membership.organization.id}
-                      displayName={
-                        membership.organization.profile?.displayName ?? null
-                      }
-                      className="h-5 w-5"
-                    />
-                  }
-                />
-              </button>
-            ))}
-          </div>
-        </div>
-      ) : null}
+      {/* NOTE: Organization memberships display is EE-only. In CE, this section is hidden. */}
     </div>
   );
 };
