@@ -35,12 +35,12 @@ export function useGetNamespaceFile({
         throw new Error("fileUid is required");
       }
 
-      if (!knowledgeBaseId) {
-        throw new Error("knowledgeBaseId is required");
-      }
-
       if (!namespaceId) {
         throw new Error("namespaceId is required");
+      }
+
+      if (!knowledgeBaseId) {
+        throw new Error("knowledgeBaseId is required");
       }
 
       const client = getInstillArtifactAPIClient({ accessToken });
@@ -48,7 +48,7 @@ export function useGetNamespaceFile({
       // Fetch file metadata with VIEW_CONTENT to get the markdown content
       const contentRes = await client.artifact.getFile({
         namespaceId,
-        knowledgeBaseId: knowledgeBaseId,
+        knowledgeBaseId,
         fileId: fileUid,
         view: "VIEW_CONTENT",
       });
@@ -56,7 +56,7 @@ export function useGetNamespaceFile({
       // Fetch file metadata with VIEW_SUMMARY to get the summary content
       const summaryRes = await client.artifact.getFile({
         namespaceId,
-        knowledgeBaseId: knowledgeBaseId,
+        knowledgeBaseId,
         fileId: fileUid,
         view: "VIEW_SUMMARY",
       });

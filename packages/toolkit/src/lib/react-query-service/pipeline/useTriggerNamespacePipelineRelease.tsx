@@ -20,7 +20,7 @@ export function useTriggerNamespacePipelineRelease() {
       });
 
       const pipelineRelease =
-        await client.vdp.trigger.triggerNamespacePipelineRelease({
+        await client.pipeline.trigger.triggerNamespacePipelineRelease({
           ...payload,
           isConsole: true,
         });

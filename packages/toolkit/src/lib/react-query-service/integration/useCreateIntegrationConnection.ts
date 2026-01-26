@@ -24,7 +24,7 @@ export function useCreateIntegrationConnection() {
       const client = getInstillAPIClient({ accessToken });
 
       const res =
-        await client.core.integration.createNamespaceConnection(payload);
+        await client.mgmt.integration.createNamespaceConnection(payload);
 
       return Promise.resolve(res.connection);
     },

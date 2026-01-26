@@ -545,7 +545,7 @@ export class ModelClient extends APIResource {
     newModelId,
   }: RenameNamespaceModelRequest) {
     try {
-      const data = await this._client.patch<RenameNamespaceModelResponse>(
+      const data = await this._client.post<RenameNamespaceModelResponse>(
         `/${namespaceModelName}/rename`,
         {
           body: JSON.stringify({

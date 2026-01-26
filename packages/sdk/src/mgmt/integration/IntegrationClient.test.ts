@@ -10,7 +10,7 @@ test("listPaginatedIntegrations", async () => {
     debug: true,
   });
 
-  const integrations = await client.core.integration.listPaginatedIntegrations({
+  const integrations = await client.mgmt.integration.listPaginatedIntegrations({
     pageToken: "pageToken",
     pageSize: 10,
     filter: "filter",

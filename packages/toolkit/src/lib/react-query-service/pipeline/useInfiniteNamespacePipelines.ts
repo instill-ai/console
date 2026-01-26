@@ -58,7 +58,7 @@ export function useInfiniteNamespacePipelines({
         accessToken: accessToken ?? undefined,
       });
 
-      const pipelines = await client.vdp.pipeline.listNamespacePipelines({
+      const pipelines = await client.pipeline.pipeline.listNamespacePipelines({
         pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         pageToken: pageParam ?? undefined,
         namespaceId,

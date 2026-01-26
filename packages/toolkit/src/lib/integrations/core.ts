@@ -296,7 +296,7 @@ export function getAuthHandler({
             });
 
             if (payload) {
-              await client.core.integration.createNamespaceConnection(payload);
+              await client.mgmt.integration.createNamespaceConnection(payload);
 
               if (onCallback) {
                 onCallback();

@@ -1,21 +1,37 @@
 export type ArtifactObject = {
-  uid: string;
+  // Canonical resource name. Format: `namespaces/{namespace}/objects/{object}`
   name: string;
-  size: string;
+  // Immutable canonical resource ID (e.g., "obj-3k7m9p2w5t1"). Hash-based, unique within a namespace.
+  id: string;
+  // Human-readable display name (user-provided filename).
+  displayName: string;
+  // Resource name of the owner namespace. Format: `namespaces/{namespace}`
+  ownerName: string;
+  // Full resource name of the user who created this object. Format: `users/{user}`
+  creatorName: string;
+  // Object creation time.
+  createTime: string;
+  // Object update time.
+  updateTime: string;
+  // Size in bytes.
+  size: number;
+  // Content type (MIME type).
   contentType: string;
-  namespaceUid: string;
-  creator: string;
+  // Whether the file has been uploaded to storage.
   isUploaded: boolean;
-  path: string;
+  // Object expiration time in days.
   objectExpireDays: number;
-  lastModifiedTime: string;
-  createdTime: string;
-  updatedTime: string;
+  // Last modified time (client-provided metadata).
+  lastModifiedTime?: string;
+  // Object delete time (for soft delete).
+  deleteTime?: string;
 };
 
 export type GetNamespaceObjectUploadURLRequest = {
-  namespaceId: string;
-  objectName: string;
+  // The parent resource name. Format: `namespaces/{namespace}`
+  parent: string;
+  // Display name for the object (user-provided filename, max 1024 characters).
+  displayName: string;
   urlExpireDays?: number;
   lastModifiedTime?: string;
   objectExpireDays?: number;
@@ -35,9 +51,13 @@ export type UploadNamespaceObjectRequest = {
 };
 
 export type GetNamespaceObjectDownloadURLRequest = {
-  namespaceId: string;
-  objectUid: string;
+  // The resource name of the object.
+  // Format: `namespaces/{namespace}/objects/{object}`
+  name: string;
+  // URL expiration time in days. Maximum is 7 days. If set to 0, URL will not expire.
   urlExpireDays?: number;
+  // Optional custom filename for the download.
+  downloadFilename?: string;
 };
 
 export type GetNamespaceObjectDownloadURLResponse = {
@@ -73,44 +93,6 @@ export type KnowledgeBase = {
   knowledgeBaseId: string; // alias for id
   namespaceId: string; // extracted from ownerName
   usage: number; // legacy field
-};
-
-export type KnowledgeBaseRunAction =
-  | "KNOWLEDGE_BASE_RUN_ACTION_UNSPECIFIED"
-  | "KNOWLEDGE_BASE_RUN_ACTION_CREATE"
-  | "KNOWLEDGE_BASE_RUN_ACTION_UPDATE"
-  | "KNOWLEDGE_BASE_RUN_ACTION_DELETE"
-  | "KNOWLEDGE_BASE_RUN_ACTION_CREATE_FILE"
-  | "KNOWLEDGE_BASE_RUN_ACTION_PROCESS_FILE"
-  | "KNOWLEDGE_BASE_RUN_ACTION_DELETE_FILE";
-
-export type KnowledgeBaseRunStatus =
-  | "RUN_STATUS_UNSPECIFIED"
-  | "RUN_STATUS_PROCESSING"
-  | "RUN_STATUS_COMPLETED"
-  | "RUN_STATUS_FAILED"
-  | "RUN_STATUS_QUEUED";
-
-export type KnowledgeBaseRunSource =
-  | "RUN_SOURCE_UNSPECIFIED"
-  | "RUN_SOURCE_CONSOLE"
-  | "RUN_SOURCE_API";
-
-export type KnowledgeBaseRun = {
-  uid: string;
-  knowledgeBaseUid: string;
-  fileUids: string[];
-  action: KnowledgeBaseRunAction;
-  status: KnowledgeBaseRunStatus;
-  source: KnowledgeBaseRunSource;
-  totalDuration: number;
-  runnerId: string;
-  namespaceId: string;
-  payload: GeneralRecord;
-  startTime: string;
-  completeTime: string;
-  error?: string;
-  creditAmount: number;
 };
 
 export type FilePosition = {
@@ -280,18 +262,30 @@ export type DeleteKnowledgeBaseRequest = {
   knowledgeBaseId: string;
 };
 
+export type GetKnowledgeBaseRequest = {
+  namespaceId: string;
+  knowledgeBaseId: string;
+};
+
+export type GetKnowledgeBaseResponse = {
+  knowledgeBase: KnowledgeBase;
+};
+
 /* ----------------------------------------------------------------------------
  * File Requests/Responses
  * ---------------------------------------------------------------------------*/
 
 export type CreateFileRequest = {
   namespaceId: string;
+  // Knowledge base ID (the ID part, not the full resource name)
   knowledgeBaseId: string;
   file: {
-    filename?: string;
+    // Human-readable display name (filename) for the file
+    displayName?: string;
     type?: FileType;
     content?: string;
-    objectUid?: string;
+    // Object resource name for blob storage upload. Format: `namespaces/{namespace}/objects/{object}`
+    object?: string;
     convertingPipeline?: string;
     tags?: string[];
   };
@@ -328,6 +322,7 @@ export type ListFilesRequest = {
   knowledgeBaseId: string;
   pageSize?: number;
   pageToken?: string;
+  filter?: string;
 };
 
 export type ListFilesResponse = {
@@ -344,6 +339,16 @@ export type UpdateFileRequest = {
 };
 
 export type UpdateFileResponse = {
+  file: File;
+};
+
+export type ReprocessFileRequest = {
+  namespaceId: string;
+  knowledgeBaseId: string;
+  fileId: string;
+};
+
+export type ReprocessFileResponse = {
   file: File;
 };
 
@@ -382,6 +387,7 @@ export type ListChunksResponse = {
 export type UpdateChunkRequest = {
   namespaceId: string;
   knowledgeBaseId: string;
+  fileId: string;
   chunkId: string;
   retrievable?: boolean;
 };
@@ -392,10 +398,11 @@ export type UpdateChunkResponse = {
 
 export type SearchChunksRequest = {
   namespaceId: string;
-  knowledgeBaseId: string;
   textPrompt?: string;
   topK?: number;
   requesterUid?: string;
+  knowledgeBaseUids?: string[];
+  fileUids?: string[];
 };
 
 export type SearchChunksResponse = {
@@ -403,21 +410,29 @@ export type SearchChunksResponse = {
 };
 
 /* ----------------------------------------------------------------------------
- * Knowledge Base Run Requests/Responses
+ * Object Requests/Responses
  * ---------------------------------------------------------------------------*/
 
-export type ListKnowledgeBaseRunsRequest = {
+export type GetObjectRequest = {
   namespaceId: string;
-  knowledgeBaseId: string;
-  pageSize?: number;
-  page?: number;
-  filter?: string;
-  orderBy?: string;
+  objectId: string;
 };
 
-export type ListKnowledgeBaseRunsResponse = {
-  knowledgeBaseRuns: KnowledgeBaseRun[];
-  totalSize: number;
-  pageSize: number;
-  page: number;
+export type GetObjectResponse = {
+  object: ArtifactObject;
+};
+
+export type UpdateObjectRequest = {
+  namespaceId: string;
+  objectId: string;
+  object?: Partial<ArtifactObject>;
+};
+
+export type UpdateObjectResponse = {
+  object: ArtifactObject;
+};
+
+export type DeleteObjectRequest = {
+  namespaceId: string;
+  objectId: string;
 };

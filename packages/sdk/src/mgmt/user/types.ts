@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { ResourceView } from "../../vdp";
+import { ResourceView } from "../../pipeline";
 
 export type OnboardingStatus =
   | "ONBOARDING_STATUS_UNSPECIFIED"

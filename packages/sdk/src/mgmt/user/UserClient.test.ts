@@ -15,7 +15,7 @@ test("getAuthenticatedUser", async () => {
     debug: true,
   });
 
-  const user = await client.core.user.getAuthenticatedUser();
+  const user = await client.mgmt.user.getAuthenticatedUser();
 
   const parsedData = getAuthenticatedResponseValidator.safeParse(user);
 
@@ -29,7 +29,7 @@ test("updateAuthenticatedUser", async () => {
     debug: true,
   });
 
-  const user = await client.core.user.updateAuthenticatedUser({
+  const user = await client.mgmt.user.updateAuthenticatedUser({
     name: "users/uid",
     email: "foo",
   });
@@ -46,7 +46,7 @@ test("getUser", async () => {
     debug: true,
   });
 
-  const user = await client.core.user.getUser({
+  const user = await client.mgmt.user.getUser({
     userId: "userid",
     view: "VIEW_FULL",
   });
@@ -63,7 +63,7 @@ test("listUsers", async () => {
     debug: true,
   });
 
-  const users = await client.core.user.listUsers({
+  const users = await client.mgmt.user.listUsers({
     enablePagination: true,
     view: "VIEW_FULL",
     filter: "filter",

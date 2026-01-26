@@ -40,7 +40,7 @@ export function useGetNamespaceConnection({
 
       const client = getInstillAPIClient({ accessToken });
 
-      const res = await client.core.integration.getNamespaceConnection({
+      const res = await client.mgmt.integration.getNamespaceConnection({
         connectionId,
         namespaceId,
         view: view ?? "VIEW_BASIC",

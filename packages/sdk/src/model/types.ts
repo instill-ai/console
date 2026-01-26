@@ -1,5 +1,5 @@
 import { ResourceView, RunSource, RunStatus } from "..";
-import { User } from "../core";
+import { User } from "../mgmt";
 import {
   GeneralRecord,
   InstillJSONSchema,

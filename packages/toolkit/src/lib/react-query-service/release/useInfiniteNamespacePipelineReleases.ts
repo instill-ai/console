@@ -90,7 +90,7 @@ export function useInfiniteNamespacePipelineReleases({
         accessToken: accessToken ?? undefined,
       });
 
-      const pipelines = await client.vdp.release.listNamespacePipelineReleases({
+      const pipelines = await client.pipeline.release.listNamespacePipelineReleases({
         pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         pageToken: pageParam ?? undefined,
         namespaceId,

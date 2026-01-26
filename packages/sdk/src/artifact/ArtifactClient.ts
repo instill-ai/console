@@ -13,18 +13,23 @@ import {
   CreateKnowledgeBaseResponse,
   DeleteFileRequest,
   DeleteKnowledgeBaseRequest,
+  DeleteObjectRequest,
   GetChunkRequest,
   GetChunkResponse,
   GetFileRequest,
   GetFileResponse,
+  GetKnowledgeBaseRequest,
+  GetKnowledgeBaseResponse,
+  GetObjectRequest,
+  GetObjectResponse,
   ListChunksRequest,
   ListChunksResponse,
   ListFilesRequest,
   ListFilesResponse,
-  ListKnowledgeBaseRunsRequest,
-  ListKnowledgeBaseRunsResponse,
   ListKnowledgeBasesRequest,
   ListKnowledgeBasesResponse,
+  ReprocessFileRequest,
+  ReprocessFileResponse,
   SearchChunksRequest,
   SearchChunksResponse,
   UpdateChunkRequest,
@@ -33,19 +38,21 @@ import {
   UpdateFileResponse,
   UpdateKnowledgeBaseRequest,
   UpdateKnowledgeBaseResponse,
+  UpdateObjectRequest,
+  UpdateObjectResponse,
 } from "./types";
 
 export class ArtifactClient extends APIResource {
   async getNamespaceObjectUploadURL({
-    namespaceId,
-    objectName,
+    parent,
+    displayName,
     urlExpireDays,
     lastModifiedTime,
     objectExpireDays,
   }: GetNamespaceObjectUploadURLRequest) {
     const queryString = getQueryString({
-      baseURL: `/namespaces/${namespaceId}/object-upload-url`,
-      objectName,
+      baseURL: `/${parent}/object-upload-url`,
+      displayName,
       urlExpireDays,
       lastModifiedTime,
       objectExpireDays,
@@ -81,14 +88,15 @@ export class ArtifactClient extends APIResource {
   }
 
   async getNamespaceObjectDownloadURL({
-    namespaceId,
-    objectUid,
+    name,
     urlExpireDays,
+    downloadFilename,
   }: GetNamespaceObjectDownloadURLRequest) {
+    // name is the full resource name: `namespaces/{namespace}/objects/{object}`
     const queryString = getQueryString({
-      baseURL: `/namespaces/${namespaceId}/object-download-url`,
-      objectUid,
+      baseURL: `/${name}/download-url`,
       urlExpireDays,
+      downloadFilename,
     });
 
     try {
@@ -137,16 +145,27 @@ export class ArtifactClient extends APIResource {
     }
   }
 
+  async getKnowledgeBase({
+    namespaceId,
+    knowledgeBaseId,
+  }: GetKnowledgeBaseRequest) {
+    try {
+      const data = await this._client.get<GetKnowledgeBaseResponse>(
+        `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}`,
+      );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
   async createKnowledgeBase(props: CreateKnowledgeBaseRequest) {
     const { namespaceId, ...payload } = props;
 
     try {
-      const queryString = getQueryString({
-        baseURL: `/namespaces/${namespaceId}/knowledge-bases`,
-      });
-
       const data = await this._client.post<CreateKnowledgeBaseResponse>(
-        queryString,
+        `/namespaces/${namespaceId}/knowledge-bases`,
         {
           body: JSON.stringify(payload),
         },
@@ -162,12 +181,8 @@ export class ArtifactClient extends APIResource {
     const { namespaceId, knowledgeBaseId, ...payload } = props;
 
     try {
-      const queryString = getQueryString({
-        baseURL: `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}`,
-      });
-
-      const data = await this._client.put<UpdateKnowledgeBaseResponse>(
-        queryString,
+      const data = await this._client.patch<UpdateKnowledgeBaseResponse>(
+        `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}`,
         {
           body: JSON.stringify(payload),
         },
@@ -184,11 +199,9 @@ export class ArtifactClient extends APIResource {
     knowledgeBaseId,
   }: DeleteKnowledgeBaseRequest) {
     try {
-      const queryString = getQueryString({
-        baseURL: `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}`,
-      });
-
-      await this._client.delete(queryString);
+      await this._client.delete(
+        `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}`,
+      );
     } catch (error) {
       return Promise.reject(error);
     }
@@ -202,14 +215,13 @@ export class ArtifactClient extends APIResource {
     const { namespaceId, knowledgeBaseId, file } = props;
 
     try {
-      const queryString = getQueryString({
-        baseURL: `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/files`,
-      });
-
-      // The gRPC gateway expects the File object directly in the body (body: "file" in proto)
-      const data = await this._client.post<CreateFileResponse>(queryString, {
-        body: JSON.stringify(file),
-      });
+      // KB is now in the path: POST /v1alpha/{parent=namespaces/*/knowledgeBases/*}/files
+      const data = await this._client.post<CreateFileResponse>(
+        `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/files`,
+        {
+          body: JSON.stringify(file),
+        },
+      );
 
       return Promise.resolve(data);
     } catch (error) {
@@ -235,13 +247,14 @@ export class ArtifactClient extends APIResource {
   }
 
   async listFiles(props: ListFilesRequest) {
-    const { namespaceId, knowledgeBaseId, pageSize, pageToken } = props;
+    const { namespaceId, knowledgeBaseId, pageSize, pageToken, filter } = props;
 
     try {
       const queryString = getQueryString({
         baseURL: `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/files`,
         pageSize,
         pageToken,
+        filter,
       });
 
       const data = await this._client.get<ListFilesResponse>(queryString);
@@ -256,13 +269,28 @@ export class ArtifactClient extends APIResource {
     const { namespaceId, knowledgeBaseId, fileId, ...payload } = props;
 
     try {
-      const queryString = getQueryString({
-        baseURL: `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/files/${fileId}`,
-      });
+      const data = await this._client.patch<UpdateFileResponse>(
+        `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/files/${fileId}`,
+        {
+          body: JSON.stringify(payload),
+        },
+      );
 
-      const data = await this._client.patch<UpdateFileResponse>(queryString, {
-        body: JSON.stringify(payload),
-      });
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async reprocessFile({
+    namespaceId,
+    knowledgeBaseId,
+    fileId,
+  }: ReprocessFileRequest) {
+    try {
+      const data = await this._client.post<ReprocessFileResponse>(
+        `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/files/${fileId}/reprocess`,
+      );
 
       return Promise.resolve(data);
     } catch (error) {
@@ -276,11 +304,9 @@ export class ArtifactClient extends APIResource {
     fileId,
   }: DeleteFileRequest) {
     try {
-      const queryString = getQueryString({
-        baseURL: `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/files/${fileId}`,
-      });
-
-      await this._client.delete(queryString);
+      await this._client.delete(
+        `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/files/${fileId}`,
+      );
     } catch (error) {
       return Promise.reject(error);
     }
@@ -326,16 +352,15 @@ export class ArtifactClient extends APIResource {
   }
 
   async updateChunk(props: UpdateChunkRequest) {
-    const { namespaceId, knowledgeBaseId, chunkId, ...payload } = props;
+    const { namespaceId, knowledgeBaseId, fileId, chunkId, ...payload } = props;
 
     try {
-      const queryString = getQueryString({
-        baseURL: `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/chunks/${chunkId}`,
-      });
-
-      const data = await this._client.patch<UpdateChunkResponse>(queryString, {
-        body: JSON.stringify(payload),
-      });
+      const data = await this._client.patch<UpdateChunkResponse>(
+        `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/files/${fileId}/chunks/${chunkId}`,
+        {
+          body: JSON.stringify(payload),
+        },
+      );
 
       return Promise.resolve(data);
     } catch (error) {
@@ -344,21 +369,20 @@ export class ArtifactClient extends APIResource {
   }
 
   async searchChunks(props: SearchChunksRequest) {
-    const { namespaceId, knowledgeBaseId, requesterUid, ...payload } = props;
-
-    const queryString = getQueryString({
-      baseURL: `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/searchChunks`,
-    });
+    const { namespaceId, requesterUid, ...payload } = props;
 
     const additionalHeaders = getInstillAdditionalHeaders({
       requesterUid: requesterUid,
     });
 
     try {
-      const data = await this._client.post<SearchChunksResponse>(queryString, {
-        body: JSON.stringify(payload),
-        additionalHeaders,
-      });
+      const data = await this._client.post<SearchChunksResponse>(
+        `/namespaces/${namespaceId}/search-chunks`,
+        {
+          body: JSON.stringify(payload),
+          additionalHeaders,
+        },
+      );
 
       return Promise.resolve(data);
     } catch (error) {
@@ -367,26 +391,43 @@ export class ArtifactClient extends APIResource {
   }
 
   /* ----------------------------------------------------------------------------
-   * Knowledge Base Runs
+   * Objects
    * ---------------------------------------------------------------------------*/
 
-  async listKnowledgeBaseRuns(props: ListKnowledgeBaseRunsRequest) {
-    const { namespaceId, knowledgeBaseId, pageSize, page, filter, orderBy } =
-      props;
-
-    const queryString = getQueryString({
-      baseURL: `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/runs`,
-      page,
-      pageSize,
-      filter,
-      orderBy,
-    });
-
+  async getObject({ namespaceId, objectId }: GetObjectRequest) {
     try {
-      const data =
-        await this._client.get<ListKnowledgeBaseRunsResponse>(queryString);
+      const data = await this._client.get<GetObjectResponse>(
+        `/namespaces/${namespaceId}/objects/${objectId}`,
+      );
 
       return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async updateObject(props: UpdateObjectRequest) {
+    const { namespaceId, objectId, ...payload } = props;
+
+    try {
+      const data = await this._client.patch<UpdateObjectResponse>(
+        `/namespaces/${namespaceId}/objects/${objectId}`,
+        {
+          body: JSON.stringify(payload),
+        },
+      );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async deleteObject({ namespaceId, objectId }: DeleteObjectRequest) {
+    try {
+      await this._client.delete(
+        `/namespaces/${namespaceId}/objects/${objectId}`,
+      );
     } catch (error) {
       return Promise.reject(error);
     }

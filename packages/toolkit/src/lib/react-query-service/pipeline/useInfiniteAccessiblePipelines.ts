@@ -48,7 +48,7 @@ export function useInfiniteAccessiblePipelines({
         accessToken: accessToken ?? undefined,
       });
 
-      const pipelines = await client.vdp.pipeline.listAccessiblePipelines({
+      const pipelines = await client.pipeline.pipeline.listAccessiblePipelines({
         enablePagination: true,
         pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE") ?? undefined,
         pageToken: pageParam ?? undefined,

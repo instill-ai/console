@@ -56,7 +56,7 @@ export function usePaginatedNamespacePipelineRuns({
         accessToken: accessToken ?? undefined,
       });
 
-      const data = await client.vdp.trigger.listPaginatedNamespacePipelineRuns({
+      const data = await client.pipeline.trigger.listPaginatedNamespacePipelineRuns({
         namespaceId,
         pipelineId,
         pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),

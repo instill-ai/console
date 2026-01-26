@@ -41,6 +41,10 @@ export function useUpdateNamespaceChunk() {
         throw new Error("knowledgeBaseId is required");
       }
 
+      if (!fileUid) {
+        throw new Error("fileUid is required");
+      }
+
       if (retrievable === undefined || retrievable === null) {
         throw new Error("retrievable flag is required");
       }
@@ -48,7 +52,8 @@ export function useUpdateNamespaceChunk() {
       const client = getInstillArtifactAPIClient({ accessToken });
       const res = await client.artifact.updateChunk({
         namespaceId,
-        knowledgeBaseId: knowledgeBaseId,
+        knowledgeBaseId,
+        fileId: fileUid,
         chunkId: chunkUid,
         retrievable,
       });

@@ -41,7 +41,7 @@ export function useListPipelineRunsByRequester({
         accessToken,
       });
 
-      const data = await client.core.metric.listPipelineRunsByRequester({
+      const data = await client.mgmt.metric.listPipelineRunsByRequester({
         pageSize,
         page,
         orderBy,

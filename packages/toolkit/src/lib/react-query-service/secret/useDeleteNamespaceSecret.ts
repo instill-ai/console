@@ -24,7 +24,7 @@ export function useDeleteNamespaceSecret() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      await client.vdp.secret.deleteNamespaceSecret({
+      await client.pipeline.secret.deleteNamespaceSecret({
         namespaceId,
         secretId,
       });

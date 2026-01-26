@@ -1,6 +1,6 @@
 import { getInstillAdditionalHeaders, getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
-import { PipelineRun } from "../../vdp";
+import { PipelineRun } from "../../pipeline";
 import {
   ListCreditConsumptionChartRecordResponse,
   ListModelTriggerCountRequest,

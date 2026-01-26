@@ -1,43 +1,41 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  GetNamespaceObjectDownloadURLRequest,
-  WithNullableFields,
-} from "instill-sdk";
+import type { Nullable } from "instill-sdk";
 
 import { getInstillArtifactAPIClient } from "../../sdk-helper";
 import { QueryBaseProps } from "../types";
 
 export function useNamespaceObjectDownloadURL({
-  objectUid,
-  namespaceId,
+  name,
   enabled,
   accessToken,
   urlExpireDays,
-}: WithNullableFields<GetNamespaceObjectDownloadURLRequest> & QueryBaseProps) {
+  downloadFilename,
+}: {
+  /** Full resource name: namespaces/{namespace}/objects/{object} */
+  name: Nullable<string>;
+  urlExpireDays?: number;
+  downloadFilename?: string;
+} & QueryBaseProps) {
   return useQuery({
-    queryKey: [namespaceId, "namespace-object-download-url", objectUid],
+    queryKey: ["namespace-object-download-url", name],
     queryFn: async () => {
       if (!accessToken) {
         throw new Error("accessToken is required");
       }
 
-      if (!objectUid) {
-        throw new Error("objectUid is required");
-      }
-
-      if (!namespaceId) {
-        throw new Error("namespaceId is required");
+      if (!name) {
+        throw new Error("name is required");
       }
 
       const client = getInstillArtifactAPIClient({ accessToken });
       const response = await client.artifact.getNamespaceObjectDownloadURL({
-        namespaceId,
-        objectUid,
+        name,
         urlExpireDays: urlExpireDays ?? undefined,
+        downloadFilename,
       });
 
       return response;
     },
-    enabled,
+    enabled: enabled && Boolean(name),
   });
 }

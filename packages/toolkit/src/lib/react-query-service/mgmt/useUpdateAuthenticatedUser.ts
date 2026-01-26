@@ -25,7 +25,7 @@ export function useUpdateAuthenticatedUser() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      const user = await client.core.user.updateAuthenticatedUser(payload);
+      const user = await client.mgmt.user.updateAuthenticatedUser(payload);
 
       return Promise.resolve(user);
     },

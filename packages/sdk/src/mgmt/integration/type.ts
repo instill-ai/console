@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { InstillJSONSchema, Nullable } from "../../types";
-import { ResourceView, ResourceViewSchema } from "../../vdp";
+import { ResourceView, ResourceViewSchema } from "../../pipeline";
 
 export type IntegrationMethod = "METHOD_DICTIONARY" | "METHOD_OAUTH";
 

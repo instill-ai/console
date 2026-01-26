@@ -19,7 +19,7 @@ export async function fetchNamespaceType({
       accessToken: accessToken ?? undefined,
     });
 
-    const type = await client.core.utils.checkNamespaceType({
+    const type = await client.mgmt.utils.checkNamespaceType({
       id: namespace,
     });
 

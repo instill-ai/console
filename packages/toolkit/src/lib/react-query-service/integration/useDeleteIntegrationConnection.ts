@@ -25,7 +25,7 @@ export function useDeleteIntegrationConnection() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      const res = await client.core.integration.deleteNamespaceConnection({
+      const res = await client.mgmt.integration.deleteNamespaceConnection({
         namespaceId,
         connectionId,
       });

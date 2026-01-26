@@ -24,7 +24,7 @@ export function useDeleteNamespacePipeline() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      await client.vdp.pipeline.deleteNamespacePipeline({
+      await client.pipeline.pipeline.deleteNamespacePipeline({
         namespaceId,
         pipelineId,
       });

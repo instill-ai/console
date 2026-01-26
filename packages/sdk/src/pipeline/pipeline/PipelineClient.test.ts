@@ -16,7 +16,7 @@ test("listAccessiblePipelines", async () => {
     debug: true,
   });
 
-  const pipelines = await client.vdp.pipeline.listAccessiblePipelines({
+  const pipelines = await client.pipeline.pipeline.listAccessiblePipelines({
     enablePagination: true,
     pageSize: 10,
     pageToken: "pt",
@@ -40,7 +40,7 @@ test("listNamespacePipelines", async () => {
     debug: true,
   });
 
-  const pipelines = await client.vdp.pipeline.listNamespacePipelines({
+  const pipelines = await client.pipeline.pipeline.listNamespacePipelines({
     namespaceId: "nid",
     enablePagination: true,
     pageSize: 10,
@@ -65,7 +65,7 @@ test("getNamespacePipeline", async () => {
     debug: true,
   });
 
-  const pipeline = await client.vdp.pipeline.getNamespacePipeline({
+  const pipeline = await client.pipeline.pipeline.getNamespacePipeline({
     namespaceId: "nid",
     pipelineId: "pid",
     view: "VIEW_FULL",
@@ -84,7 +84,7 @@ test("createNamespacePipeline", async () => {
     debug: true,
   });
 
-  const pipeline = await client.vdp.pipeline.createNamespacePipeline({
+  const pipeline = await client.pipeline.pipeline.createNamespacePipeline({
     namespaceId: "nid",
     id: "hello",
     recipe: {
@@ -106,7 +106,7 @@ test("updateNamespacePipeline", async () => {
     debug: true,
   });
 
-  const pipeline = await client.vdp.pipeline.updateNamespacePipeline({
+  const pipeline = await client.pipeline.pipeline.updateNamespacePipeline({
     namespaceId: "nid",
     pipelineId: "pid",
     recipe: {

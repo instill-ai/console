@@ -6,9 +6,7 @@ import {
   CreateKnowledgeBaseRequest,
   KnowledgeBase,
   Nullable,
-  OrganizationSubscription,
   UpdateKnowledgeBaseRequest,
-  UserSubscription,
 } from "instill-sdk";
 import * as z from "zod";
 
@@ -23,6 +21,10 @@ import {
   useShallow,
   useUpdateNamespaceKnowledgeBase,
 } from "../../../../lib";
+import type {
+  OrganizationSubscription,
+  UserSubscription,
+} from "../lib/helpers";
 import { CreateKnowledgeBaseCard } from "../CreateKnowledgeBaseCard";
 import {
   CreateKnowledgeBaseDialog,
@@ -43,7 +45,7 @@ type KnowledgeBaseMainTabProps = {
   accessToken: Nullable<string>;
   onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
   knowledgeBases: KnowledgeBase[];
-  knowledgeBaseLimit: number;
+  knowledgeBaseLimit: Nullable<number>;
   namespaceType: Nullable<"user" | "organization">;
   subscription: Nullable<UserSubscription | OrganizationSubscription>;
   isLocalEnvironment: boolean;

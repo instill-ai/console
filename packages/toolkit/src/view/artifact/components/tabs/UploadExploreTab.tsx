@@ -5,8 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CreateFileRequest,
   KnowledgeBase,
-  OrganizationSubscription,
-  UserSubscription,
 } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -31,6 +29,10 @@ import {
   useShallow,
   useUserNamespaces,
 } from "../../../../lib";
+import type {
+  OrganizationSubscription,
+  UserSubscription,
+} from "../lib/helpers";
 import { useAmplitudeCtx } from "../../../../lib/amplitude";
 import { DragAndDropUpload } from "../DragAndDropUpload";
 import { FILE_ERROR_TIMEOUT } from "../lib/constant";
@@ -259,9 +261,10 @@ export const UploadExploreTab = ({
 
           const payload: CreateFileRequest = {
             namespaceId: navigationNamespaceAnchor ?? "",
-            knowledgeBaseId: knowledgeBase.id,
+            // Knowledge base resource name format: `namespaces/{namespace}/knowledgeBases/{kb}`
+            knowledgeBase: knowledgeBase.name,
             file: {
-              filename: file.name,
+              displayName: file.name,
               type: getFileType(file),
               content,
             },

@@ -1,5 +1,4 @@
 export * from "./metric";
-export * from "./subscription";
 export * from "./token";
 export * from "./user";
 export * from "./integration";

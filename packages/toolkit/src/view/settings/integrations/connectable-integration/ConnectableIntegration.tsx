@@ -62,7 +62,7 @@ export const ConnectableIntegration = ({
             });
 
             const integrationFull =
-              await client.core.integration.getIntegration({
+              await client.mgmt.integration.getIntegration({
                 integrationId: integration.id,
                 view: "VIEW_FULL",
               });

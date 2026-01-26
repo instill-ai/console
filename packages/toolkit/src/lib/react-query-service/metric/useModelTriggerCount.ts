@@ -33,7 +33,7 @@ export function useModelTriggerCount({
         stop,
       };
 
-      const data = await client.core.metric.listModelTriggerCount(request);
+      const data = await client.mgmt.metric.listModelTriggerCount(request);
       return data;
     },
     enabled: enabled && !!requesterId,

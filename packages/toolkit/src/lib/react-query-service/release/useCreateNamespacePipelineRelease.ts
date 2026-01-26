@@ -26,7 +26,7 @@ export function useCreateNamespacePipelineRelease() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      await client.vdp.release.createNamespacePipelineRelease(payload);
+      await client.pipeline.release.createNamespacePipelineRelease(payload);
 
       return Promise.resolve({
         namespaceId: payload.namespaceId,

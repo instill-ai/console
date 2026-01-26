@@ -551,9 +551,9 @@ const knowledgeBaseQueryKeyStore = {
     knowledgeBaseId,
   }: {
     namespaceId: Nullable<string>;
-    knowledgeBaseId: Nullable<string>;
+    knowledgeBaseId?: Nullable<string>;
   }) {
-    return [namespaceId, "knowledge-bases", knowledgeBaseId, "files"];
+    return [namespaceId, "knowledge-bases", knowledgeBaseId ?? null, "files"];
   },
   getUseListNamespaceKnowledgeBaseChunksQueryKey({
     namespaceId,
@@ -562,11 +562,11 @@ const knowledgeBaseQueryKeyStore = {
     chunkUids,
   }: {
     namespaceId: Nullable<string>;
-    knowledgeBaseId: Nullable<string>;
+    knowledgeBaseId?: Nullable<string>;
     fileUid: Nullable<string>;
     chunkUids: Nullable<string[]>;
   }) {
-    const queryKey = [namespaceId, "knowledge-bases", knowledgeBaseId];
+    const queryKey = [namespaceId, "knowledge-bases", knowledgeBaseId ?? null];
 
     if (fileUid) {
       queryKey.push("files", fileUid);
@@ -584,7 +584,7 @@ const knowledgeBaseQueryKeyStore = {
     fileUid,
   }: {
     namespaceId: Nullable<string>;
-    knowledgeBaseId: Nullable<string>;
+    knowledgeBaseId?: Nullable<string>;
     fileUid: Nullable<string>;
   }) {
     return [
@@ -620,13 +620,13 @@ const knowledgeBaseQueryKeyStore = {
     fileUid,
   }: {
     namespaceId: Nullable<string>;
-    knowledgeBaseId: Nullable<string>;
+    knowledgeBaseId?: Nullable<string>;
     fileUid: Nullable<string>;
   }) {
     return [
       namespaceId,
       "knowledge-bases",
-      knowledgeBaseId,
+      knowledgeBaseId ?? null,
       "files",
       fileUid,
       "content",

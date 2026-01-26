@@ -8,6 +8,8 @@ import { getInstillAPIClient } from "../../sdk-helper";
 import { queryKeyStore } from "../queryKeyStore";
 
 export function usePaginatedNamepsacePipelineComponentRuns({
+  namespaceId,
+  pipelineId,
   pipelineRunId,
   accessToken,
   enabled,
@@ -19,6 +21,8 @@ export function usePaginatedNamepsacePipelineComponentRuns({
   requesterUid,
 }: {
   enabled: boolean;
+  namespaceId: Nullable<string>;
+  pipelineId: Nullable<string>;
   pipelineRunId: Nullable<string>;
   accessToken: Nullable<string>;
   view: Nullable<ResourceView>;
@@ -42,6 +46,14 @@ export function usePaginatedNamepsacePipelineComponentRuns({
         },
       ),
     queryFn: async () => {
+      if (!namespaceId) {
+        return Promise.reject(new Error("namespaceId not provided"));
+      }
+
+      if (!pipelineId) {
+        return Promise.reject(new Error("pipelineId not provided"));
+      }
+
       if (!pipelineRunId) {
         return Promise.reject(new Error("pipelineRunId not provided"));
       }
@@ -51,7 +63,9 @@ export function usePaginatedNamepsacePipelineComponentRuns({
       });
 
       const data =
-        await client.vdp.trigger.listPaginatedNamespacePipelineComponentRuns({
+        await client.pipeline.trigger.listPaginatedNamespacePipelineComponentRuns({
+          namespaceId,
+          pipelineId,
           pipelineRunId,
           pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
           view: view ?? "VIEW_BASIC",

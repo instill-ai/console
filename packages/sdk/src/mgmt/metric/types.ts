@@ -1,6 +1,10 @@
 import { ModelReleaseStage, ModelTriggerStatus } from "../../model";
 import { Nullable } from "../../types";
-import { PipelineMode, PipelineReleaseState, PipelineRun } from "../../vdp";
+import {
+  PipelineMode,
+  PipelineReleaseState,
+  PipelineRun,
+} from "../../pipeline";
 
 export type Mode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 

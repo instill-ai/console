@@ -23,7 +23,7 @@ export function useListNamespaceChunks({
 }) {
   let enabledQuery = false;
 
-  if (enabled && accessToken && namespaceId && knowledgeBaseId) {
+  if (enabled && accessToken && namespaceId && knowledgeBaseId && fileUid) {
     enabledQuery = true;
   }
 
@@ -57,7 +57,7 @@ export function useListNamespaceChunks({
       const client = getInstillArtifactAPIClient({ accessToken });
       const res = await client.artifact.listChunks({
         namespaceId,
-        knowledgeBaseId: knowledgeBaseId,
+        knowledgeBaseId,
         fileId: fileUid,
       });
 

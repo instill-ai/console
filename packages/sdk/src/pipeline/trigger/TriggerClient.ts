@@ -64,6 +64,8 @@ export class TriggerClient extends APIResource {
     props: ListPaginatedNamespacePipelineComponentRunsRequest,
   ) {
     const {
+      namespaceId,
+      pipelineId,
       pipelineRunId,
       view,
       pageSize,
@@ -77,7 +79,7 @@ export class TriggerClient extends APIResource {
       const additionalHeaders = getInstillAdditionalHeaders({ requesterUid });
 
       const queryString = getQueryString({
-        baseURL: `/pipeline-runs/${pipelineRunId}/component-runs`,
+        baseURL: `/namespaces/${namespaceId}/pipelines/${pipelineId}/runs/${pipelineRunId}/component-runs`,
         pageSize,
         page,
         filter,
@@ -203,7 +205,7 @@ export class TriggerClient extends APIResource {
     try {
       const data =
         await this._client.post<TriggerAsyncNamespacePipelineResponse>(
-          `/namespaces/${namespaceId}/pipelines/${pipelineId}/triggerAsync`,
+          `/namespaces/${namespaceId}/pipelines/${pipelineId}/trigger-async`,
           {
             body: JSON.stringify({ inputs }),
             additionalHeaders,
@@ -278,7 +280,7 @@ export class TriggerClient extends APIResource {
     try {
       const data =
         await this._client.post<TriggerAsyncNamespacePipelineReleaseResponse>(
-          `/namespaces/${namespaceId}/pipelines/${pipelineId}/releases/${releaseId}/triggerAsync`,
+          `/namespaces/${namespaceId}/pipelines/${pipelineId}/releases/${releaseId}/trigger-async`,
           {
             body: JSON.stringify({ inputs }),
             additionalHeaders,

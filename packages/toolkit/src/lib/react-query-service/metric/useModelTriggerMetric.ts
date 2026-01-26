@@ -26,7 +26,7 @@ export function useModelTriggerMetric({
       const client = getInstillAPIClient({ accessToken });
 
       try {
-        const response = await client.core.metric.listModelTriggerMetric({
+        const response = await client.mgmt.metric.listModelTriggerMetric({
           pageSize: undefined,
           filter: filter ?? undefined,
           requesterId: requesterId ?? undefined,

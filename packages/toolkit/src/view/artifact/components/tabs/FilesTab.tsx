@@ -5,8 +5,6 @@ import {
   KnowledgeBase,
   File as KnowledgeBaseFile,
   Nullable,
-  OrganizationSubscription,
-  UserSubscription,
 } from "instill-sdk";
 
 import { Separator, Skeleton } from "@instill-ai/design-system";
@@ -20,6 +18,10 @@ import {
   useListNamespaceFiles,
   useShallow,
 } from "../../../../lib";
+import type {
+  OrganizationSubscription,
+  UserSubscription,
+} from "../lib/helpers";
 import { EmptyState } from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";

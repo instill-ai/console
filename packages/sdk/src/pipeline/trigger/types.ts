@@ -62,6 +62,8 @@ export type ComponentRun = {
 };
 
 export type ListPaginatedNamespacePipelineComponentRunsRequest = {
+  namespaceId: string;
+  pipelineId: string;
   pipelineRunId: string;
   pageSize?: number;
   page?: number;

@@ -19,7 +19,7 @@ export function useStreamingTriggerUserPipelineRelease() {
         accessToken: accessToken ?? undefined,
       });
 
-      const response = await client.vdp.trigger.triggerNamespacePipelineRelease(
+      const response = await client.pipeline.trigger.triggerNamespacePipelineRelease(
         {
           ...payload,
           stream: true,
