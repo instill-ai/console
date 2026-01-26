@@ -68,11 +68,11 @@ export const ChunksTab = ({ knowledgeBase, onGoToUpload }: ChunksTabProps) => {
 
   const updateChunk = useUpdateNamespaceChunk();
 
-  const toggleFileExpansion = (fileUid: string) => {
+  const toggleFileExpansion = (fileId: string) => {
     setExpandedFiles((prev) =>
-      prev.includes(fileUid)
-        ? prev.filter((id) => id !== fileUid)
-        : [...prev, fileUid],
+      prev.includes(fileId)
+        ? prev.filter((id) => id !== fileId)
+        : [...prev, fileId],
     );
   };
 
@@ -89,15 +89,15 @@ export const ChunksTab = ({ knowledgeBase, onGoToUpload }: ChunksTabProps) => {
   };
 
   const handleRetrievableToggle = async (
-    chunkUid: string,
+    chunkId: string,
     currentValue: boolean,
   ) => {
     try {
       await updateChunk.mutateAsync({
         namespaceId: selectedNamespace,
         knowledgeBaseId: knowledgeBase.id,
-        fileUid: null,
-        chunkUid,
+        fileId: null,
+        chunkId,
         accessToken,
         retrievable: !currentValue,
       });
@@ -161,12 +161,12 @@ export const ChunksTab = ({ knowledgeBase, onGoToUpload }: ChunksTabProps) => {
           <div className="w-full pr-4">
             {filteredFiles.map((file: KnowledgeBaseFile) => (
               <FileChunks
-                key={file.uid}
+                key={file.id}
                 file={file}
                 knowledgeBase={knowledgeBase}
                 accessToken={accessToken}
                 namespaceId={selectedNamespace}
-                expanded={expandedFiles.includes(file.uid)}
+                expanded={expandedFiles.includes(file.id)}
                 onToggleExpand={toggleFileExpansion}
                 onChunkClick={handleChunkClick}
                 onRetrievableToggle={handleRetrievableToggle}
@@ -196,16 +196,16 @@ export const ChunksTab = ({ knowledgeBase, onGoToUpload }: ChunksTabProps) => {
       )}
       {selectedFile && selectedChunk && (
         <FileDetailsOverlay
-          fileUid={selectedFile.uid}
+          fileId={selectedFile.id}
           knowledgeBaseId={knowledgeBase.id}
           accessToken={accessToken}
           onClose={closeOverlay}
           showFullFile={false}
-          selectedChunkUid={selectedChunk.uid}
+          selectedChunkId={selectedChunk.id}
           namespaceId={selectedNamespace ?? ""}
           isOpen={isFileDetailsOpen}
           setIsOpen={setIsFileDetailsOpen}
-          fileName={selectedFile.filename}
+          fileName={selectedFile.displayName}
           highlightChunk={false}
           fileType={selectedFile.type}
         />

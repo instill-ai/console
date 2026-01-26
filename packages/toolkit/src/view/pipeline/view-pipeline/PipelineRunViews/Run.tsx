@@ -72,7 +72,7 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
     page: 0,
     filter: `pipelineTriggerUID="${id}"`,
     view: "VIEW_FULL",
-    requesterUid: targetNamespace ? targetNamespace.uid : null,
+    requesterId: targetNamespace ? targetNamespace.id : null,
     orderBy: null,
   });
 

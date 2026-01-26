@@ -15,7 +15,7 @@ export async function fetchAuthenticatedUser({
   try {
     const client = getInstillAPIClient({ accessToken });
 
-    const user = await client.core.user.getAuthenticatedUser();
+    const user = await client.mgmt.user.getAuthenticatedUser();
 
     return Promise.resolve(user);
   } catch (error) {

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { InstillJSONSchema, Nullable } from "../../types";
-import { ResourceView, ResourceViewSchema } from "../../vdp";
+import { ResourceView, ResourceViewSchema } from "../../pipeline";
 
 export type IntegrationMethod = "METHOD_DICTIONARY" | "METHOD_OAUTH";
 
@@ -28,44 +28,73 @@ export const OAuthConfigSchema = z.object({
 });
 
 export type Integration = {
-  uid: string;
+  // Integration ID, which references a component definition
   id: string;
+  // Title, reflects the app name
   title: string;
+  // Short description of the integrated app
   description: string;
+  // Integrated app vendor name
   vendor: string;
+  // Integration icon path
   icon: string;
-  helpLink: HelpLink;
+  // Reference to the vendor's documentation
+  helpLink?: HelpLink;
+  // Connection setup field definitions (JSON Schema)
   setupSchema: InstillJSONSchema;
+  // OAuth 2.0 configuration parameters (if supported)
   oAuthConfig: Nullable<OAuthConfig>;
+  // View defines how the integration is presented
   view: ResourceView;
 };
 
 export const IntegrationSchema = z.object({
-  uid: z.string(),
   id: z.string(),
   title: z.string(),
   description: z.string(),
   vendor: z.string(),
   icon: z.string(),
-  helpLink: HelpLinkSchema,
+  helpLink: HelpLinkSchema.optional(),
   setupSchema: z.any(),
   oAuthConfig: OAuthConfigSchema.nullable(),
   view: ResourceViewSchema,
 });
 
 export type IntegrationConnection = {
-  uid: string;
+  // ===== Standard AIP fields =====
+  // Canonical resource name. Format: `namespaces/{namespace}/connections/{connection}`
+  name: string;
+  // Immutable canonical resource ID (e.g., "con-8f3a2k9E7c1")
   id: string;
-  namespaceId: string;
-  integrationId: string;
-  integrationTitle: string;
-  pipelineIds: string[];
-  method: IntegrationMethod;
-  setup: Record<string, unknown>;
-  view: ResourceView;
+  // Human-readable display name for UI
+  displayName: string;
+  // URL-friendly slug (NO prefix)
+  slug?: string;
+  // Previous slugs for backward compatibility
+  aliases?: string[];
+  // Optional description
+  description?: string;
+  // ===== Timestamps =====
   createTime: string;
   updateTime: string;
+  // ===== Resource-specific fields =====
+  // ID of the namespace owning the connection
+  namespaceId: string;
+  // Integration ID (determines which components can use this connection)
+  integrationId: string;
+  // Integration title (for display purposes)
+  integrationTitle: string;
+  // Connection method (METHOD_DICTIONARY or METHOD_OAUTH)
+  method: IntegrationMethod;
+  // Connection details (setup values may be redacted in responses)
+  setup: Record<string, unknown>;
+  // View defines how the connection is presented
+  view: ResourceView;
+  // OAuth scopes (if applicable)
+  scopes?: string[];
+  // OAuth access details (vendor-specific metadata)
   oAuthAccessDetails?: Record<string, unknown>;
+  // OAuth identity (email/username used for the access token)
   identity?: string;
 };
 

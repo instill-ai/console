@@ -28,7 +28,7 @@ export async function fetchNamespaceSecret({
   try {
     const client = getInstillAPIClient({ accessToken });
 
-    const userSecret = await client.vdp.secret.getNamespaceSecret({
+    const userSecret = await client.pipeline.secret.getNamespaceSecret({
       namespaceId,
       secretId,
     });

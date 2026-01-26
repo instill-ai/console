@@ -22,7 +22,7 @@ export function useCreateAPIToken() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      const res = await client.core.token.createAPIToken(payload);
+      const res = await client.mgmt.token.createAPIToken(payload);
 
       return Promise.resolve(res.token);
     },

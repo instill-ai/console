@@ -73,18 +73,18 @@ const modelQueryKeyStore = {
   getUseNamespaceModelOperationResultQueryKey({
     namespaceId,
     modelId,
-    requesterUid,
+    requesterId,
     view,
   }: {
     namespaceId: Nullable<string>;
     modelId: Nullable<string>;
-    requesterUid: Nullable<string>;
+    requesterId: Nullable<string>;
     view: Nullable<ResourceView>;
   }) {
     const queryKey = [namespaceId, "models", modelId, "operation"];
 
-    if (requesterUid) {
-      queryKey.push(requesterUid);
+    if (requesterId) {
+      queryKey.push(requesterId);
     }
 
     if (view) {
@@ -97,13 +97,13 @@ const modelQueryKeyStore = {
     namespaceId,
     modelId,
     versionId,
-    requesterUid,
+    requesterId,
     view,
   }: {
     namespaceId: Nullable<string>;
     modelId: Nullable<string>;
     versionId: Nullable<string>;
-    requesterUid: Nullable<string>;
+    requesterId: Nullable<string>;
     view: Nullable<ResourceView>;
   }) {
     const queryKey = [
@@ -115,8 +115,8 @@ const modelQueryKeyStore = {
       "operation",
     ];
 
-    if (requesterUid) {
-      queryKey.push(requesterUid);
+    if (requesterId) {
+      queryKey.push(requesterId);
     }
 
     if (view) {
@@ -131,7 +131,7 @@ const modelQueryKeyStore = {
   getNamespaceModelRunsQueryKey({
     namespaceId,
     modelId,
-    requesterUid,
+    requesterId,
     accessToken,
     view,
     pageSize,
@@ -141,7 +141,7 @@ const modelQueryKeyStore = {
   }: {
     namespaceId: Nullable<string>;
     modelId: Nullable<string>;
-    requesterUid: Nullable<string>;
+    requesterId: Nullable<string>;
     accessToken: Nullable<string>;
     view: Nullable<ResourceView>;
     pageSize: Nullable<number>;
@@ -151,8 +151,8 @@ const modelQueryKeyStore = {
   }) {
     const queryKey = [namespaceId, "models", modelId, "runs", "paginated"];
 
-    if (requesterUid) {
-      queryKey.push(requesterUid);
+    if (requesterId) {
+      queryKey.push(requesterId);
     }
 
     if (accessToken) {
@@ -271,7 +271,7 @@ const pipelineQueryKeyStore = {
   getUsePaginatedNamespacePipelineRunsQueryKey({
     namespaceId,
     pipelineId,
-    requesterUid,
+    requesterId,
     accessToken,
     view,
     pageSize,
@@ -281,7 +281,7 @@ const pipelineQueryKeyStore = {
   }: {
     namespaceId: Nullable<string>;
     pipelineId: Nullable<string>;
-    requesterUid: Nullable<string>;
+    requesterId: Nullable<string>;
     accessToken: Nullable<string>;
     view: Nullable<ResourceView>;
     pageSize: Nullable<number>;
@@ -312,8 +312,8 @@ const pipelineQueryKeyStore = {
       queryKey.push(filter);
     }
 
-    if (requesterUid) {
-      queryKey.push(requesterUid);
+    if (requesterId) {
+      queryKey.push(requesterId);
     }
 
     if (pageSize) {
@@ -467,7 +467,7 @@ const releaseQueryKeyStore = {
     view,
     orderBy,
     filter,
-    requesterUid,
+    requesterId,
     pageSize,
   }: {
     pipelineRunId: Nullable<string>;
@@ -475,7 +475,7 @@ const releaseQueryKeyStore = {
     view: Nullable<ResourceView>;
     orderBy: Nullable<string>;
     filter: Nullable<string>;
-    requesterUid: Nullable<string>;
+    requesterId: Nullable<string>;
     pageSize: Nullable<number>;
   }) {
     const queryKey = [
@@ -500,8 +500,8 @@ const releaseQueryKeyStore = {
       queryKey.push(filter);
     }
 
-    if (requesterUid) {
-      queryKey.push(requesterUid);
+    if (requesterId) {
+      queryKey.push(requesterId);
     }
 
     if (pageSize) {
@@ -551,29 +551,29 @@ const knowledgeBaseQueryKeyStore = {
     knowledgeBaseId,
   }: {
     namespaceId: Nullable<string>;
-    knowledgeBaseId: Nullable<string>;
+    knowledgeBaseId?: Nullable<string>;
   }) {
-    return [namespaceId, "knowledge-bases", knowledgeBaseId, "files"];
+    return [namespaceId, "knowledge-bases", knowledgeBaseId ?? null, "files"];
   },
   getUseListNamespaceKnowledgeBaseChunksQueryKey({
     namespaceId,
     knowledgeBaseId,
-    fileUid,
-    chunkUids,
+    fileId,
+    chunkIds,
   }: {
     namespaceId: Nullable<string>;
-    knowledgeBaseId: Nullable<string>;
-    fileUid: Nullable<string>;
-    chunkUids: Nullable<string[]>;
+    knowledgeBaseId?: Nullable<string>;
+    fileId: Nullable<string>;
+    chunkIds: Nullable<string[]>;
   }) {
-    const queryKey = [namespaceId, "knowledge-bases", knowledgeBaseId];
+    const queryKey = [namespaceId, "knowledge-bases", knowledgeBaseId ?? null];
 
-    if (fileUid) {
-      queryKey.push("files", fileUid);
+    if (fileId) {
+      queryKey.push("files", fileId);
     }
 
-    if (chunkUids) {
-      queryKey.push("chunks", ...chunkUids);
+    if (chunkIds) {
+      queryKey.push("chunks", ...chunkIds);
     }
 
     return queryKey;
@@ -581,54 +581,54 @@ const knowledgeBaseQueryKeyStore = {
   getUseNamespaceKnowledgeBaseSingleSourceOfTruthFileQueryKey({
     namespaceId,
     knowledgeBaseId,
-    fileUid,
+    fileId,
   }: {
     namespaceId: Nullable<string>;
-    knowledgeBaseId: Nullable<string>;
-    fileUid: Nullable<string>;
+    knowledgeBaseId?: Nullable<string>;
+    fileId: Nullable<string>;
   }) {
     return [
       namespaceId,
       "knowledge-bases",
       knowledgeBaseId,
       "files",
-      fileUid,
+      fileId,
       "source",
     ];
   },
   getUseKnowledgeBaseFileSummaryQueryKey({
     namespaceId,
     knowledgeBaseId,
-    fileUid,
+    fileId,
   }: {
     namespaceId: Nullable<string>;
     knowledgeBaseId: Nullable<string>;
-    fileUid: Nullable<string>;
+    fileId: Nullable<string>;
   }) {
     return [
       namespaceId,
       "knowledge-bases",
       knowledgeBaseId,
       "files",
-      fileUid,
+      fileId,
       "summary",
     ];
   },
   getUseNamespaceKnowledgeBaseFileQueryKey({
     namespaceId,
     knowledgeBaseId,
-    fileUid,
+    fileId,
   }: {
     namespaceId: Nullable<string>;
-    knowledgeBaseId: Nullable<string>;
-    fileUid: Nullable<string>;
+    knowledgeBaseId?: Nullable<string>;
+    fileId: Nullable<string>;
   }) {
     return [
       namespaceId,
       "knowledge-bases",
-      knowledgeBaseId,
+      knowledgeBaseId ?? null,
       "files",
-      fileUid,
+      fileId,
       "content",
     ];
   },

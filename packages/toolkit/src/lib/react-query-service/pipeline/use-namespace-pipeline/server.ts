@@ -30,7 +30,7 @@ export async function fetchNamespacePipeline({
       accessToken: accessToken ?? undefined,
     });
 
-    const pipeline = await client.vdp.pipeline.getNamespacePipeline({
+    const pipeline = await client.pipeline.pipeline.getNamespacePipeline({
       namespaceId,
       pipelineId,
       shareCode: shareCode ?? undefined,

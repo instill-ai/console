@@ -48,7 +48,7 @@ export function useCreditConsumptionChartRecords({
       });
 
       const data =
-        await client.core.metric.listInstillCreditConsumptionTimeChart({
+        await client.mgmt.metric.listInstillCreditConsumptionTimeChart({
           namespaceId,
           start: start ?? undefined,
           stop: stop ?? undefined,

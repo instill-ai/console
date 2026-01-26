@@ -24,7 +24,7 @@ export function useUpdateNamespaceConnection() {
       const client = getInstillAPIClient({ accessToken });
 
       const res =
-        await client.core.integration.updateNamespaceConnection(payload);
+        await client.mgmt.integration.updateNamespaceConnection(payload);
 
       return Promise.resolve(res.connection);
     },

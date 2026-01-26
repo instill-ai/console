@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { ResourceView } from "../../vdp";
+import { ResourceView } from "../../pipeline";
 
 export type OnboardingStatus =
   | "ONBOARDING_STATUS_UNSPECIFIED"
@@ -42,19 +42,34 @@ export const UserProfileSchema = z.object({
 });
 
 export type User = {
+  // ===== Standard AIP fields =====
+  // Canonical resource name. Format: `users/{user}`
   name: string;
-  uid: string;
+  // Immutable canonical resource ID (e.g., "usr-8f3A2k9E7c1xYz")
   id: string;
+  // Human-readable display name for UI
+  displayName?: string;
+  // URL-friendly slug (NO prefix)
+  slug?: string;
+  // Previous slugs for backward compatibility
+  aliases?: string[];
+  // Optional description / bio
+  description?: string;
+  // ===== Timestamps =====
   createTime: string;
   updateTime: string;
+  // ===== Resource-specific fields =====
   profile?: UserProfile;
   email: string;
 };
 
 export const UserSchema = z.object({
   name: z.string(),
-  uid: z.string(),
   id: z.string(),
+  displayName: z.string().optional(),
+  slug: z.string().optional(),
+  aliases: z.array(z.string()).optional(),
+  description: z.string().optional(),
   createTime: z.string(),
   updateTime: z.string(),
   profile: UserProfileSchema.optional(),
@@ -62,34 +77,48 @@ export const UserSchema = z.object({
 });
 
 export type AuthenticatedUser = {
+  // ===== Standard AIP fields =====
+  // Canonical resource name. Format: `users/{user}`
   name: string;
-  uid: string;
+  // Immutable canonical resource ID (e.g., "usr-8f3A2k9E7c1xYz")
   id: string;
+  // Human-readable display name for UI
+  displayName: string;
+  // URL-friendly slug (NO prefix)
+  slug: string;
+  // Previous slugs for backward compatibility
+  aliases?: string[];
+  // Optional description / bio
+  description?: string;
+  // ===== Timestamps =====
   createTime: string;
   updateTime: string;
-  customerId: string;
+  // ===== Resource-specific fields =====
   email: string;
+  role?: string;
   newsletterSubscription: boolean;
-  role: string;
-  onboardingStatus: OnboardingStatus;
   cookieToken?: string;
+  onboardingStatus: OnboardingStatus;
   profile?: UserProfile;
   isEligibleForOrganizationTrial: boolean;
 };
 
 export const AuthenticatedUserSchema = z.object({
   name: z.string(),
-  uid: z.string(),
   id: z.string(),
+  displayName: z.string().optional(),
+  slug: z.string().optional(),
+  aliases: z.array(z.string()).optional(),
+  description: z.string().optional(),
   createTime: z.string(),
   updateTime: z.string(),
-  customerId: z.string(),
   email: z.string(),
+  role: z.string().optional(),
   newsletterSubscription: z.boolean(),
-  role: z.string(),
   onboardingStatus: OnboardingStatusSchema,
   cookieToken: z.string().optional(),
   profile: UserProfileSchema.optional(),
+  isEligibleForOrganizationTrial: z.boolean().optional(),
 });
 
 export type GetAuthenticatedResponse = {
@@ -99,7 +128,7 @@ export type GetAuthenticatedResponse = {
 export const getAuthenticatedResponseValidator = AuthenticatedUserSchema;
 
 export type UpdateAuthenticatedUserRequest = Partial<
-  Omit<AuthenticatedUser, "uid" | "createTime" | "updateTime" | "customerId">
+  Omit<AuthenticatedUser, "id" | "createTime" | "updateTime">
 >;
 
 export type UpdateAuthenticatedUserResponse = {

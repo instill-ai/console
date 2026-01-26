@@ -1,6 +1,6 @@
 import { getInstillAdditionalHeaders, getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
-import { PipelineRun } from "../../vdp";
+import { PipelineRun } from "../../pipeline";
 import {
   ListCreditConsumptionChartRecordResponse,
   ListModelTriggerCountRequest,
@@ -57,17 +57,10 @@ export class MetricClient extends APIResource {
       enablePagination?: boolean;
     },
   ) {
-    const {
-      pageSize,
-      page,
-      filter,
-      enablePagination,
-      requesterId,
-      requesterUid,
-      start,
-    } = props;
+    const { pageSize, page, filter, enablePagination, requesterId, start } =
+      props;
     const additionalHeaders = getInstillAdditionalHeaders({
-      requesterUid,
+      requesterId,
     });
 
     try {
@@ -134,18 +127,11 @@ export class MetricClient extends APIResource {
   async listPipelineRunsByRequester(
     props: ListPipelineRunsByRequesterRequest & { enablePagination?: boolean },
   ): Promise<ListPipelineRunsByRequesterResponse | PipelineRun[]> {
-    const {
-      pageSize,
-      page,
-      orderBy,
-      enablePagination,
-      requesterUid,
-      requesterId,
-      start,
-    } = props;
+    const { pageSize, page, orderBy, enablePagination, requesterId, start } =
+      props;
 
     const additionalHeaders = getInstillAdditionalHeaders({
-      requesterUid,
+      requesterId,
     });
 
     try {

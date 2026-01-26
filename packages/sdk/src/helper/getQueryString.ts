@@ -31,6 +31,9 @@ export const getQueryString = ({
   includeCollections,
   parentProjectUid,
   projectUid,
+  downloadFilename,
+  displayName,
+  knowledgeBase,
 }: {
   baseURL: string;
   pageSize?: number;
@@ -64,6 +67,9 @@ export const getQueryString = ({
   includeCollections?: boolean;
   parentProjectUid?: string;
   projectUid?: string;
+  downloadFilename?: string;
+  displayName?: string;
+  knowledgeBase?: string;
 }) => {
   let url = baseURL;
 
@@ -91,7 +97,10 @@ export const getQueryString = ({
     maxDepth ||
     includeCollections ||
     parentProjectUid ||
-    projectUid
+    projectUid ||
+    downloadFilename ||
+    displayName ||
+    knowledgeBase
   ) {
     // Check if the baseURL already has a query string
     if (baseURL.includes("?")) {
@@ -217,6 +226,18 @@ export const getQueryString = ({
 
   if (projectUid) {
     url += `projectUid=${projectUid}&`;
+  }
+
+  if (downloadFilename) {
+    url += `downloadFilename=${encodeURIComponent(downloadFilename)}&`;
+  }
+
+  if (displayName) {
+    url += `displayName=${encodeURIComponent(displayName)}&`;
+  }
+
+  if (knowledgeBase) {
+    url += `knowledgeBase=${encodeURIComponent(knowledgeBase)}&`;
   }
 
   if (url.endsWith("&")) {

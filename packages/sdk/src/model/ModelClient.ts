@@ -221,18 +221,11 @@ export class ModelClient extends APIResource {
   async listModelRunsByRequester(
     props: ListModelRunsByRequesterRequest & { enablePagination?: boolean },
   ): Promise<ListModelRunsByRequesterResponse | ModelRun[]> {
-    const {
-      pageSize,
-      page,
-      orderBy,
-      enablePagination,
-      requesterUid,
-      requesterId,
-      start,
-    } = props;
+    const { pageSize, page, orderBy, enablePagination, requesterId, start } =
+      props;
 
     const additionalHeaders = getInstillAdditionalHeaders({
-      requesterUid,
+      requesterId,
     });
 
     try {
@@ -466,7 +459,7 @@ export class ModelClient extends APIResource {
     page,
     orderBy,
     filter,
-    requesterUid,
+    requesterId,
   }: ListModelRunsRequest) {
     try {
       const queryString = getQueryString({
@@ -478,7 +471,7 @@ export class ModelClient extends APIResource {
         view,
       });
 
-      const additionalHeaders = getInstillAdditionalHeaders({ requesterUid });
+      const additionalHeaders = getInstillAdditionalHeaders({ requesterId });
 
       const data = await this._client.get<ListModelRunsResponse>(queryString, {
         additionalHeaders,
@@ -545,7 +538,7 @@ export class ModelClient extends APIResource {
     newModelId,
   }: RenameNamespaceModelRequest) {
     try {
-      const data = await this._client.patch<RenameNamespaceModelResponse>(
+      const data = await this._client.post<RenameNamespaceModelResponse>(
         `/${namespaceModelName}/rename`,
         {
           body: JSON.stringify({
@@ -627,13 +620,13 @@ export class ModelClient extends APIResource {
     modelId,
     versionId,
     taskInputs,
-    requesterUid,
+    requesterId,
     returnTraces,
     isConsole,
   }: TriggerAsyncNamespaceModelVersionRequest) {
     try {
       const additionalHeaders = getInstillAdditionalHeaders({
-        requesterUid,
+        requesterId,
         returnTraces,
         isConsole,
       });
@@ -696,7 +689,7 @@ export class ModelClient extends APIResource {
     namespaceId,
     modelId,
     view,
-    requesterUid,
+    requesterId,
   }: GetNamespaceModelOperationResultRequest) {
     try {
       const queryString = getQueryString({
@@ -704,7 +697,7 @@ export class ModelClient extends APIResource {
         view,
       });
 
-      const additionalHeaders = getInstillAdditionalHeaders({ requesterUid });
+      const additionalHeaders = getInstillAdditionalHeaders({ requesterId });
 
       const data =
         await this._client.get<GetNamespaceModelOperationResultResponse>(
@@ -725,7 +718,7 @@ export class ModelClient extends APIResource {
     modelId,
     versionId,
     view,
-    requesterUid,
+    requesterId,
   }: GetNamespaceModelVersionOperationResultRequest) {
     try {
       const queryString = getQueryString({
@@ -733,7 +726,7 @@ export class ModelClient extends APIResource {
         view,
       });
 
-      const additionalHeaders = getInstillAdditionalHeaders({ requesterUid });
+      const additionalHeaders = getInstillAdditionalHeaders({ requesterId });
 
       const data =
         await this._client.get<GetNamespaceModelOperationResultResponse>(

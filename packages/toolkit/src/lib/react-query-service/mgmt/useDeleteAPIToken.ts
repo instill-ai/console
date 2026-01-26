@@ -22,7 +22,7 @@ export function useDeleteAPIToken() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      await client.core.token.deleteAPIToken({ tokenId });
+      await client.mgmt.token.deleteAPIToken({ tokenId });
 
       return Promise.resolve(tokenId);
     },

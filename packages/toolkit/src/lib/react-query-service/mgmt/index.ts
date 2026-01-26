@@ -1,4 +1,3 @@
-export { useAuthenticatedUserSubscription } from "./useAuthenticatedUserSubscription";
 export { useMgmtDefinition } from "./useMgmtDefinition";
 export { useNamespaceType } from "./use-namespace-type/client";
 

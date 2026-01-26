@@ -315,7 +315,7 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
           accessToken,
           inputs: [parsedStructuredData],
           returnTraces: true,
-          requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+          requesterId: targetNamespace ? targetNamespace.id : undefined,
         });
 
         if (amplitudeIsInit) {
@@ -350,7 +350,7 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
           inputs: [parsedStructuredData],
           accessToken,
           returnTraces: true,
-          requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+          requesterId: targetNamespace ? targetNamespace.id : undefined,
         });
 
         if (amplitudeIsInit) {

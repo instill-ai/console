@@ -37,7 +37,7 @@ export function useListNamespaceConnections({
         accessToken: accessToken ?? undefined,
       });
 
-      const res = await client.core.integration.listNamespaceConnections({
+      const res = await client.mgmt.integration.listNamespaceConnections({
         namespaceId,
         filter: filter ?? undefined,
       });

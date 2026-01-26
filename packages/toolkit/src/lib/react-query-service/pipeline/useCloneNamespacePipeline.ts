@@ -23,7 +23,7 @@ export function useCloneNamespacePipeline() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      await client.vdp.pipeline.cloneNamespacePipeline(payload);
+      await client.pipeline.pipeline.cloneNamespacePipeline(payload);
 
       return Promise.resolve({
         namespaceId: payload.namespaceId,

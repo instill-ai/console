@@ -12,14 +12,14 @@ export function useNamespaceModelOperationResult({
   accessToken,
   enabled,
   view = "VIEW_BASIC",
-  requesterUid,
+  requesterId,
 }: {
   namespaceId: Nullable<string>;
   modelId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   view: Nullable<ResourceView>;
-  requesterUid: Nullable<string>;
+  requesterId: Nullable<string>;
 }) {
   let enableQuery = false;
 
@@ -31,7 +31,7 @@ export function useNamespaceModelOperationResult({
     queryKey: queryKeyStore.model.getUseNamespaceModelOperationResultQueryKey({
       namespaceId,
       modelId,
-      requesterUid,
+      requesterId,
       view,
     }),
     queryFn: async () => {
@@ -51,7 +51,7 @@ export function useNamespaceModelOperationResult({
         namespaceId,
         modelId,
         view: view ?? undefined,
-        requesterUid: requesterUid ?? undefined,
+        requesterId: requesterId ?? undefined,
       });
 
       return Promise.resolve(operation);

@@ -21,7 +21,7 @@ export function useTriggerNamespacePipeline() {
         accessToken: accessToken ?? undefined,
       });
 
-      const response = await client.vdp.trigger.triggerNamespacePipeline({
+      const response = await client.pipeline.trigger.triggerNamespacePipeline({
         ...payload,
         isConsole: true,
       });

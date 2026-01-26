@@ -63,7 +63,7 @@ export const FileTable = ({
       <FileTableHeader sortConfig={sortConfig} requestSort={requestSort} />
       {sortedData.map((item, index) => (
         <FileTableRow
-          key={item.uid}
+          key={item.id}
           item={item}
           index={index}
           handleFileClick={handleFileClick}

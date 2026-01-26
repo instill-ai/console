@@ -31,7 +31,7 @@ export function useGetIntegration({
         accessToken: accessToken ?? undefined,
       });
 
-      const res = await client.core.integration.getIntegration({
+      const res = await client.mgmt.integration.getIntegration({
         integrationId,
         view: view ?? "VIEW_BASIC",
       });

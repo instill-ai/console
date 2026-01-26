@@ -74,7 +74,7 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
     pageSize: TABLE_PAGE_SIZE,
     page: paginationState.pageIndex,
     orderBy,
-    requesterUid: targetNamespace ? targetNamespace.uid : null,
+    requesterId: targetNamespace ? targetNamespace.id : null,
     view: "VIEW_FULL",
     filter: null,
   });

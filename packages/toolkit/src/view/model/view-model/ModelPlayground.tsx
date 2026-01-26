@@ -166,7 +166,7 @@ export const ModelPlayground = ({
       enabledQuery &&
       userNamespaces.isSuccess &&
       routeInfo.isSuccess,
-    requesterUid: targetNamespace ? targetNamespace.uid : null,
+    requesterId: targetNamespace ? targetNamespace.id : null,
   });
 
   const pollForResponse = React.useCallback(async () => {
@@ -373,7 +373,7 @@ export const ModelPlayground = ({
         namespaceId: routeInfo.data.namespaceId,
         accessToken,
         taskInputs: [input],
-        requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+        requesterId: targetNamespace ? targetNamespace.id : undefined,
         versionId: activeVersion,
       });
 

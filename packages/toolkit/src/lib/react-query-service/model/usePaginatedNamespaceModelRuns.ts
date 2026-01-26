@@ -17,7 +17,7 @@ export function usePaginatedNamespaceModelRuns({
   page,
   orderBy,
   filter,
-  requesterUid,
+  requesterId,
 }: {
   namespaceId: Nullable<string>;
   modelId: Nullable<string>;
@@ -28,13 +28,13 @@ export function usePaginatedNamespaceModelRuns({
   page: Nullable<number>;
   orderBy: Nullable<string>;
   filter: Nullable<string>;
-  requesterUid: Nullable<string>;
+  requesterId: Nullable<string>;
 }) {
   return useQuery({
     queryKey: queryKeyStore.model.getNamespaceModelRunsQueryKey({
       namespaceId,
       modelId,
-      requesterUid,
+      requesterId,
       accessToken,
       view,
       pageSize,
@@ -63,7 +63,7 @@ export function usePaginatedNamespaceModelRuns({
         page: page || 0,
         orderBy: orderBy ?? undefined,
         filter: filter ?? undefined,
-        requesterUid: requesterUid ?? undefined,
+        requesterId: requesterId ?? undefined,
       });
 
       return Promise.resolve(data);

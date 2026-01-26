@@ -47,7 +47,7 @@ export function useGetNamespacePipelineRelease({
 
       const client = getInstillAPIClient({ accessToken });
 
-      const data = await client.vdp.release.GetNamespacePipelineRelease({
+      const data = await client.pipeline.release.GetNamespacePipelineRelease({
         namespaceId,
         pipelineId,
         releaseId,

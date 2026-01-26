@@ -35,6 +35,7 @@ export function useCreateNamespaceFile() {
       return Promise.resolve(res.file);
     },
     onSuccess: (_, variables) => {
+      // Invalidate files list for the namespace
       queryClient.invalidateQueries({
         queryKey:
           queryKeyStore.knowledgeBase.getUseListNamespaceKnowledgeBaseFilesQueryKey(

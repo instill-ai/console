@@ -287,7 +287,7 @@ export const Input = ({
             accessToken,
             inputs: [input],
             returnTraces: true,
-            requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+            requesterId: targetNamespace ? targetNamespace.id : undefined,
           });
         } else {
           response = await triggerPipeline.mutateAsync({
@@ -296,7 +296,7 @@ export const Input = ({
             accessToken,
             inputs: [input],
             returnTraces: true,
-            requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+            requesterId: targetNamespace ? targetNamespace.id : undefined,
           });
         }
 

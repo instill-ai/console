@@ -6,14 +6,16 @@ import {
   CreateKnowledgeBaseRequest,
   KnowledgeBase,
   Nullable,
-  OrganizationSubscription,
   UpdateKnowledgeBaseRequest,
-  UserSubscription,
 } from "instill-sdk";
 import * as z from "zod";
 
 import { Separator, Skeleton } from "@instill-ai/design-system";
 
+import type {
+  OrganizationSubscription,
+  UserSubscription,
+} from "../lib/helpers";
 import {
   InstillStore,
   toastInstillError,
@@ -43,7 +45,7 @@ type KnowledgeBaseMainTabProps = {
   accessToken: Nullable<string>;
   onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
   knowledgeBases: KnowledgeBase[];
-  knowledgeBaseLimit: number;
+  knowledgeBaseLimit: Nullable<number>;
   namespaceType: Nullable<"user" | "organization">;
   subscription: Nullable<UserSubscription | OrganizationSubscription>;
   isLocalEnvironment: boolean;
@@ -206,8 +208,8 @@ export const KnowledgeBaseMainTab = ({
           bValue = new Date(b.updateTime).getTime();
           break;
         case "usage":
-          aValue = a.usage || 0;
-          bValue = b.usage || 0;
+          aValue = a.usedStorage || 0;
+          bValue = b.usedStorage || 0;
           break;
         default:
           return 0;

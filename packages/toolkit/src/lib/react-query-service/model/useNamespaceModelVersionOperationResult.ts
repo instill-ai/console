@@ -13,7 +13,7 @@ export function useNamespaceModelVersionOperationResult({
   accessToken,
   enabled,
   view = "VIEW_BASIC",
-  requesterUid,
+  requesterId,
 }: {
   namespaceId: Nullable<string>;
   modelId: Nullable<string>;
@@ -21,7 +21,7 @@ export function useNamespaceModelVersionOperationResult({
   accessToken: Nullable<string>;
   enabled: boolean;
   view: Nullable<ResourceView>;
-  requesterUid: Nullable<string>;
+  requesterId: Nullable<string>;
 }) {
   let enableQuery = false;
 
@@ -35,7 +35,7 @@ export function useNamespaceModelVersionOperationResult({
         namespaceId,
         modelId,
         versionId,
-        requesterUid,
+        requesterId,
         view,
       }),
     queryFn: async () => {
@@ -61,7 +61,7 @@ export function useNamespaceModelVersionOperationResult({
           modelId,
           versionId,
           view: view ?? undefined,
-          requesterUid: requesterUid ?? undefined,
+          requesterId: requesterId ?? undefined,
         });
 
       return Promise.resolve(operation);

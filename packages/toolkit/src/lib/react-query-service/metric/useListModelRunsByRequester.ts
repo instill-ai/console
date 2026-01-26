@@ -12,7 +12,6 @@ export function useListModelRunsByRequester({
   page,
   orderBy,
   requesterId,
-  requesterUid,
   start,
 }: {
   enabled: boolean;
@@ -21,19 +20,10 @@ export function useListModelRunsByRequester({
   page: Nullable<number>;
   orderBy?: string;
   requesterId?: string;
-  requesterUid?: string;
   start?: string;
 }) {
   return useQuery<ListModelRunsByRequesterResponse>({
-    queryKey: [
-      "modelRuns",
-      requesterId,
-      requesterUid,
-      pageSize,
-      page,
-      orderBy,
-      start,
-    ],
+    queryKey: ["modelRuns", requesterId, pageSize, page, orderBy, start],
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
@@ -48,7 +38,6 @@ export function useListModelRunsByRequester({
         page,
         orderBy,
         requesterId,
-        requesterUid,
         start,
         enablePagination: true,
       });

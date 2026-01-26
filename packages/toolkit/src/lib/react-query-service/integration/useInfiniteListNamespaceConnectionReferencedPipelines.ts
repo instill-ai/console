@@ -44,7 +44,7 @@ export function useInfiniteListNamespaceConnectionReferencedPipelines({
       const client = getInstillAPIClient({ accessToken });
 
       const res =
-        await client.core.integration.listPaginatedNamespaceConnectionReferencedPipelines(
+        await client.mgmt.integration.listPaginatedNamespaceConnectionReferencedPipelines(
           {
             namespaceId,
             connectionId,

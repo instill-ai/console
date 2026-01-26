@@ -8,6 +8,8 @@ import { getInstillAPIClient } from "../../sdk-helper";
 import { queryKeyStore } from "../queryKeyStore";
 
 export function usePaginatedNamepsacePipelineComponentRuns({
+  namespaceId,
+  pipelineId,
   pipelineRunId,
   accessToken,
   enabled,
@@ -16,9 +18,11 @@ export function usePaginatedNamepsacePipelineComponentRuns({
   orderBy,
   filter,
   view,
-  requesterUid,
+  requesterId,
 }: {
   enabled: boolean;
+  namespaceId: Nullable<string>;
+  pipelineId: Nullable<string>;
   pipelineRunId: Nullable<string>;
   accessToken: Nullable<string>;
   view: Nullable<ResourceView>;
@@ -26,7 +30,7 @@ export function usePaginatedNamepsacePipelineComponentRuns({
   page: Nullable<number>;
   orderBy: Nullable<string>;
   filter: Nullable<string>;
-  requesterUid: Nullable<string>;
+  requesterId: Nullable<string>;
 }) {
   return useQuery({
     queryKey:
@@ -37,11 +41,19 @@ export function usePaginatedNamepsacePipelineComponentRuns({
           view,
           orderBy,
           filter,
-          requesterUid,
+          requesterId,
           pageSize,
         },
       ),
     queryFn: async () => {
+      if (!namespaceId) {
+        return Promise.reject(new Error("namespaceId not provided"));
+      }
+
+      if (!pipelineId) {
+        return Promise.reject(new Error("pipelineId not provided"));
+      }
+
       if (!pipelineRunId) {
         return Promise.reject(new Error("pipelineRunId not provided"));
       }
@@ -51,15 +63,19 @@ export function usePaginatedNamepsacePipelineComponentRuns({
       });
 
       const data =
-        await client.vdp.trigger.listPaginatedNamespacePipelineComponentRuns({
-          pipelineRunId,
-          pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-          view: view ?? "VIEW_BASIC",
-          page: page ?? undefined,
-          orderBy: orderBy ?? undefined,
-          filter: filter ?? undefined,
-          requesterUid: requesterUid ?? undefined,
-        });
+        await client.pipeline.trigger.listPaginatedNamespacePipelineComponentRuns(
+          {
+            namespaceId,
+            pipelineId,
+            pipelineRunId,
+            pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+            view: view ?? "VIEW_BASIC",
+            page: page ?? undefined,
+            orderBy: orderBy ?? undefined,
+            filter: filter ?? undefined,
+            requesterId: requesterId ?? undefined,
+          },
+        );
 
       return Promise.resolve(data);
     },
