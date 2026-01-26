@@ -29,16 +29,16 @@
   "devDependencies": {
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
-    "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
     "@instill-ai/prettier-config-cortex": "workspace:*",
-    "eslint": "^8.13.0",
-    "husky": "^7.0.0",
-    "lint-staged": ">=10",
+    "eslint": "^8.57.1",
+    "husky": "^7.0.4",
+    "lint-staged": "^16.2.7",
     "prettier": "latest",
-    "prettier-plugin-tailwindcss": "^0.6.13",
-    "turbo": "^2.5.4",
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "turbo": "^2.7.6",
     "typescript": "catalog:",
-    "yaml": "^2.5.0"
+    "yaml": "^2.8.2"
   },
   "engines": {
     "node": ">=20.0.0"
