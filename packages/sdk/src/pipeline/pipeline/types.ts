@@ -109,13 +109,24 @@ export const PipelineSharingSchema = z.object({
 });
 
 export type Pipeline = {
+  // ===== Standard AIP fields =====
+  // Canonical resource name. Format: `namespaces/{namespace}/pipelines/{pipeline}`
   name: string;
-  uid: string;
+  // Immutable canonical resource ID (e.g., "pip-8f3a2k9E7c1")
   id: string;
-  description: string;
-  readme: string;
+  // Human-readable display name for UI
+  displayName: string;
+  // URL-friendly slug (NO prefix)
+  slug?: string;
+  // Previous slugs for backward compatibility
+  aliases?: string[];
+  // Optional description
+  description?: string;
+  // ===== Timestamps =====
   createTime: string;
   updateTime: string;
+  // ===== Resource-specific fields =====
+  readme: string;
   recipe: Nullable<PipelineRecipe>;
   rawRecipe: Nullable<string>;
   dataSpecification: DataSpecification;
@@ -144,13 +155,15 @@ export type Pipeline = {
 
 export const PipelineSchema = z.object({
   name: z.string(),
-  uid: z.string(),
   id: z.string(),
-  description: z.string(),
-  readme: z.string(),
+  displayName: z.string().optional(),
+  slug: z.string().optional(),
+  aliases: z.array(z.string()).optional(),
+  description: z.string().optional(),
   createTime: z.string(),
   updateTime: z.string(),
 
+  readme: z.string(),
   // Our openapi isn't fully typed on the recipe field yet
   recipe: z.record(z.any()),
   dataSpecification: DataSpecificationSchema,

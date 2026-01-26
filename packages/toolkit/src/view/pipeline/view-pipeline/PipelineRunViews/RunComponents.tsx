@@ -63,8 +63,10 @@ export const PipelineRunComponents = ({
   ]);
 
   const pipelineComponentRuns = usePaginatedNamepsacePipelineComponentRuns({
+    namespaceId: routeInfo.data?.namespaceId ?? null,
+    pipelineId: routeInfo.data?.resourceId ?? null,
     pipelineRunId: pipelineRunId,
-    requesterUid: targetNamespace ? targetNamespace.uid : null,
+    requesterId: targetNamespace ? targetNamespace.id : null,
     enabled: enabledQuery && routeInfo.isSuccess && userNamespaces.isSuccess,
     accessToken,
     view: "VIEW_FULL",

@@ -1,5 +1,5 @@
 import { ResourceView, RunSource, RunStatus } from "..";
-import { User } from "../core";
+import { User } from "../mgmt";
 import {
   GeneralRecord,
   InstillJSONSchema,
@@ -67,17 +67,28 @@ export type Hardware = {
 };
 
 export type Model = {
+  // ===== Standard AIP fields =====
+  // Canonical resource name. Format: `namespaces/{namespace}/models/{model}`
   name: string;
-  uid: string;
+  // Immutable canonical resource ID (e.g., "mod-8f3a2k9E7c1")
   id: string;
-  description: string;
+  // Human-readable display name for UI
+  displayName: string;
+  // URL-friendly slug (NO prefix)
+  slug?: string;
+  // Previous slugs for backward compatibility
+  aliases?: string[];
+  // Optional description
+  description?: string;
+  // ===== Timestamps =====
+  createTime: string;
+  updateTime: string | null;
+  deleteTime?: string | null;
+  // ===== Resource-specific fields =====
   modelDefinition: string;
   configuration: Record<string, string>;
   task: ModelTask;
   visibility: Visibility;
-  createTime: string;
-  updateTime: string | null;
-  deleteTime: string | null;
   ownerName: string;
   // NOTE: organization owner is EE-only (available in console-ee)
   owner: {
@@ -195,7 +206,7 @@ export type ListModelRunsRequest = {
   page?: number;
   orderBy?: string;
   filter?: string;
-  requesterUid?: string;
+  requesterId?: string;
 };
 
 export type ModelRun = {
@@ -349,7 +360,7 @@ export type TriggerAsyncNamespaceModelVersionRequest = {
   versionId: string;
   taskInputs: Record<string, unknown>[];
   returnTraces?: boolean;
-  requesterUid?: string;
+  requesterId?: string;
   isConsole?: boolean;
 };
 
@@ -380,7 +391,7 @@ export type GetNamespaceModelOperationResultRequest = {
   namespaceId: string;
   modelId: string;
   view?: ResourceView;
-  requesterUid?: string;
+  requesterId?: string;
 };
 
 export type GetNamespaceModelOperationResultResponse = {
@@ -392,7 +403,7 @@ export type GetNamespaceModelVersionOperationResultRequest = {
   modelId: string;
   versionId: string;
   view?: ResourceView;
-  requesterUid?: string;
+  requesterId?: string;
 };
 
 export type GetNamespaceModelVersionOperationResultResponse = {
@@ -422,7 +433,6 @@ export type ListModelRunsByRequesterRequest = {
   pageSize?: number;
   page: Nullable<number>;
   orderBy?: string;
-  requesterUid?: string;
   requesterId?: string;
   start?: string;
 };

@@ -41,7 +41,7 @@ export function useDeleteNamespaceFile() {
 
       await client.artifact.deleteFile({
         namespaceId,
-        knowledgeBaseId: knowledgeBaseId,
+        knowledgeBaseId,
         fileId,
       });
 

@@ -22,7 +22,7 @@ export function useRenameNamespacePipeline() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      await client.vdp.pipeline.renameNamespacePipeline(payload);
+      await client.pipeline.pipeline.renameNamespacePipeline(payload);
 
       return Promise.resolve({
         namespaceId: payload.namespaceId,

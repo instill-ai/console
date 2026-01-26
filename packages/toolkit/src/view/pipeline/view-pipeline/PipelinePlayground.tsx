@@ -330,7 +330,7 @@ export const PipelinePlayground = ({
           inputs: [input],
           returnTraces: true,
           shareCode: shareCode ?? undefined,
-          requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+          requesterId: targetNamespace ? targetNamespace.id : undefined,
           stream: false,
         });
 
@@ -381,7 +381,7 @@ export const PipelinePlayground = ({
           accessToken,
           returnTraces: true,
           shareCode: shareCode ?? undefined,
-          requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+          requesterId: targetNamespace ? targetNamespace.id : undefined,
         });
 
         if (amplitudeIsInit) {

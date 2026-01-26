@@ -163,7 +163,9 @@ export const PublishPipelineDialog = () => {
               <Metadata
                 form={form}
                 description={
-                  pipeline.isSuccess ? pipeline.data.description : null
+                  pipeline.isSuccess
+                    ? (pipeline.data.description ?? null)
+                    : null
                 }
               />
               <ReadmeEditor

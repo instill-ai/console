@@ -41,7 +41,7 @@ export function useListNamespaceFiles({
       const client = getInstillArtifactAPIClient({ accessToken });
       const res = await client.artifact.listFiles({
         namespaceId,
-        knowledgeBaseId: knowledgeBaseId,
+        knowledgeBaseId,
       });
 
       return Promise.resolve(res.files);
@@ -50,7 +50,7 @@ export function useListNamespaceFiles({
     enabled:
       enabled &&
       Boolean(namespaceId) &&
-      Boolean(accessToken) &&
-      Boolean(knowledgeBaseId),
+      Boolean(knowledgeBaseId) &&
+      Boolean(accessToken),
   });
 }

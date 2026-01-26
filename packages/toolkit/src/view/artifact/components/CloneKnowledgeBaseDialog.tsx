@@ -4,7 +4,6 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isAxiosError } from "axios";
-import { Nullable } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -21,22 +20,12 @@ import { EntitySelector, LoadingSpin } from "../../../components";
 import {
   InstillStore,
   toastInstillError,
-  useAuthenticatedUserSubscription,
   useInstillStore,
-  useListNamespaceKnowledgeBases,
   useShallow,
 } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
-import { env } from "../../../server";
 import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
-import {
-  checkNamespaceType,
-  convertTagsToArray,
-  formatName,
-  getKnowledgeBaseLimit,
-  getSubscriptionInfo,
-} from "./lib/helpers";
-import { KnowledgeBaseLimitNotification } from "./notifications";
+import { convertTagsToArray, formatName } from "./lib/helpers";
 
 const CloneKnowledgeBaseFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -65,8 +54,6 @@ type CloneKnowledgeBaseDialogProps = {
 };
 
 const selector = (store: InstillStore) => ({
-  accessToken: store.accessToken,
-  enabledQuery: store.enabledQuery,
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
   updateNavigationNamespaceAnchor: store.updateNavigationNamespaceAnchor,
 });
@@ -79,18 +66,9 @@ export const CloneKnowledgeBaseDialog = ({
 }: CloneKnowledgeBaseDialogProps) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [showLimitNotification, setShowLimitNotification] =
-    React.useState(false);
-  const [hasNamespaceChanged, setHasNamespaceChanged] = React.useState(false);
-  const [isKnowledgeBaseLimitReached, setIsKnowledgeBaseLimitReached] =
-    React.useState(false);
 
-  const {
-    accessToken,
-    enabledQuery,
-    navigationNamespaceAnchor,
-    updateNavigationNamespaceAnchor,
-  } = useInstillStore(useShallow(selector));
+  const { navigationNamespaceAnchor, updateNavigationNamespaceAnchor } =
+    useInstillStore(useShallow(selector));
   const userNamespaces = useUserNamespaces();
 
   const form = useForm<z.infer<typeof CloneKnowledgeBaseFormSchema>>({
@@ -106,49 +84,8 @@ export const CloneKnowledgeBaseDialog = ({
   const { formState, reset, watch, setValue } = form;
   const nameValue = watch("name");
   const description = watch("description");
-  const selectedNamespace = watch("namespaceId");
-  const [namespaceType, setNamespaceType] =
-    React.useState<Nullable<"user" | "organization">>(null);
 
   const formattedName = formatName(nameValue);
-
-  React.useEffect(() => {
-    const getNamespaceType = async () => {
-      if (selectedNamespace && accessToken) {
-        const type = await checkNamespaceType(selectedNamespace, accessToken);
-        setNamespaceType(type);
-      } else {
-        setNamespaceType(null);
-      }
-    };
-
-    getNamespaceType();
-  }, [selectedNamespace, accessToken]);
-
-  const knowledgeBases = useListNamespaceKnowledgeBases({
-    accessToken,
-    namespaceId: selectedNamespace,
-    enabled: enabledQuery && !!selectedNamespace,
-  });
-
-  const userSub = useAuthenticatedUserSubscription({
-    enabled: enabledQuery && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
-    accessToken,
-  });
-
-  // NOTE: Organization subscriptions are EE-only. In CE, orgSub is always null.
-  const subscriptionInfo = React.useMemo(() => {
-    return getSubscriptionInfo(
-      namespaceType,
-      userSub.data || null,
-      null, // orgSub is EE-only
-    );
-  }, [userSub.data, namespaceType]);
-
-  const knowledgeBaseLimit = React.useMemo(
-    () => getKnowledgeBaseLimit(subscriptionInfo.plan),
-    [subscriptionInfo.plan],
-  );
 
   React.useEffect(() => {
     if (isOpen) {
@@ -157,29 +94,12 @@ export const CloneKnowledgeBaseDialog = ({
         tags: initialValues.tags.join(", "),
         namespaceId: navigationNamespaceAnchor || "",
       });
-      setShowLimitNotification(false);
-      setHasNamespaceChanged(false);
-      setIsKnowledgeBaseLimitReached(false);
     }
   }, [isOpen, initialValues, navigationNamespaceAnchor, reset]);
-
-  React.useEffect(() => {
-    if (hasNamespaceChanged && knowledgeBases.data && knowledgeBaseLimit) {
-      const limitReached = knowledgeBases.data.length >= knowledgeBaseLimit;
-      setIsKnowledgeBaseLimitReached(limitReached);
-      if (limitReached) {
-        setShowLimitNotification(true);
-      }
-    }
-  }, [knowledgeBases.data, knowledgeBaseLimit, hasNamespaceChanged]);
 
   const handleSubmit = async (
     data: z.infer<typeof CloneKnowledgeBaseFormSchema>,
   ) => {
-    if (showLimitNotification) {
-      return;
-    }
-
     setIsSubmitting(true);
     try {
       const formattedData = {
@@ -224,7 +144,6 @@ export const CloneKnowledgeBaseDialog = ({
 
   const handleNamespaceChange = (value: string) => {
     setValue("namespaceId", value, { shouldValidate: true });
-    setHasNamespaceChanged(true);
   };
 
   return (
@@ -373,11 +292,7 @@ export const CloneKnowledgeBaseDialog = ({
                   variant="primary"
                   type="submit"
                   className="text-semantic-fg-on-default"
-                  disabled={
-                    !formState.isValid ||
-                    isSubmitting ||
-                    isKnowledgeBaseLimitReached
-                  }
+                  disabled={!formState.isValid || isSubmitting}
                 >
                   {isSubmitting ? (
                     <LoadingSpin className="!text-semantic-fg-secondary" />
@@ -390,10 +305,7 @@ export const CloneKnowledgeBaseDialog = ({
           </Form.Root>
         </Dialog.Content>
       </Dialog.Root>
-      <KnowledgeBaseLimitNotification
-        isOpen={showLimitNotification}
-        setIsOpen={() => setShowLimitNotification(false)}
-      />
+      {/* Subscription limit notifications are EE-only */}
     </>
   );
 };

@@ -17,7 +17,7 @@ export function usePaginatedNamespacePipelineRuns({
   page,
   orderBy,
   filter,
-  requesterUid,
+  requesterId,
 }: {
   namespaceId: Nullable<string>;
   pipelineId: Nullable<string>;
@@ -28,14 +28,14 @@ export function usePaginatedNamespacePipelineRuns({
   page: Nullable<number>;
   orderBy: Nullable<string>;
   filter: Nullable<string>;
-  requesterUid: Nullable<string>;
+  requesterId: Nullable<string>;
 }) {
   return useQuery({
     queryKey:
       queryKeyStore.pipeline.getUsePaginatedNamespacePipelineRunsQueryKey({
         namespaceId,
         pipelineId,
-        requesterUid,
+        requesterId,
         accessToken,
         view,
         pageSize,
@@ -56,16 +56,17 @@ export function usePaginatedNamespacePipelineRuns({
         accessToken: accessToken ?? undefined,
       });
 
-      const data = await client.vdp.trigger.listPaginatedNamespacePipelineRuns({
-        namespaceId,
-        pipelineId,
-        pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-        view: view ?? "VIEW_BASIC",
-        page: page ?? undefined,
-        orderBy: orderBy ?? undefined,
-        filter: filter ?? undefined,
-        requesterUid: requesterUid ?? undefined,
-      });
+      const data =
+        await client.pipeline.trigger.listPaginatedNamespacePipelineRuns({
+          namespaceId,
+          pipelineId,
+          pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+          view: view ?? "VIEW_BASIC",
+          page: page ?? undefined,
+          orderBy: orderBy ?? undefined,
+          filter: filter ?? undefined,
+          requesterId: requesterId ?? undefined,
+        });
 
       return Promise.resolve(data);
     },

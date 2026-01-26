@@ -23,7 +23,7 @@ export function useCreateNamespaceSecret() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      await client.vdp.secret.createNamespaceSecret(payload);
+      await client.pipeline.secret.createNamespaceSecret(payload);
 
       return Promise.resolve({
         namespaceId: payload.namespaceId,

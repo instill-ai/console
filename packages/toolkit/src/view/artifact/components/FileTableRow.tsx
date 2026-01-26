@@ -41,8 +41,8 @@ export const FileTableRow = ({
           className="flex items-center justify-center px-4 truncate cursor-pointer text-semantic-bg-secondary-alt-primary product-body-text-3-regular"
           onClick={() => handleFileClick(item)}
         >
-          <span className="truncate max-w-[200px]" title={item.filename}>
-            {item.filename}
+          <span className="truncate max-w-[200px]" title={item.displayName}>
+            {item.displayName}
           </span>
           <Icons.ArrowUpRight className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary ml-0.5 flex-shrink-0" />
         </div>
@@ -89,7 +89,7 @@ export const FileTableRow = ({
             <div className="flex flex-col items-start justify-start gap-6 self-stretch">
               <div className="flex flex-col items-center justify-center gap-1">
                 <Dialog.Title className="product-headings-heading-3">
-                  Delete {truncateName(item.filename)}
+                  Delete {truncateName(item.displayName)}
                 </Dialog.Title>
                 <Dialog.Description className="text-center product-body-text-2-regular">
                   Are you sure you want to delete this file?

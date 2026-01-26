@@ -27,7 +27,7 @@ export function usePipelineTriggerComputationTimeCharts({
       const client = getInstillAPIClient({ accessToken });
 
       const triggers =
-        await client.core.metric.listPipelineTriggerComputationTimeCharts({
+        await client.mgmt.metric.listPipelineTriggerComputationTimeCharts({
           pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
           filter: filter ?? undefined,
         });

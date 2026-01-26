@@ -10,7 +10,7 @@ type ChunkCardProps = {
   index: number;
   onChunkClick: () => void;
   onRetrievableToggle: (
-    chunkUid: string,
+    chunkId: string,
     currentValue: boolean,
   ) => Promise<void>;
   fileContent: string;
@@ -67,7 +67,7 @@ const ChunkCard = ({
             <Switch
               checked={chunk.retrievable}
               onCheckedChange={() =>
-                onRetrievableToggle(chunk.uid, chunk.retrievable)
+                onRetrievableToggle(chunk.id, chunk.retrievable)
               }
             />
           </div>

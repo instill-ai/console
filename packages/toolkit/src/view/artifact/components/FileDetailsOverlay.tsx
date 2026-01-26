@@ -11,12 +11,12 @@ import { MarkdownViewer } from "../../../lib/markdown";
 import { getFileIcon } from "./lib/helpers";
 
 type FileDetailsOverlayProps = {
-  fileUid: string;
+  fileId: string;
   accessToken: Nullable<string>;
   onClose: () => void;
   knowledgeBaseId: string;
   showFullFile: boolean;
-  selectedChunkUid?: string;
+  selectedChunkId?: string;
   namespaceId: string;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
@@ -26,10 +26,10 @@ type FileDetailsOverlayProps = {
 };
 
 const FileDetailsOverlay = ({
-  fileUid,
+  fileId,
   accessToken,
   knowledgeBaseId,
-  selectedChunkUid,
+  selectedChunkId,
   namespaceId,
   isOpen,
   setIsOpen,
@@ -39,7 +39,7 @@ const FileDetailsOverlay = ({
   fileType,
 }: FileDetailsOverlayProps) => {
   const fileData = useGetNamespaceFile({
-    fileUid,
+    fileId,
     knowledgeBaseId,
     accessToken,
     enabled: isOpen,
@@ -51,13 +51,13 @@ const FileDetailsOverlay = ({
     accessToken,
     enabled: isOpen && (highlightChunk || !showFullFile),
     namespaceId,
-    fileUid,
-    chunkUids: null,
+    fileId,
+    chunkIds: null,
   });
 
   const extractChunkContent = React.useCallback(
-    (content: string, summaryContent: string, chunkUid?: string) => {
-      if (!chunkUid) {
+    (content: string, summaryContent: string, chunkId?: string) => {
+      if (!chunkId) {
         return content;
       }
 
@@ -66,7 +66,7 @@ const FileDetailsOverlay = ({
         return "";
       }
 
-      const chunk = chunks.data?.find((c: Chunk) => c.uid === chunkUid);
+      const chunk = chunks.data?.find((c: Chunk) => c.id === chunkId);
 
       if (!chunk) {
         return content;
@@ -136,10 +136,10 @@ const FileDetailsOverlay = ({
         ? extractChunkContent(
             fileData.data.content,
             fileData.data.summaryContent,
-            selectedChunkUid,
+            selectedChunkId,
           )
         : "",
-    [fileData.data, fileData.isSuccess, extractChunkContent, selectedChunkUid],
+    [fileData.data, fileData.isSuccess, extractChunkContent, selectedChunkId],
   );
 
   const sanitizedHtmlText = React.useMemo(

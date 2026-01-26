@@ -71,7 +71,7 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
     page: 0,
     filter: `uid="${id}"`,
     view: "VIEW_FULL",
-    requesterUid: targetNamespace ? targetNamespace.uid : null,
+    requesterId: targetNamespace ? targetNamespace.id : null,
     orderBy: null,
   });
 

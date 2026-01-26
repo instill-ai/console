@@ -68,7 +68,6 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
     page: paginationState.pageIndex,
     orderBy: orderBy,
     requesterId: targetNamespace?.id,
-    requesterUid: targetNamespace?.uid,
     start,
   });
 

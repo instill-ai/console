@@ -10,20 +10,20 @@ export function useListNamespaceChunks({
   accessToken,
   namespaceId,
   knowledgeBaseId,
-  fileUid,
-  chunkUids,
+  fileId,
+  chunkIds,
   enabled,
 }: {
   accessToken: Nullable<string>;
   namespaceId: Nullable<string>;
   knowledgeBaseId: Nullable<string>;
-  fileUid: Nullable<string>;
-  chunkUids: Nullable<string[]>;
+  fileId: Nullable<string>;
+  chunkIds: Nullable<string[]>;
   enabled: boolean;
 }) {
   let enabledQuery = false;
 
-  if (enabled && accessToken && namespaceId && knowledgeBaseId) {
+  if (enabled && accessToken && namespaceId && knowledgeBaseId && fileId) {
     enabledQuery = true;
   }
 
@@ -33,8 +33,8 @@ export function useListNamespaceChunks({
         {
           namespaceId,
           knowledgeBaseId,
-          fileUid,
-          chunkUids,
+          fileId,
+          chunkIds,
         },
       ),
     queryFn: async () => {
@@ -50,15 +50,15 @@ export function useListNamespaceChunks({
         throw new Error("knowledgeBaseId is required");
       }
 
-      if (!fileUid) {
-        throw new Error("fileUid is required for listChunks");
+      if (!fileId) {
+        throw new Error("fileId is required for listChunks");
       }
 
       const client = getInstillArtifactAPIClient({ accessToken });
       const res = await client.artifact.listChunks({
         namespaceId,
-        knowledgeBaseId: knowledgeBaseId,
-        fileId: fileUid,
+        knowledgeBaseId,
+        fileId,
       });
 
       return Promise.resolve(res.chunks);

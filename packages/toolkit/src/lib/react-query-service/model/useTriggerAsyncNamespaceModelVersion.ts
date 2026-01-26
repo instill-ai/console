@@ -15,7 +15,7 @@ export function useTriggerAsyncNamespaceModelVersion() {
       versionId,
       taskInputs,
       accessToken,
-      requesterUid,
+      requesterId,
       returnTraces,
     }: {
       namespaceId: string;
@@ -23,7 +23,7 @@ export function useTriggerAsyncNamespaceModelVersion() {
       versionId: string;
       taskInputs: Record<string, unknown>[];
       accessToken: Nullable<string>;
-      requesterUid?: string;
+      requesterId?: string;
       returnTraces?: boolean;
     }) => {
       if (!accessToken) {
@@ -39,7 +39,7 @@ export function useTriggerAsyncNamespaceModelVersion() {
         modelId,
         versionId,
         taskInputs,
-        requesterUid,
+        requesterId,
         returnTraces,
         isConsole: true,
       });

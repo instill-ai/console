@@ -15,10 +15,10 @@ type FileChunksProps = {
   accessToken: Nullable<string>;
   namespaceId: Nullable<string>;
   expanded: boolean;
-  onToggleExpand: (fileUid: string) => void;
+  onToggleExpand: (fileId: string) => void;
   onChunkClick: (file: File, chunk: Chunk) => void;
   onRetrievableToggle: (
-    chunkUid: string,
+    chunkId: string,
     currentValue: boolean,
   ) => Promise<void>;
 };
@@ -38,12 +38,12 @@ const FileChunks = ({
     accessToken: accessToken || null,
     enabled: expanded,
     namespaceId: namespaceId,
-    fileUid: file.uid,
-    chunkUids: null,
+    fileId: file.id,
+    chunkIds: null,
   });
 
   const fileData = useGetNamespaceFile({
-    fileUid: file.uid,
+    fileId: file.id,
     knowledgeBaseId: knowledgeBase.id,
     accessToken: accessToken || null,
     enabled: expanded,
@@ -54,7 +54,7 @@ const FileChunks = ({
 
   const handleToggleExpand = () => {
     if (!isProcessing) {
-      onToggleExpand(file.uid);
+      onToggleExpand(file.id);
     }
   };
 
@@ -122,7 +122,7 @@ const FileChunks = ({
               : "text-semantic-fg-secondary",
           )}
         >
-          {file.filename}
+          {file.displayName}
         </p>
         {isProcessing && (
           <p className="text-semantic-fg-secondary italic">
@@ -146,7 +146,7 @@ const FileChunks = ({
 
               return (
                 <ChunkCard
-                  key={chunk.uid}
+                  key={chunk.id}
                   chunk={chunk}
                   index={i}
                   onChunkClick={() => onChunkClick(file, chunk)}

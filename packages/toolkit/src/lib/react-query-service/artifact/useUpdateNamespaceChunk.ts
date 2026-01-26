@@ -13,15 +13,15 @@ export function useUpdateNamespaceChunk() {
     mutationFn: async ({
       namespaceId,
       knowledgeBaseId,
-      fileUid,
-      chunkUid,
+      fileId,
+      chunkId,
       accessToken,
       retrievable,
     }: {
       namespaceId: Nullable<string>;
       knowledgeBaseId: Nullable<string>;
-      fileUid: Nullable<string>;
-      chunkUid: Nullable<string>;
+      fileId: Nullable<string>;
+      chunkId: Nullable<string>;
       accessToken: Nullable<string>;
       retrievable: boolean;
     }) => {
@@ -29,8 +29,8 @@ export function useUpdateNamespaceChunk() {
         throw new Error("accessToken is required");
       }
 
-      if (!chunkUid) {
-        throw new Error("chunkUid is required");
+      if (!chunkId) {
+        throw new Error("chunkId is required");
       }
 
       if (!namespaceId) {
@@ -41,6 +41,10 @@ export function useUpdateNamespaceChunk() {
         throw new Error("knowledgeBaseId is required");
       }
 
+      if (!fileId) {
+        throw new Error("fileId is required");
+      }
+
       if (retrievable === undefined || retrievable === null) {
         throw new Error("retrievable flag is required");
       }
@@ -48,27 +52,28 @@ export function useUpdateNamespaceChunk() {
       const client = getInstillArtifactAPIClient({ accessToken });
       const res = await client.artifact.updateChunk({
         namespaceId,
-        knowledgeBaseId: knowledgeBaseId,
-        chunkId: chunkUid,
+        knowledgeBaseId,
+        fileId,
+        chunkId,
         retrievable,
       });
 
       return Promise.resolve({
         namespaceId,
         knowledgeBaseId,
-        fileUid,
+        fileId,
         response: res,
       });
     },
-    onSuccess: ({ namespaceId, knowledgeBaseId, fileUid }) => {
+    onSuccess: ({ namespaceId, knowledgeBaseId, fileId }) => {
       queryClient.invalidateQueries({
         queryKey:
           queryKeyStore.knowledgeBase.getUseListNamespaceKnowledgeBaseChunksQueryKey(
             {
               namespaceId,
               knowledgeBaseId,
-              fileUid,
-              chunkUids: null,
+              fileId,
+              chunkIds: null,
             },
           ),
       });

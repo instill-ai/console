@@ -70,11 +70,11 @@ export const CreateKnowledgeBaseCard = ({
     accessToken,
     namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.id,
-    fileUid: existingFiles.isSuccess
-      ? (existingFiles.data?.[0]?.uid ?? null)
+    fileId: existingFiles.isSuccess
+      ? (existingFiles.data?.[0]?.id ?? null)
       : null,
     enabled: Boolean(existingFiles.data) && Boolean(accessToken) && isHovered,
-    chunkUids: null,
+    chunkIds: null,
   });
 
   const totalChunks = React.useMemo(() => {

@@ -11,7 +11,6 @@ import {
   GeneralAppPageProp,
   InstillStore,
   toastInstillError,
-  useAuthenticatedUserSubscription,
   useDeleteNamespaceKnowledgeBase,
   useInstillStore,
   useListNamespaceFiles,
@@ -21,12 +20,6 @@ import {
 import { env } from "../../server";
 import { Sidebar, WarnDiscardFilesDialog } from "./components";
 import { CREDIT_TIMEOUT } from "./components/lib/constant";
-import {
-  calculateRemainingStorage,
-  checkNamespaceType,
-  getKnowledgeBaseLimit,
-  getSubscriptionInfo,
-} from "./components/lib/helpers";
 import { CreditUsageFileNotification } from "./components/notifications";
 import {
   ChunksTab,
@@ -57,9 +50,6 @@ export const KnowledgeBaseMainView = (props: KnowledgeBaseViewProps) => {
   const [pendingTabChange, setPendingTabChange] =
     React.useState<Nullable<KnowledgeBaseTabs>>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
-  const [remainingStorageSpace, setRemainingStorageSpace] = React.useState(0);
-  const [namespaceType, setNamespaceType] =
-    React.useState<Nullable<"user" | "organization">>(null);
   const [isAutomaticTabChange, setIsAutomaticTabChange] = React.useState(false);
 
   const router = useRouter();
@@ -86,58 +76,13 @@ export const KnowledgeBaseMainView = (props: KnowledgeBaseViewProps) => {
       Boolean(selectedKnowledgeBase),
   });
 
-  const userSub = useAuthenticatedUserSubscription({
-    enabled: enabledQuery && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
-    accessToken,
-  });
-
-  // NOTE: Organization subscriptions are EE-only. In CE, orgSub is always null.
-  const subscriptionInfo = React.useMemo(() => {
-    return getSubscriptionInfo(
-      namespaceType,
-      userSub.data || null,
-      null, // orgSub is EE-only
-    );
-  }, [namespaceType, userSub.data]);
-
-  React.useEffect(() => {
-    const getNamespaceType = async () => {
-      if (selectedNamespace && accessToken) {
-        const type = await checkNamespaceType(selectedNamespace, accessToken);
-        setNamespaceType(type);
-      } else {
-        setNamespaceType(null);
-      }
-    };
-
-    getNamespaceType();
-  }, [selectedNamespace, accessToken]);
-
-  React.useEffect(() => {
-    if (knowledgeBases.data) {
-      const totalUsed = knowledgeBases.data.reduce(
-        (total, kb) => total + parseInt(String(kb.usedStorage)),
-        0,
-      );
-      setRemainingStorageSpace(
-        calculateRemainingStorage(subscriptionInfo.planStorageLimit, totalUsed),
-      );
-    }
-  }, [knowledgeBases.data, subscriptionInfo.planStorageLimit]);
-
+  // CE has no subscription limits - unlimited storage and knowledge bases
   const updateRemainingSpace = React.useCallback(
-    (fileSize: number, isAdding: boolean) => {
-      setRemainingStorageSpace((prev) => {
-        const newUsedStorage = isAdding
-          ? subscriptionInfo.planStorageLimit - prev + fileSize
-          : subscriptionInfo.planStorageLimit - prev - fileSize;
-        return calculateRemainingStorage(
-          subscriptionInfo.planStorageLimit,
-          newUsedStorage,
-        );
-      });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (_fileSize: number, _isAdding: boolean) => {
+      // No-op in CE - unlimited storage
     },
-    [subscriptionInfo.planStorageLimit],
+    [],
   );
 
   React.useEffect(() => {
@@ -147,10 +92,8 @@ export const KnowledgeBaseMainView = (props: KnowledgeBaseViewProps) => {
     }
   }, [filesData.data, filesData.isSuccess]);
 
-  const knowledgeBaseLimit = React.useMemo(
-    () => getKnowledgeBaseLimit(subscriptionInfo.plan),
-    [subscriptionInfo.plan],
-  );
+  // CE has no knowledge base limits
+  const knowledgeBaseLimit = null;
 
   const handleTabChangeAttempt = (
     tab: KnowledgeBaseTabs,
@@ -322,8 +265,8 @@ export const KnowledgeBaseMainView = (props: KnowledgeBaseViewProps) => {
               accessToken={props.accessToken}
               knowledgeBases={knowledgeBases.data || []}
               knowledgeBaseLimit={knowledgeBaseLimit}
-              namespaceType={namespaceType}
-              subscription={subscriptionInfo.subscription}
+              namespaceType={null}
+              subscription={null}
               isLocalEnvironment={isLocalEnvironment}
             />
           ) : null}
@@ -331,10 +274,10 @@ export const KnowledgeBaseMainView = (props: KnowledgeBaseViewProps) => {
             <FilesTab
               knowledgeBase={selectedKnowledgeBase}
               onGoToUpload={handleGoToUpload}
-              remainingStorageSpace={remainingStorageSpace}
+              remainingStorageSpace={Infinity}
               updateRemainingSpace={updateRemainingSpace}
-              subscription={subscriptionInfo.subscription}
-              namespaceType={namespaceType}
+              subscription={null}
+              namespaceType={null}
               isLocalEnvironment={isLocalEnvironment}
             />
           ) : null}
@@ -344,10 +287,10 @@ export const KnowledgeBaseMainView = (props: KnowledgeBaseViewProps) => {
               onProcessFile={handleProcessFile}
               onTabChange={(tab) => handleTabChangeAttempt(tab, true)}
               setHasUnsavedChanges={setHasUnsavedChanges}
-              remainingStorageSpace={remainingStorageSpace}
+              remainingStorageSpace={Infinity}
               updateRemainingSpace={updateRemainingSpace}
-              subscription={subscriptionInfo.subscription}
-              namespaceType={namespaceType}
+              subscription={null}
+              namespaceType={null}
               isLocalEnvironment={isLocalEnvironment}
               selectedNamespace={selectedNamespace}
             />
@@ -364,7 +307,7 @@ export const KnowledgeBaseMainView = (props: KnowledgeBaseViewProps) => {
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
               namespaceId={selectedNamespace}
-              namespaceType={namespaceType}
+              namespaceType={null}
               isLocalEnvironment={isLocalEnvironment}
             />
           ) : null}

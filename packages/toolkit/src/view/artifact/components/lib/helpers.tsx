@@ -4,16 +4,18 @@ import {
   KnowledgeBase,
   File as KnowledgeBaseFile,
   Nullable,
-  OrganizationSubscription,
-  OrganizationSubscriptionPlan,
-  UserSubscription,
-  UserSubscriptionPlan,
 } from "instill-sdk";
 
 import { Icons } from "@instill-ai/design-system";
 
 import { getInstillAPIClient } from "../../../../lib";
 import { MAX_FILE_NAME_LENGTH, STORAGE_WARNING_THRESHOLD } from "./constant";
+
+// CE stub types - subscription features are EE-only
+export type UserSubscriptionPlan = string;
+export type OrganizationSubscriptionPlan = string;
+export type UserSubscription = { plan: string } | null;
+export type OrganizationSubscription = { plan: string } | null;
 
 export const getStatusSortValue = (status: FileProcessStatus): number => {
   const statusOrder: Record<FileProcessStatus, number> = {
@@ -144,7 +146,6 @@ export const getFileType = (file: File): FileType => {
     case "png":
       return "TYPE_PNG";
     case "jpg":
-      return "TYPE_JPG";
     case "jpeg":
       return "TYPE_JPEG";
     case "gif":
@@ -319,7 +320,7 @@ export const checkNamespaceType = async (
 ) => {
   try {
     const client = getInstillAPIClient({ accessToken });
-    const type = await client.core.utils.checkNamespaceType({
+    const type = await client.mgmt.utils.checkNamespaceType({
       id: selectedNamespace,
     });
     return type === "NAMESPACE_USER" ? "user" : "organization";
@@ -449,7 +450,7 @@ export const validateFile = (
   }
 
   const isDuplicate = existingFiles.some(
-    (existingFile) => existingFile.filename === file.name,
+    (existingFile) => existingFile.displayName === file.name,
   );
   if (isDuplicate) {
     return { isValid: false, error: "DUPLICATE_FILE" };
@@ -458,24 +459,22 @@ export const validateFile = (
   return { isValid: true, error: null };
 };
 
-export const getKnowledgeBaseNameByUid = (
-  knowledgeBaseUid: string | undefined,
+export const getKnowledgeBaseNameById = (
+  knowledgeBaseId: string | undefined,
   knowledgeBases: KnowledgeBase[],
 ): string => {
-  const knowledgeBase = knowledgeBases.find(
-    (kb) => kb.knowledgeBaseUid === knowledgeBaseUid,
-  );
+  const knowledgeBase = knowledgeBases.find((kb) => kb.id === knowledgeBaseId);
   return knowledgeBase ? knowledgeBase.id : "Select";
 };
 
-export const getKnowledgeBaseUidByName = (
+export const getKnowledgeBaseIdByName = (
   knowledgeBaseName: string,
   knowledgeBases: KnowledgeBase[] | undefined,
 ): string | undefined => {
   const knowledgeBase = knowledgeBases?.find(
     (kb) => kb.name === knowledgeBaseName,
   );
-  return knowledgeBase?.knowledgeBaseUid;
+  return knowledgeBase?.id;
 };
 
 export const getFileTypeByExtension = (extension: string) => {

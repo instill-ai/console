@@ -26,8 +26,8 @@ export function useUploadAndGetDownloadNamespaceObjectURL() {
       const namespaceObjectUploadURL =
         await getNamespaceObjectUploadURL.mutateAsync({
           payload: {
-            namespaceId,
-            objectName: object.name,
+            parent: `namespaces/${namespaceId}`,
+            displayName: object.name,
           },
           accessToken,
         });
@@ -48,8 +48,7 @@ export function useUploadAndGetDownloadNamespaceObjectURL() {
       const downloadURLResponse =
         await getNamespaceObjectDownloadURL.mutateAsync({
           payload: {
-            namespaceId: namespaceId,
-            objectUid: namespaceObjectUploadURL.object.uid,
+            name: namespaceObjectUploadURL.object.name,
           },
           accessToken,
         });

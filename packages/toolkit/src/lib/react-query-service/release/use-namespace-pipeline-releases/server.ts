@@ -31,7 +31,7 @@ export async function fetchNamespacePipelineReleases({
     });
 
     const pipelineReleases =
-      await client.vdp.release.listNamespacePipelineReleases({
+      await client.pipeline.release.listNamespacePipelineReleases({
         namespaceId,
         pipelineId,
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),

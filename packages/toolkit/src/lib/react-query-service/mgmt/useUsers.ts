@@ -22,7 +22,7 @@ export function useUsers({
 
       const client = getInstillAPIClient({ accessToken });
 
-      const users = await client.core.user.listUsers({
+      const users = await client.mgmt.user.listUsers({
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         enablePagination: false,
       });

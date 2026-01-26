@@ -7,13 +7,13 @@ import { getInstillArtifactAPIClient } from "../../sdk-helper";
 import { queryKeyStore } from "../queryKeyStore";
 
 export function useGetNamespaceFile({
-  fileUid,
+  fileId,
   accessToken,
   enabled,
   knowledgeBaseId,
   namespaceId,
 }: {
-  fileUid: Nullable<string>;
+  fileId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   knowledgeBaseId: Nullable<string>;
@@ -22,7 +22,7 @@ export function useGetNamespaceFile({
   return useQuery<File & { content: string; summaryContent: string }>({
     queryKey:
       queryKeyStore.knowledgeBase.getUseNamespaceKnowledgeBaseFileQueryKey({
-        fileUid,
+        fileId,
         knowledgeBaseId,
         namespaceId,
       }),
@@ -31,16 +31,16 @@ export function useGetNamespaceFile({
         throw new Error("accessToken is required");
       }
 
-      if (!fileUid) {
-        throw new Error("fileUid is required");
-      }
-
-      if (!knowledgeBaseId) {
-        throw new Error("knowledgeBaseId is required");
+      if (!fileId) {
+        throw new Error("fileId is required");
       }
 
       if (!namespaceId) {
         throw new Error("namespaceId is required");
+      }
+
+      if (!knowledgeBaseId) {
+        throw new Error("knowledgeBaseId is required");
       }
 
       const client = getInstillArtifactAPIClient({ accessToken });
@@ -48,16 +48,16 @@ export function useGetNamespaceFile({
       // Fetch file metadata with VIEW_CONTENT to get the markdown content
       const contentRes = await client.artifact.getFile({
         namespaceId,
-        knowledgeBaseId: knowledgeBaseId,
-        fileId: fileUid,
+        knowledgeBaseId,
+        fileId,
         view: "VIEW_CONTENT",
       });
 
       // Fetch file metadata with VIEW_SUMMARY to get the summary content
       const summaryRes = await client.artifact.getFile({
         namespaceId,
-        knowledgeBaseId: knowledgeBaseId,
-        fileId: fileUid,
+        knowledgeBaseId,
+        fileId,
         view: "VIEW_SUMMARY",
       });
 
@@ -89,6 +89,6 @@ export function useGetNamespaceFile({
 
       return Promise.resolve({ ...contentRes.file, content, summaryContent });
     },
-    enabled: enabled && Boolean(accessToken) && Boolean(fileUid),
+    enabled: enabled && Boolean(accessToken) && Boolean(fileId),
   });
 }

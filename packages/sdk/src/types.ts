@@ -2,7 +2,7 @@
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import { z } from "zod";
 
-import { User, UserSchema } from "./core/user";
+import { User, UserSchema } from "./mgmt/user";
 
 export type ErrorDetails = {
   "@type": string;

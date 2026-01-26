@@ -28,7 +28,7 @@ export async function fetchNamespacePipelines({
       accessToken: accessToken ?? undefined,
     });
 
-    const pipelines = await client.vdp.pipeline.listNamespacePipelines({
+    const pipelines = await client.pipeline.pipeline.listNamespacePipelines({
       namespaceId,
       pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
       enablePagination: false,

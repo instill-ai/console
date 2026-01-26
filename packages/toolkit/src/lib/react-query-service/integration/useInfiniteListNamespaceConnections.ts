@@ -35,7 +35,7 @@ export function useInfiniteListNamespaceConnections({
       const client = getInstillAPIClient({ accessToken });
 
       const res =
-        await client.core.integration.listPaginatedNamespaceConnections({
+        await client.mgmt.integration.listPaginatedNamespaceConnections({
           namespaceId,
           pageSize: 100,
           pageToken: pageParam ?? null,

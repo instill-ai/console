@@ -14,11 +14,11 @@ test("get basic instill headers", () => {
     "Access-Control-Allow-Headers": "instill-return-traces",
   });
 
-  const requesterUidHeaders = getInstillAdditionalHeaders({
-    requesterUid: "requesterUid",
+  const requesterIdHeaders = getInstillAdditionalHeaders({
+    requesterId: "requesterId",
   });
-  expect(requesterUidHeaders).toEqual({
-    "Instill-Requester-Uid": "requesterUid",
+  expect(requesterIdHeaders).toEqual({
+    "Instill-Requester-Uid": "requesterId",
     "Access-Control-Allow-Headers": "Instill-Requester-Uid",
   });
 
@@ -32,13 +32,13 @@ test("get basic instill headers", () => {
 
   const allHeaders = getInstillAdditionalHeaders({
     returnTraces: true,
-    requesterUid: "requesterUid",
+    requesterId: "requesterId",
     shareCode: "shareCode",
   });
 
   expect(allHeaders).toEqual({
     "instill-return-traces": "true",
-    "Instill-Requester-Uid": "requesterUid",
+    "Instill-Requester-Uid": "requesterId",
     "instill-share-code": "shareCode",
     "Access-Control-Allow-Headers":
       "instill-return-traces, Instill-Requester-Uid, instill-share-code",

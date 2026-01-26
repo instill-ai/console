@@ -40,7 +40,7 @@ export type ListPaginatedNamespacePipelineRunsRequest = {
   page?: number;
   orderBy?: string;
   filter?: string;
-  requesterUid?: string;
+  requesterId?: string;
 };
 
 export type ListPaginatedNamespacePipelineRunsResponse = {
@@ -62,13 +62,15 @@ export type ComponentRun = {
 };
 
 export type ListPaginatedNamespacePipelineComponentRunsRequest = {
+  namespaceId: string;
+  pipelineId: string;
   pipelineRunId: string;
   pageSize?: number;
   page?: number;
   view?: ResourceView;
   orderBy?: string;
   filter?: string;
-  requesterUid?: string;
+  requesterId?: string;
 };
 
 export type ListPaginatedNamespacePipelineComponentRunsResponse = {
@@ -88,7 +90,7 @@ export type TriggerNamespacePipelineRequest = {
   inputs: GeneralRecord[];
   returnTraces?: boolean;
   shareCode?: string;
-  requesterUid?: string;
+  requesterId?: string;
   stream?: boolean;
   isConsole?: boolean;
 };
@@ -204,7 +206,7 @@ export type TriggerAsyncNamespacePipelineRequest = {
   inputs: GeneralRecord[];
   returnTraces?: boolean;
   shareCode?: string;
-  requesterUid?: string;
+  requesterId?: string;
 };
 
 export type TriggerAsyncNamespacePipelineResponse = {
@@ -218,7 +220,7 @@ export type TriggerNamespacePipelineReleaseRequest = {
   inputs: GeneralRecord[];
   returnTraces?: boolean;
   shareCode?: string;
-  requesterUid?: string;
+  requesterId?: string;
   stream?: boolean;
 };
 
@@ -234,7 +236,7 @@ export type TriggerAsyncNamespacePipelineReleaseRequest = {
   inputs: GeneralRecord[];
   returnTraces?: boolean;
   shareCode?: string;
-  requesterUid?: string;
+  requesterId?: string;
 };
 
 export type TriggerNamespacePipelineReleaseWithStreamResponse = any;

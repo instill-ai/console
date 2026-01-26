@@ -25,7 +25,7 @@ export async function fetchNamespaceSecrets({
   try {
     const client = getInstillAPIClient({ accessToken });
 
-    const userSecrets = await client.vdp.secret.listNamespaceSecrets({
+    const userSecrets = await client.pipeline.secret.listNamespaceSecrets({
       namespaceId,
       enablePagination: false,
       pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),

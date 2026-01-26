@@ -1,6 +1,10 @@
 import { ModelReleaseStage, ModelTriggerStatus } from "../../model";
 import { Nullable } from "../../types";
-import { PipelineMode, PipelineReleaseState, PipelineRun } from "../../vdp";
+import {
+  PipelineMode,
+  PipelineReleaseState,
+  PipelineRun,
+} from "../../pipeline";
 
 export type Mode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 
@@ -116,8 +120,7 @@ export type ListModelTriggerMetricRequest = {
   pageSize?: number;
   page?: Nullable<number>;
   filter?: string;
-  requesterUid?: string;
-  requesterId?: Nullable<string>;
+  requesterId?: string;
   start?: string;
 };
 
@@ -163,7 +166,6 @@ export type ListPipelineRunsByRequesterRequest = {
   pageSize?: number;
   page: Nullable<number>;
   orderBy?: string;
-  requesterUid?: string;
   requesterId?: string;
   start?: string;
 };

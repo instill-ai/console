@@ -10,7 +10,6 @@ export function useListPipelineRunsByRequester({
   page,
   orderBy,
   requesterId,
-  requesterUid,
   start,
 }: {
   enabled: boolean;
@@ -19,19 +18,10 @@ export function useListPipelineRunsByRequester({
   page: Nullable<number>;
   orderBy?: string;
   requesterId?: string;
-  requesterUid?: string;
   start: string;
 }) {
   return useQuery<ListPipelineRunsByRequesterResponse>({
-    queryKey: [
-      "pipelineRuns",
-      requesterId,
-      requesterUid,
-      pageSize,
-      page,
-      orderBy,
-      start,
-    ],
+    queryKey: ["pipelineRuns", requesterId, pageSize, page, orderBy, start],
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
@@ -41,12 +31,11 @@ export function useListPipelineRunsByRequester({
         accessToken,
       });
 
-      const data = await client.core.metric.listPipelineRunsByRequester({
+      const data = await client.mgmt.metric.listPipelineRunsByRequester({
         pageSize,
         page,
         orderBy,
         requesterId,
-        requesterUid,
         start,
         enablePagination: true,
       });

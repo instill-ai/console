@@ -26,7 +26,7 @@ export function useInfiniteListIntegrations({
 
       const client = getInstillAPIClient({ accessToken });
 
-      const res = await client.core.integration.listPaginatedIntegrations({
+      const res = await client.mgmt.integration.listPaginatedIntegrations({
         pageSize: 100,
         pageToken: pageParam ?? undefined,
         filter: filter ?? undefined,

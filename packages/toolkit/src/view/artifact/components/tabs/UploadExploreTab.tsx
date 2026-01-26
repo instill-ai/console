@@ -2,12 +2,7 @@
 
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  CreateFileRequest,
-  KnowledgeBase,
-  OrganizationSubscription,
-  UserSubscription,
-} from "instill-sdk";
+import { CreateFileRequest, KnowledgeBase } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -21,6 +16,10 @@ import {
 } from "@instill-ai/design-system";
 
 import type { KnowledgeBaseTabs } from "../../types";
+import type {
+  OrganizationSubscription,
+  UserSubscription,
+} from "../lib/helpers";
 import {
   InstillStore,
   sendAmplitudeData,
@@ -228,7 +227,7 @@ export const UploadExploreTab = ({
     }
 
     const processedFiles = new Set<string>();
-    const uploadedFileUids: string[] = [];
+    const uploadedFileIds: string[] = [];
 
     try {
       const targetNamespace = userNamespaces.data.find(
@@ -261,7 +260,7 @@ export const UploadExploreTab = ({
             namespaceId: navigationNamespaceAnchor ?? "",
             knowledgeBaseId: knowledgeBase.id,
             file: {
-              filename: file.name,
+              displayName: file.name,
               type: getFileType(file),
               content,
             },
@@ -273,7 +272,7 @@ export const UploadExploreTab = ({
           });
 
           processedFiles.add(file.name);
-          return uploadedFile.uid;
+          return uploadedFile.id;
         } catch (error) {
           toastInstillError({
             title: `Error uploading file ${file.name}`,
@@ -287,7 +286,7 @@ export const UploadExploreTab = ({
       const results = await Promise.all(uploadPromises);
 
       // Filter out failed uploads (null values)
-      uploadedFileUids.push(...results.filter((uid) => uid !== null));
+      uploadedFileIds.push(...results.filter((id) => id !== null));
 
       // Files are automatically processed after upload
       setProcessingPhase("processing");

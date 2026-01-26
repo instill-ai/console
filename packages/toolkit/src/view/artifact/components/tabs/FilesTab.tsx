@@ -5,12 +5,14 @@ import {
   KnowledgeBase,
   File as KnowledgeBaseFile,
   Nullable,
-  OrganizationSubscription,
-  UserSubscription,
 } from "instill-sdk";
 
 import { Separator, Skeleton } from "@instill-ai/design-system";
 
+import type {
+  OrganizationSubscription,
+  UserSubscription,
+} from "../lib/helpers";
 import {
   InstillStore,
   toastInstillError,
@@ -128,7 +130,7 @@ export const FilesTab = ({
     try {
       const fileToDelete = files.find((file) => file.id === fileId);
       if (fileToDelete) {
-        setDeletingFile(fileToDelete.filename);
+        setDeletingFile(fileToDelete.displayName);
 
         await deleteFile.mutateAsync({
           fileId,
@@ -222,7 +224,7 @@ export const FilesTab = ({
         </div>
         {selectedFile ? (
           <FileDetailsOverlay
-            fileUid={selectedFile.uid}
+            fileId={selectedFile.id}
             knowledgeBaseId={knowledgeBase.id}
             accessToken={accessToken}
             onClose={closeOverlay}
@@ -230,7 +232,7 @@ export const FilesTab = ({
             namespaceId={selectedNamespace ?? ""}
             isOpen={isFileDetailsOpen}
             setIsOpen={setIsFileDetailsOpen}
-            fileName={selectedFile.filename}
+            fileName={selectedFile.displayName}
             fileType={selectedFile.type}
           />
         ) : null}

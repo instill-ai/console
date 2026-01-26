@@ -26,7 +26,7 @@ export function usePipelineTriggerMetric({
 
       const client = getInstillAPIClient({ accessToken });
 
-      const triggerMetric = await client.core.metric.listPipelineTriggerMetric({
+      const triggerMetric = await client.mgmt.metric.listPipelineTriggerMetric({
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         filter: filter ?? undefined,
         enablePagination: false,

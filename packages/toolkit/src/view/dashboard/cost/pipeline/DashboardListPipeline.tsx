@@ -70,7 +70,6 @@ export const DashboardListPipeline = ({
     page: paginationState.pageIndex,
     orderBy: orderBy,
     requesterId: targetNamespace?.id,
-    requesterUid: targetNamespace?.uid,
     start,
   });
 

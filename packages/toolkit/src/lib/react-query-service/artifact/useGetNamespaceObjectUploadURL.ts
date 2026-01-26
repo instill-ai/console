@@ -1,26 +1,95 @@
 "use client";
 
-import type { GetNamespaceObjectUploadURLRequest, Nullable } from "instill-sdk";
+import type { Nullable } from "instill-sdk";
 import { useMutation } from "@tanstack/react-query";
 
 import { getInstillArtifactAPIClient } from "../../sdk-helper";
+
+// Support both old format (namespaceId, objectName) and new format (parent, displayName)
+type GetNamespaceObjectUploadURLPayload = {
+  // New AIP-122 format
+  parent?: string;
+  displayName?: string;
+  // Legacy format (deprecated)
+  namespaceId?: string;
+  objectName?: string;
+  // Common optional fields
+  urlExpireDays?: number;
+  lastModifiedTime?: string;
+  objectExpireDays?: number;
+};
 
 export function useGetNamespaceObjectUploadURL() {
   return useMutation({
     mutationFn: async ({
       payload,
       accessToken,
+      shareToken,
+      collectionUid,
+      sharePermission,
+      shareCreatorUid,
     }: {
-      payload: GetNamespaceObjectUploadURLRequest;
+      payload: GetNamespaceObjectUploadURLPayload;
       accessToken: Nullable<string>;
+      /**
+       * Share link token for public resource access.
+       * When provided, allows anonymous file uploads to shared collections.
+       */
+      shareToken?: string;
+      /**
+       * Collection UID for share link validation.
+       * Required when using shareToken for file uploads to collections.
+       */
+      collectionUid?: string;
+      /**
+       * Permission type from the share link (e.g., "viewer", "editor").
+       */
+      sharePermission?: string;
+      /**
+       * Share link creator's UID for proper ownership tracking.
+       * This identifies who authorized the upload via their share link.
+       */
+      shareCreatorUid?: string;
     }) => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+      // Either accessToken or shareToken is required
+      if (!accessToken && !shareToken) {
+        return Promise.reject(new Error("accessToken or shareToken required"));
       }
 
-      const client = getInstillArtifactAPIClient({ accessToken });
-      const response =
-        await client.artifact.getNamespaceObjectUploadURL(payload);
+      // When using share token, don't send Authorization header (accessToken)
+      // The Instill-Share-Token header is sufficient for authentication
+      const effectiveAccessToken = shareToken
+        ? undefined
+        : (accessToken ?? undefined);
+
+      const client = getInstillArtifactAPIClient({
+        accessToken: effectiveAccessToken,
+        shareToken,
+        collectionUid,
+        sharePermission,
+        shareCreatorUid,
+      });
+
+      // Convert payload to the format expected by the API
+      // New format: parent, displayName
+      // Legacy format: namespaceId, objectName (deprecated)
+      const sdkPayload = {
+        parent:
+          payload.parent ||
+          (payload.namespaceId ? `namespaces/${payload.namespaceId}` : ""),
+        displayName: payload.displayName || payload.objectName || "",
+        urlExpireDays: payload.urlExpireDays,
+        lastModifiedTime: payload.lastModifiedTime,
+        objectExpireDays: payload.objectExpireDays,
+      };
+
+      // Type assertion needed because the instill-sdk package type definitions
+      // haven't been updated yet, but the API accepts the new format
+      const response = await client.artifact.getNamespaceObjectUploadURL(
+        sdkPayload as unknown as Parameters<
+          typeof client.artifact.getNamespaceObjectUploadURL
+        >[0],
+      );
 
       return Promise.resolve(response);
     },

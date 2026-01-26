@@ -22,7 +22,7 @@ export function useTestNamespaceConnection() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      const res = await client.core.integration.testNamespaceConnection({
+      const res = await client.mgmt.integration.testNamespaceConnection({
         namespaceId,
         connectionId,
       });

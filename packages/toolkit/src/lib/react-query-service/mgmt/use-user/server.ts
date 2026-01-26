@@ -20,7 +20,7 @@ export async function fetchUser({
       accessToken: accessToken ?? undefined,
     });
 
-    const user = await client.core.user.getUser({ userId });
+    const user = await client.mgmt.user.getUser({ userId });
 
     return Promise.resolve(user);
   } catch (error) {

@@ -90,15 +90,16 @@ export function useInfiniteNamespacePipelineReleases({
         accessToken: accessToken ?? undefined,
       });
 
-      const pipelines = await client.vdp.release.listNamespacePipelineReleases({
-        pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-        pageToken: pageParam ?? undefined,
-        namespaceId,
-        pipelineId,
-        enablePagination: true,
-        shareCode: shareCode ?? undefined,
-        view: view ?? "VIEW_BASIC",
-      });
+      const pipelines =
+        await client.pipeline.release.listNamespacePipelineReleases({
+          pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+          pageToken: pageParam ?? undefined,
+          namespaceId,
+          pipelineId,
+          enablePagination: true,
+          shareCode: shareCode ?? undefined,
+          view: view ?? "VIEW_BASIC",
+        });
 
       return Promise.resolve(pipelines);
     },

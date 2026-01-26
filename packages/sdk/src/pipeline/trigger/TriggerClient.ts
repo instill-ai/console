@@ -31,7 +31,7 @@ export class TriggerClient extends APIResource {
       page,
       orderBy,
       filter,
-      requesterUid,
+      requesterId,
     } = props;
 
     try {
@@ -44,7 +44,7 @@ export class TriggerClient extends APIResource {
         view,
       });
 
-      const additionalHeaders = getInstillAdditionalHeaders({ requesterUid });
+      const additionalHeaders = getInstillAdditionalHeaders({ requesterId });
 
       const data =
         await this._client.get<ListPaginatedNamespacePipelineRunsResponse>(
@@ -64,20 +64,22 @@ export class TriggerClient extends APIResource {
     props: ListPaginatedNamespacePipelineComponentRunsRequest,
   ) {
     const {
+      namespaceId,
+      pipelineId,
       pipelineRunId,
       view,
       pageSize,
       page,
       orderBy,
       filter,
-      requesterUid,
+      requesterId,
     } = props;
 
     try {
-      const additionalHeaders = getInstillAdditionalHeaders({ requesterUid });
+      const additionalHeaders = getInstillAdditionalHeaders({ requesterId });
 
       const queryString = getQueryString({
-        baseURL: `/pipeline-runs/${pipelineRunId}/component-runs`,
+        baseURL: `/namespaces/${namespaceId}/pipelines/${pipelineId}/runs/${pipelineRunId}/component-runs`,
         pageSize,
         page,
         filter,
@@ -104,7 +106,7 @@ export class TriggerClient extends APIResource {
     pipelineId,
     inputs,
     returnTraces,
-    requesterUid,
+    requesterId,
     shareCode,
     stream,
   }: TriggerNamespacePipelineRequest & {
@@ -115,7 +117,7 @@ export class TriggerClient extends APIResource {
     pipelineId,
     inputs,
     returnTraces,
-    requesterUid,
+    requesterId,
     shareCode,
     stream,
   }: TriggerNamespacePipelineRequest & {
@@ -126,7 +128,7 @@ export class TriggerClient extends APIResource {
     pipelineId,
     inputs,
     returnTraces,
-    requesterUid,
+    requesterId,
     shareCode,
     stream,
   }: TriggerNamespacePipelineRequest & {
@@ -137,7 +139,7 @@ export class TriggerClient extends APIResource {
     pipelineId,
     inputs,
     returnTraces,
-    requesterUid,
+    requesterId,
     shareCode,
     stream,
   }: TriggerNamespacePipelineRequest & {
@@ -150,14 +152,14 @@ export class TriggerClient extends APIResource {
     namespaceId,
     pipelineId,
     inputs,
-    requesterUid,
+    requesterId,
     returnTraces,
     shareCode,
     stream,
     isConsole,
   }: TriggerNamespacePipelineRequest) {
     const additionalHeaders = getInstillAdditionalHeaders({
-      requesterUid,
+      requesterId,
       returnTraces,
       shareCode,
       stream,
@@ -191,11 +193,11 @@ export class TriggerClient extends APIResource {
     pipelineId,
     inputs,
     returnTraces,
-    requesterUid,
+    requesterId,
     shareCode,
   }: TriggerAsyncNamespacePipelineRequest) {
     const additionalHeaders = getInstillAdditionalHeaders({
-      requesterUid,
+      requesterId,
       returnTraces,
       shareCode,
     });
@@ -203,7 +205,7 @@ export class TriggerClient extends APIResource {
     try {
       const data =
         await this._client.post<TriggerAsyncNamespacePipelineResponse>(
-          `/namespaces/${namespaceId}/pipelines/${pipelineId}/triggerAsync`,
+          `/namespaces/${namespaceId}/pipelines/${pipelineId}/trigger-async`,
           {
             body: JSON.stringify({ inputs }),
             additionalHeaders,
@@ -221,7 +223,7 @@ export class TriggerClient extends APIResource {
     releaseId,
     inputs,
     returnTraces,
-    requesterUid,
+    requesterId,
     shareCode,
     stream,
     isConsole,
@@ -230,7 +232,7 @@ export class TriggerClient extends APIResource {
     isConsole?: boolean;
   }) {
     const additionalHeaders = getInstillAdditionalHeaders({
-      requesterUid,
+      requesterId,
       returnTraces,
       shareCode,
       stream,
@@ -266,11 +268,11 @@ export class TriggerClient extends APIResource {
     releaseId,
     inputs,
     returnTraces,
-    requesterUid,
+    requesterId,
     shareCode,
   }: TriggerAsyncNamespacePipelineReleaseRequest) {
     const additionalHeaders = getInstillAdditionalHeaders({
-      requesterUid,
+      requesterId,
       returnTraces,
       shareCode,
     });
@@ -278,7 +280,7 @@ export class TriggerClient extends APIResource {
     try {
       const data =
         await this._client.post<TriggerAsyncNamespacePipelineReleaseResponse>(
-          `/namespaces/${namespaceId}/pipelines/${pipelineId}/releases/${releaseId}/triggerAsync`,
+          `/namespaces/${namespaceId}/pipelines/${pipelineId}/releases/${releaseId}/trigger-async`,
           {
             body: JSON.stringify({ inputs }),
             additionalHeaders,

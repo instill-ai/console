@@ -22,7 +22,7 @@ export function useComponentDefinitions({
       const client = getInstillAPIClient({ accessToken });
 
       const connectorDefinitions =
-        await client.vdp.component.listComponentDefinitions({
+        await client.pipeline.component.listComponentDefinitions({
           pageSize: 100,
           filter:
             componentType !== "all"

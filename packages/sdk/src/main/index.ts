@@ -4,11 +4,10 @@ import { ArtifactClient } from "../artifact";
 import {
   IntegrationClient,
   MetricClient,
-  SubscriptionClient,
   TokenClient,
   UserClient,
   UtilsClient,
-} from "../core";
+} from "../mgmt";
 import { ModelClient } from "../model";
 import { GeneralRecord, HttpMethod, InstillError } from "../types";
 import {
@@ -17,7 +16,7 @@ import {
   ReleaseClient,
   SecretClient,
   TriggerClient,
-} from "../vdp";
+} from "../pipeline";
 
 export type RequestOption = {
   body?: string | Blob | File;
@@ -130,7 +129,7 @@ export class InstillAPIClient {
     }
   }
 
-  vdp = {
+  pipeline = {
     component: new ComponentClient(this),
     pipeline: new PipelineClient(this),
     release: new ReleaseClient(this),
@@ -138,12 +137,11 @@ export class InstillAPIClient {
     secret: new SecretClient(this),
   };
 
-  // NOTE: organization and membership clients are EE-only (available in console-ee)
-  core = {
+  // NOTE: organization, membership, and subscription clients are EE-only (available in console-ee)
+  mgmt = {
     metric: new MetricClient(this),
     user: new UserClient(this),
     token: new TokenClient(this),
-    subscription: new SubscriptionClient(this),
     utils: new UtilsClient(this),
     integration: new IntegrationClient(this),
   };

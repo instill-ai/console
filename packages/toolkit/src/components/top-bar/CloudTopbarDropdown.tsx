@@ -1,10 +1,8 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
 
 import {
-  Button,
   ComplicateIcons,
   DropdownMenu,
   Icons,
@@ -15,12 +13,10 @@ import { DOCS_BASE_URL } from "../../constant";
 import {
   InstillStore,
   useAuthenticatedUser,
-  useAuthenticatedUserSubscription,
   useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
   useShallow,
 } from "../../lib";
-import { env } from "../../server";
 import { NamespaceAvatarWithFallback } from "../NamespaceAvatarWithFallback";
 import { TopbarDropdownGroup, TopbarDropdownItem } from "./TopbarDropdown";
 
@@ -36,26 +32,7 @@ export const CloudTopbarDropdown = () => {
     accessToken,
   });
 
-  const userSub = useAuthenticatedUserSubscription({
-    enabled:
-      me.isSuccess && enabledQuery && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
-    accessToken,
-  });
-
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
-
-  const subIsActive = React.useMemo(() => {
-    if (userSub.isSuccess && me.isSuccess) {
-      if (
-        userSub.data.detail?.status === "STATUS_ACTIVE" ||
-        userSub.data.detail?.status === "STATUS_TRIALING"
-      ) {
-        return true;
-      }
-    }
-
-    return false;
-  }, [userSub.isSuccess, userSub.data, me.isSuccess]);
 
   return me.isSuccess ? (
     <DropdownMenu.Root>
@@ -205,26 +182,7 @@ export const CloudTopbarDropdown = () => {
             </Link>
           </TopbarDropdownItem>
         </TopbarDropdownGroup>
-        {!subIsActive ? (
-          <React.Fragment>
-            <Separator orientation="horizontal" />
-            <TopbarDropdownGroup>
-              <TopbarDropdownItem
-                onClick={() => {
-                  navigate("/subscribe");
-                }}
-                asChild
-              >
-                <Button
-                  className="flex w-full items-center"
-                  variant="secondaryColour"
-                >
-                  Upgrade to Starter Plan
-                </Button>
-              </TopbarDropdownItem>
-            </TopbarDropdownGroup>
-          </React.Fragment>
-        ) : null}
+        {/* Subscription upgrade CTA is EE-only */}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   ) : (

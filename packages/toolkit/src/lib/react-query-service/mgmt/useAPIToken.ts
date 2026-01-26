@@ -24,7 +24,7 @@ export function useAPIToken({
 
       const client = getInstillAPIClient({ accessToken });
 
-      const res = await client.core.token.getAPIToken({
+      const res = await client.mgmt.token.getAPIToken({
         tokenId,
       });
 
