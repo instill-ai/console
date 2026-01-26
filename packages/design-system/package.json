@@ -91,7 +91,7 @@
     "react-dom": "catalog:",
     "require-from-string": "^2.0.2",
     "rimraf": "^3.0.2",
-    "storybook": "^8.6.12",
+    "storybook": "^8.6.15",
     "tailwindcss": "catalog:",
     "tsup": "catalog:",
     "typescript": "catalog:",
