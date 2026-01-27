@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.120.19](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.18...@instill-ai/toolkit-v0.120.19) (2026-01-27)
+
+
+### Bug Fixes
+
+* **sdk:** use displayName instead of objectName for object upload URL ([#1864](https://github.com/instill-ai/console/issues/1864)) ([c906383](https://github.com/instill-ai/console/commit/c906383285683df8543e76b77b4ce9604edc1e8f))
+
 ## [0.120.18](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.17...@instill-ai/toolkit-v0.120.18) (2026-01-27)
 
 
