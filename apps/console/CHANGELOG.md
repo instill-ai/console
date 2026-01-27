@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.68.9](https://github.com/instill-ai/console/compare/v0.68.8...v0.68.9) (2026-01-27)
+
+
+### Miscellaneous
+
+* **deps:** bump next from 15.4.7 to 15.4.8 ([#1854](https://github.com/instill-ai/console/issues/1854)) ([23f423c](https://github.com/instill-ai/console/commit/23f423c4168ac596838069428ec86c559e43b1c6))
+* **deps:** bump next from 15.4.8 to 15.4.9 ([#1856](https://github.com/instill-ai/console/issues/1856)) ([1c95dab](https://github.com/instill-ai/console/commit/1c95dab47c90a944b6b4113ea3ee1c69117db69b))
+* **deps:** bump next from 15.4.9 to 15.4.10 ([#1862](https://github.com/instill-ai/console/issues/1862)) ([4224a5f](https://github.com/instill-ai/console/commit/4224a5f18a1e7cc4ef9b862b88a255842b781895))
+* **deps:** bump next from 15.4.9 to 15.4.10 in /apps/console ([#1863](https://github.com/instill-ai/console/issues/1863)) ([bbed4c9](https://github.com/instill-ai/console/commit/bbed4c98aa242f721dee9d58dbf5f61a8c9ea021))
+* **package:** upgrade dependencies ([368522c](https://github.com/instill-ai/console/commit/368522c67fc1b88340b461d33382acb1f9359924))
+
+
+### Refactor
+
+* **core:** remove organization feature from CE console ([#1858](https://github.com/instill-ai/console/issues/1858)) ([8f7e4bd](https://github.com/instill-ai/console/commit/8f7e4bd40fe0bfb7e2d5da9345dba03e78793097))
+
 ## [0.68.8](https://github.com/instill-ai/console/compare/v0.68.7...v0.68.8) (2025-11-18)
 
 
