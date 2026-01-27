@@ -2,8 +2,12 @@
   "name": "@instill-ai/design-tokens",
   "version": "0.10.4",
   "description": "Instill AI's design tokens",
-  "repository": "https://github.com/instill-ai/design-system.git",
-  "bugs": "https://github.com/instill-ai/design-system/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/instill-ai/console.git",
+    "directory": "packages/design-tokens"
+  },
+  "bugs": "https://github.com/instill-ai/console/issues",
   "keywords": [
     "instill-ai",
     "design-system",

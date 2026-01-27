@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
 jobs:
   release-please:
     runs-on: ubuntu-latest
@@ -51,9 +55,10 @@ jobs:
 
       - name: Setup Node.js 18.x
         if: ${{ steps.release.outputs.releases_created }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
+        uses: actions/setup-node@v4
+        with:          
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
 
       - uses: pnpm/action-setup@v2.0.1
         if: ${{ steps.release.outputs.releases_created }}
@@ -77,10 +82,6 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-
-      - name: Setup npmrc
-        if: ${{ steps.release.outputs.releases_created }}
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPMTOKEN }}" > .npmrc
 
       - name: Install dependencies
         if: ${{ steps.release.outputs.releases_created }}

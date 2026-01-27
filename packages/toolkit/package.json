@@ -2,8 +2,12 @@
   "name": "@instill-ai/toolkit",
   "version": "0.120.18",
   "description": "Instill AI's frontend toolkit",
-  "repository": "https://github.com/instill-ai/design-system.git",
-  "bugs": "https://github.com/instill-ai/design-system/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/instill-ai/console.git",
+    "directory": "packages/toolkit"
+  },
+  "bugs": "https://github.com/instill-ai/console/issues",
   "keywords": [
     "instill-ai",
     "design-system",

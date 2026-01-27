@@ -2,7 +2,11 @@
   "name": "instill-sdk",
   "version": "0.18.13",
   "description": "Instill AI's Typescript SDK",
-  "repository": "https://github.com/instill-ai/typescript-sdk.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/instill-ai/console.git",
+    "directory": "packages/sdk"
+  },
   "bugs": "https://github.com/instill-ai/community/issues",
   "keywords": [
     "instill-ai",
