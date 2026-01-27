@@ -5,15 +5,9 @@ import { useMutation } from "@tanstack/react-query";
 
 import { getInstillArtifactAPIClient } from "../../sdk-helper";
 
-// Support both old format (namespaceId, objectName) and new format (parent, displayName)
 type GetNamespaceObjectUploadURLPayload = {
-  // New AIP-122 format
-  parent?: string;
-  displayName?: string;
-  // Legacy format (deprecated)
-  namespaceId?: string;
-  objectName?: string;
-  // Common optional fields
+  parent: string;
+  displayName: string;
   urlExpireDays?: number;
   lastModifiedTime?: string;
   objectExpireDays?: number;
@@ -70,14 +64,24 @@ export function useGetNamespaceObjectUploadURL() {
         shareCreatorUid,
       });
 
-      // Convert payload to the format expected by the API
-      // New format: parent, displayName
-      // Legacy format: namespaceId, objectName (deprecated)
+      // Validate parent before API call
+      if (
+        !payload.parent ||
+        payload.parent.includes("undefined") ||
+        payload.parent.includes("null")
+      ) {
+        console.error(
+          "[useGetNamespaceObjectUploadURL] BLOCKED: Invalid parent",
+          { parent: payload.parent },
+        );
+        return Promise.reject(
+          new Error(`Invalid namespace parent: ${payload.parent}`),
+        );
+      }
+
       const sdkPayload = {
-        parent:
-          payload.parent ||
-          (payload.namespaceId ? `namespaces/${payload.namespaceId}` : ""),
-        displayName: payload.displayName || payload.objectName || "",
+        parent: payload.parent,
+        displayName: payload.displayName,
         urlExpireDays: payload.urlExpireDays,
         lastModifiedTime: payload.lastModifiedTime,
         objectExpireDays: payload.objectExpireDays,

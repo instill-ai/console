@@ -50,6 +50,15 @@ export class ArtifactClient extends APIResource {
     lastModifiedTime,
     objectExpireDays,
   }: GetNamespaceObjectUploadURLRequest) {
+    // Validate parent before constructing URL
+    if (!parent || parent.includes("undefined") || parent.includes("null")) {
+      console.error(
+        "[ArtifactClient] BLOCKED: Invalid parent in getNamespaceObjectUploadURL",
+        { parent, displayName },
+      );
+      return Promise.reject(new Error(`Invalid parent: ${parent}`));
+    }
+
     const queryString = getQueryString({
       baseURL: `/${parent}/object-upload-url`,
       displayName,
