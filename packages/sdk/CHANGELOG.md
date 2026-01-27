@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.14](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.13...instill-sdk-v0.18.14) (2026-01-27)
+
+
+### Bug Fixes
+
+* **sdk:** use displayName instead of objectName for object upload URL ([#1864](https://github.com/instill-ai/console/issues/1864)) ([c906383](https://github.com/instill-ai/console/commit/c906383285683df8543e76b77b4ce9604edc1e8f))
+
 ## [0.18.13](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.12...instill-sdk-v0.18.13) (2026-01-27)
 
 
