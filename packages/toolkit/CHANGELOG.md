@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.120.18](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.17...@instill-ai/toolkit-v0.120.18) (2026-01-27)
+
+
+### Miscellaneous
+
+* **query:** update query for tabs ([#1851](https://github.com/instill-ai/console/issues/1851)) ([01e82b5](https://github.com/instill-ai/console/commit/01e82b5dda342f1d01e41f378cb9f99e73569b8e))
+* **sdk:** sdk update ([#1853](https://github.com/instill-ai/console/issues/1853)) ([5ac5763](https://github.com/instill-ai/console/commit/5ac5763fc8e51b980306839c5b5ae2898dbd7a11))
+
+
+### Refactor
+
+* **core:** remove organization feature from CE console ([#1858](https://github.com/instill-ai/console/issues/1858)) ([8f7e4bd](https://github.com/instill-ai/console/commit/8f7e4bd40fe0bfb7e2d5da9345dba03e78793097))
+* **sdk:** rename SDK namespaces and remove EE-only subscription features from CE ([#1861](https://github.com/instill-ai/console/issues/1861)) ([7dfee1d](https://github.com/instill-ai/console/commit/7dfee1d5c471d44f0fde27fb9541ddbdb93d1a84))
+
 ## [0.120.17](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.16...@instill-ai/toolkit-v0.120.17) (2025-11-10)
 
 
