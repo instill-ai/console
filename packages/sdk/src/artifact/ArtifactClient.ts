@@ -224,7 +224,7 @@ export class ArtifactClient extends APIResource {
     const { namespaceId, knowledgeBaseId, file } = props;
 
     try {
-      // KB is now in the path: POST /v1alpha/{parent=namespaces/*/knowledgeBases/*}/files
+      // KB is now in the path: POST /v1alpha/{parent=namespaces/*/knowledge-bases/*}/files
       const data = await this._client.post<CreateFileResponse>(
         `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/files`,
         {
@@ -387,14 +387,14 @@ export class ArtifactClient extends APIResource {
 
     // Add knowledge_base resource name if provided
     if (knowledgeBaseId) {
-      payload.knowledgeBase = `namespaces/${namespaceId}/knowledgeBases/${knowledgeBaseId}`;
+      payload.knowledgeBase = `namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}`;
     }
 
     // Add files resource names if provided
     if (fileIds && fileIds.length > 0 && knowledgeBaseId) {
       payload.files = fileIds.map(
         (fileId) =>
-          `namespaces/${namespaceId}/knowledgeBases/${knowledgeBaseId}/files/${fileId}`,
+          `namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/files/${fileId}`,
       );
     }
 

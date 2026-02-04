@@ -2,6 +2,7 @@ export * from "./useDownloadNamespaceObject";
 export * from "./useGetNamespaceObjectDownloadURL";
 export * from "./useNamespaceObjectDownloadURL";
 export * from "./useGetNamespaceObjectUploadURL";
+export * from "./useUpdateNamespaceObject";
 export * from "./useUploadAndGetDownloadNamespaceObjectURL";
 export * from "./useUploadNamespaceObject";
 export * from "./useListNamespaceKnowledgeBases";

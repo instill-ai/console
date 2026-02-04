@@ -71,7 +71,7 @@ export type DownloadNamespaceObjectRequest = {
 };
 
 export type KnowledgeBase = {
-  // Canonical resource name. Format: `namespaces/{namespace}/knowledgeBases/{knowledge_base}`
+  // Canonical resource name. Format: `namespaces/{namespace}/knowledge-bases/{knowledge_base}`
   name: string;
   // Immutable canonical resource ID
   id: string;
@@ -112,7 +112,7 @@ export type ChunkType =
   | "TYPE_AUGMENTED";
 
 export type Chunk = {
-  // Resource name. Format: `namespaces/{namespace}/knowledgeBases/{knowledge_base}/files/{file}/chunks/{chunk}`
+  // Resource name. Format: `namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}/chunks/{chunk}`
   name: string;
   // Chunk ID (unique identifier)
   id: string;
@@ -120,7 +120,7 @@ export type Chunk = {
   tokens: number;
   createTime: string;
   // Resource name of the original file this chunk belongs to
-  // Format: `namespaces/{namespace}/knowledgeBases/{knowledge_base}/files/{file}`
+  // Format: `namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}`
   originalFile: string;
   type: ChunkType;
   reference?: ChunkReference;
@@ -132,11 +132,11 @@ export type GetChunkResponse = {
 };
 
 export type SimilarChunk = {
-  // Chunk resource name. Format: `namespaces/{namespace}/knowledgeBases/{knowledge_base}/files/{file}/chunks/{chunk}`
+  // Chunk resource name. Format: `namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}/chunks/{chunk}`
   chunk: string;
   similarityScore: number;
   textContent: string;
-  // Source file resource name. Format: `namespaces/{namespace}/knowledgeBases/{knowledge_base}/files/{file}`
+  // Source file resource name. Format: `namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}`
   file: string;
   // Full chunk metadata
   chunkMetadata: Chunk;
@@ -205,7 +205,7 @@ export type FileMediaType =
 
 export type File = {
   // ===== Standard AIP fields =====
-  // Canonical resource name. Format: `namespaces/{namespace}/knowledgeBases/{knowledge_base}/files/{file}`
+  // Canonical resource name. Format: `namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}`
   name: string;
   // Immutable canonical resource ID (e.g., "file-8f3a2k9E7c1")
   id: string;
@@ -236,7 +236,7 @@ export type File = {
 
   // ===== Knowledge base associations =====
   // Knowledge base resource names that this file is associated with
-  // Format: `namespaces/{namespace}/knowledgeBases/{knowledge_base}`
+  // Format: `namespaces/{namespace}/knowledge-bases/{knowledge_base}`
   knowledgeBases?: string[];
 
   // ===== Owner and creator references =====

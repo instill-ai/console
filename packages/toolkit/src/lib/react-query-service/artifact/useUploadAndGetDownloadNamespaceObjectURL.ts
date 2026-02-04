@@ -36,6 +36,11 @@ export function useUploadAndGetDownloadNamespaceObjectURL() {
         return null;
       }
 
+      // Extract object ID from resource name (namespaces/{ns}/objects/{id})
+      const objectResourceName = namespaceObjectUploadURL.object.name;
+      const objectIdParts = objectResourceName.split("/");
+      const objectIdOnly = objectIdParts[objectIdParts.length - 1] ?? "";
+
       await uploadNamespaceObject.mutateAsync({
         payload: {
           uploadUrl: namespaceObjectUploadURL.uploadUrl,
@@ -43,6 +48,15 @@ export function useUploadAndGetDownloadNamespaceObjectURL() {
           contentType: object.type ?? "application/octet-stream",
         },
         accessToken,
+        // Confirm upload to mark is_uploaded=true in database
+        confirmUpload: objectIdOnly
+          ? {
+              namespaceId,
+              objectId: objectIdOnly,
+              size: object.size,
+              contentType: object.type ?? "application/octet-stream",
+            }
+          : undefined,
       });
 
       const downloadURLResponse =
