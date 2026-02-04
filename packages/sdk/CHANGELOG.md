@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.15](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.14...instill-sdk-v0.18.15) (2026-02-04)
+
+
+### Bug Fixes
+
+* **artifact:** confirm object upload and fix knowledge-base resource paths ([451f0f3](https://github.com/instill-ai/console/commit/451f0f34446813846f5f23c8da09981541289d43))
+
 ## [0.18.14](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.13...instill-sdk-v0.18.14) (2026-01-27)
 
 
