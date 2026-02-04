@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.120.20](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.19...@instill-ai/toolkit-v0.120.20) (2026-02-04)
+
+
+### Bug Fixes
+
+* **artifact:** confirm object upload and fix knowledge-base resource paths ([451f0f3](https://github.com/instill-ai/console/commit/451f0f34446813846f5f23c8da09981541289d43))
+
 ## [0.120.19](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.18...@instill-ai/toolkit-v0.120.19) (2026-01-27)
 
 
