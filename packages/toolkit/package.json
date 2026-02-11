@@ -143,7 +143,7 @@
     "@uiw/react-codemirror": "^4.22.2",
     "@uiw/react-json-view": "2.0.0-alpha.18",
     "ajv": "^8.16.0",
-    "axios": "^1.12.0",
+    "axios": "^1.13.5",
     "clsx": "^1.0.0",
     "cookie": "^0.7.1",
     "echarts": "^5.4.2",
