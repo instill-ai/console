@@ -108,6 +108,10 @@ export const UploadExploreTab = ({
   //   React.useState(false);
   const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
+  const [duplicateExistingFileName, setDuplicateExistingFileName] =
+    React.useState<string>("");
+  const [duplicateExistingFileLink, setDuplicateExistingFileLink] =
+    React.useState<string>("");
   const [tooLongFileName, setTooLongFileName] = React.useState<string>("");
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [processingPhase, setProcessingPhase] = React.useState<
@@ -274,6 +278,42 @@ export const UploadExploreTab = ({
           processedFiles.add(file.name);
           return uploadedFile.id;
         } catch (error) {
+          if (
+            error &&
+            typeof error === "object" &&
+            "status" in error &&
+            (error as { status: number }).status === 409
+          ) {
+            const apiError = error as {
+              status: number;
+              response?: {
+                details?: Array<{
+                  reason?: string;
+                  metadata?: Record<string, string>;
+                }>;
+              };
+            };
+            const detail = apiError.response?.details?.find(
+              (d) => d.reason === "DUPLICATE_FILE_CONTENT",
+            );
+            if (detail?.metadata) {
+              const {
+                existing_file_name,
+                existing_file_id,
+                existing_namespace_id,
+              } = detail.metadata;
+              setDuplicateFileName(file.name);
+              setDuplicateExistingFileName(existing_file_name ?? "");
+              setDuplicateExistingFileLink(
+                `/${existing_namespace_id}/agents?fileId=${existing_file_id}`,
+              );
+              setShowDuplicateFileMessage(true);
+              duplicateFileTimeoutRef.current = setTimeout(() => {
+                setShowDuplicateFileMessage(false);
+              }, FILE_ERROR_TIMEOUT);
+              return null;
+            }
+          }
           toastInstillError({
             title: `Error uploading file ${file.name}`,
             error,
@@ -428,6 +468,8 @@ export const UploadExploreTab = ({
         <DuplicateFileNotification
           deletedFileName={duplicateFileName}
           setShowDeleteMessage={setShowDuplicateFileMessage}
+          existingFileName={duplicateExistingFileName}
+          existingFileLink={duplicateExistingFileLink}
         />
       )}
       {showFileTooLongMessage && (

@@ -1,5 +1,7 @@
 import { Icons, toast, ToastAction } from "@instill-ai/design-system";
 
+import { TOAST_DEFAULT_DURATION } from "./toastInstillError";
+
 export function toastInstillSuccess({
   title,
   description,
@@ -22,6 +24,6 @@ export function toastInstillSuccess({
       </div>
     ),
     className: "!bg-semantic-success-bg",
-    duration: duration ?? 4000,
+    duration: duration ?? TOAST_DEFAULT_DURATION,
   });
 }
