@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.120.21](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.20...@instill-ai/toolkit-v0.120.21) (2026-03-01)
+
+
+### Features
+
+* **toolkit:** add duplicate file upload detection and shared toast duration constant ([575d8cf](https://github.com/instill-ai/console/commit/575d8cf04ca19aa8dfc78a3cc1dc99b164dfebf2))
+
+
+### Miscellaneous
+
+* **deps:** bump ajv from 8.17.1 to 8.18.0 ([#1870](https://github.com/instill-ai/console/issues/1870)) ([03eec91](https://github.com/instill-ai/console/commit/03eec91bbad74daf108ead72a190b2cddf407175))
+* **deps:** bump axios from 1.13.3 to 1.13.5 ([#1868](https://github.com/instill-ai/console/issues/1868)) ([8e55b3b](https://github.com/instill-ai/console/commit/8e55b3b7322328744ed0aea93539f06628f6ced7))
+* **deps:** bump markdown-it from 13.0.2 to 14.1.1 ([#1869](https://github.com/instill-ai/console/issues/1869)) ([501da68](https://github.com/instill-ai/console/commit/501da68405f31ad6cc579c740f276fe549fbabb2))
+* **deps:** bump next from 15.4.10 to 16.1.5 ([#1866](https://github.com/instill-ai/console/issues/1866)) ([50ab7cb](https://github.com/instill-ai/console/commit/50ab7cb94e807ae83f71b4db23ff7acc89054000))
+
 ## [0.120.20](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.19...@instill-ai/toolkit-v0.120.20) (2026-02-04)
 
 
