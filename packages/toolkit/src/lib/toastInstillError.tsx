@@ -46,9 +46,7 @@ export type DuplicateFileInfo = {
  *   2. Raw JSON body (EE SDK):     { code: 6, details: [...] }
  * Returns null if the error is not a duplicate file error.
  */
-export function getDuplicateFileInfo(
-  error: unknown,
-): DuplicateFileInfo | null {
+export function getDuplicateFileInfo(error: unknown): DuplicateFileInfo | null {
   if (!error || typeof error !== "object") return null;
 
   type DetailEntry = { reason?: string; metadata?: Record<string, string> };
@@ -76,9 +74,7 @@ export function getDuplicateFileInfo(
 
   if (!details) return null;
 
-  const detail = details.find(
-    (d) => d.reason === "DUPLICATE_FILE_CONTENT",
-  );
+  const detail = details.find((d) => d.reason === "DUPLICATE_FILE_CONTENT");
   if (!detail?.metadata) return null;
   return detail.metadata as unknown as DuplicateFileInfo;
 }
