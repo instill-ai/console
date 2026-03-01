@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.68.10](https://github.com/instill-ai/console/compare/v0.68.9...v0.68.10) (2026-03-01)
+
+
+### Miscellaneous
+
+* **deps:** bump axios from 1.13.3 to 1.13.5 ([#1868](https://github.com/instill-ai/console/issues/1868)) ([8e55b3b](https://github.com/instill-ai/console/commit/8e55b3b7322328744ed0aea93539f06628f6ced7))
+* **deps:** bump next-mdx-remote from 4.4.1 to 6.0.0 ([#1871](https://github.com/instill-ai/console/issues/1871)) ([224c9e3](https://github.com/instill-ai/console/commit/224c9e3fd600de37445548ddbc435c0590cc05d6))
+
 ## [0.68.9](https://github.com/instill-ai/console/compare/v0.68.8...v0.68.9) (2026-01-27)
 
 

@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.90.9](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.8...@instill-ai/design-system-v0.90.9) (2026-03-01)
+
+
+### Miscellaneous
+
+* **deps-dev:** bump storybook from 8.6.15 to 8.6.17 ([#1872](https://github.com/instill-ai/console/issues/1872)) ([92f0162](https://github.com/instill-ai/console/commit/92f0162ff4c7795d3929276a36b0e20ad41f53f8))
+
 ## [0.90.8](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.7...@instill-ai/design-system-v0.90.8) (2026-01-27)
 
 
