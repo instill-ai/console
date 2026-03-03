@@ -20,7 +20,7 @@ export const RunButton = () => {
   );
 
   return (
-    <div className="flex flex-row gap-x-1 items-center">
+    <div className="flex flex-row gap-x-3 items-center">
       <EditorButtonTooltipWrapper
         tooltipContent={isMac ? "CMD Enter" : "CTRL Enter"}
       >
