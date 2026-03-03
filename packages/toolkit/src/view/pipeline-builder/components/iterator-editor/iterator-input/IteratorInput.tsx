@@ -91,7 +91,7 @@ export const IteratorInput = ({ className }: { className?: string }) => {
           Input
         </p>
       </div>
-      <div className="flex flex-row items-center gap-x-2">
+      <div className="flex min-w-0 flex-1 flex-row items-center gap-x-2">
         <Select.Root
           value={selectedInputOption?.path}
           onValueChange={(value) => {
@@ -120,7 +120,7 @@ export const IteratorInput = ({ className }: { className?: string }) => {
             }
           }}
         >
-          <Select.Trigger className="!w-[245px]">
+          <Select.Trigger className="!min-w-[300px] !flex-1">
             <Select.Value aria-label={selectedInputOption?.path}>
               {selectedInputOption ? (
                 <p className="rounded bg-semantic-accent-bg px-2 py-0.5 text-semantic-accent-default product-body-text-4-medium">

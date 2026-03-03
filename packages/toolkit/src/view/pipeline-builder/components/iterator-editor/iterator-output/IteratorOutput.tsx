@@ -59,16 +59,16 @@ export const OutputSet = ({
   disabledDeleteButton?: boolean;
 }) => {
   return (
-    <div key={outputKey} className="flex flex-row items-center gap-x-3">
+    <div key={outputKey} className="flex flex-row flex-wrap items-center gap-x-3">
       <p className="text-semantic-fg-primary product-body-text-3-semibold">
         {outputKey}
       </p>
-      <div className="flex flex-row gap-x-2">
-        <p className="text-semantic-fg-secondary product-body-text-4-semibold">
+      <div className="flex min-w-0 flex-1 flex-row items-center gap-x-2">
+        <p className="shrink-0 text-semantic-fg-secondary product-body-text-4-semibold">
           array of
         </p>
+        <OutputValueInput outputKey={outputKey} />
       </div>
-      <OutputValueInput outputKey={outputKey} />
       {disabledDeleteButton ? null : (
         <DeleteOutputButton outputKey={outputKey} />
       )}

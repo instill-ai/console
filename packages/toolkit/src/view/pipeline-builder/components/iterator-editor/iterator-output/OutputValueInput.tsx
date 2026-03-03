@@ -37,7 +37,7 @@ export const OutputValueInput = ({ outputKey }: { outputKey: string }) => {
   }, [tempSavedNodesForEditingIteratorFlow, editingIteratorID, outputKey]);
 
   return (
-    <Input.Root className="!h-8 !w-[250px]">
+    <Input.Root className="!h-8 !min-w-[250px] !flex-1">
       <Input.Core
         className="!product-body-text-4-medium"
         value={outputValue}
