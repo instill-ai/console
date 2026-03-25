@@ -174,7 +174,7 @@
     "server-only": "^0.0.1",
     "unique-names-generator": "^4.7.1",
     "uuid": "^9.0.0",
-    "yaml": "^2.5.0",
+    "yaml": "^2.8.3",
     "yup": "^0.32.11",
     "zod": "catalog:",
     "zustand": "catalog:"
