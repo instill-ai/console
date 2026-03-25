@@ -38,7 +38,7 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "turbo": "^2.7.6",
     "typescript": "catalog:",
-    "yaml": "^2.8.2"
+    "yaml": "^2.8.3"
   },
   "engines": {
     "node": ">=20.0.0"
