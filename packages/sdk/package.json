@@ -52,7 +52,7 @@
     "@vitest/coverage-istanbul": "^3.2.4",
     "dotenv": "^16.0.1",
     "eslint": "catalog:",
-    "lodash": "^4.17.23",
+    "lodash": "^4.18.1",
     "msw": "^2.3.2",
     "msw-auto-mock": "^0.25.0",
     "oazapfts": "^6.1.0",
