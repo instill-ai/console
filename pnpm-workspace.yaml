@@ -12,7 +12,7 @@ catalog:
   tsx: ^4.19.4
   next: 15.5.10
   zod: ^3.25.56
-  postcss: ^8.5.4
+  postcss: ^8.5.10
   autoprefixer: ^10.4.21
   zustand: ^5.0.5
   react-dom: ^18.3.1
