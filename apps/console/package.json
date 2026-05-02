@@ -66,7 +66,7 @@
     "styled-jsx": "^5.1.7",
     "tailwindcss-animate": "^1.0.6",
     "unique-names-generator": "^4.7.1",
-    "uuid": "^9.0.0",
+    "uuid": "^14.0.0",
     "yup": "^0.32.11",
     "zod": "catalog:",
     "zustand": "^4.3.7"
